@@ -1,9 +1,11 @@
 {
   "node": true,
+  "browser": true,
   "strict": true,
   "trailing": true,
   "indent": 2,
   "sub": true,
   "undef": true,
-  "unused": true
+  "unused": true,
+  "loopfunc": true
 }
