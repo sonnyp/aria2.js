@@ -13,8 +13,8 @@
     "url": "git://github.com/sonnyp/aria2.js.git"
   },
   "author": {
-    "name" : "Sonny Piers",
-    "email" : "sonny@fastmail.net"
+    "name": "Sonny Piers",
+    "email": "sonny@fastmail.net"
   },
   "license": "MIT",
   "bugs": {
@@ -27,5 +27,8 @@
     "grunt-jsvalidate": "~0.2.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-mocha-test": "~0.8.1"
+  },
+  "dependencies": {
+    "ws": "~0.4.31"
   }
 }
