@@ -9,7 +9,7 @@ JavaScript library for [aria2 "The next generation download utility."](http://ar
 
 ## Use
 ```xml
-<script src="../lib/index.js"></script>
+<script src="aria2.js/lib/index.js"></script>
 ```
 ```javascript
 var aria2 = new Aria2();
