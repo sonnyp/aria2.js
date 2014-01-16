@@ -1,16 +1,31 @@
 aria2.js
 ========
 
-JavaScript library for [aria2 "The next generation download utility."](http://aria2.sourceforge.net/)
+JavaScript library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
 [![Build Status](https://travis-ci.org/sonnyp/aria2.js.png?branch=master)](https://travis-ci.org/sonnyp/aria2.js)
 [![Dependency Status](https://david-dm.org/sonnyp/aria2.js.png)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://david-dm.org/sonnyp/aria2.js/dev-status.png)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
 
 ## Use
+
+### Install
+```
+npm install aria2
+```
+
+### Browsers
 ```xml
 <script src="aria2.js/lib/index.js"></script>
 ```
+
+### Node.js
+```
+var aria2 = require('aria2');
+```
+
+### Example
+
 ```javascript
 var aria2 = new Aria2();
 
@@ -45,5 +60,27 @@ aria2.onDownloadStart = function(e) {
 ## Methods
 See [aria2 methods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods)
 
+For every method you can use
+```javascript
+aria2.send(method, [params], function(err, res) {
+  console.log(err || res);
+});
+```
+
+or directly
+```javascript
+aria2.method([params], function(err, res) {
+  console.log(err || res);
+});
+```
+
 ## Notifications
 See [aria2 notifications](http://aria2.sourceforge.net/manual/en/html/aria2c.html#json-rpc-over-websocket)
+
+For every notifications you can attach a function to call.
+```javascript
+aria2.onDownloadStart = function(event) {
+  console.log(event);
+};
+```
+

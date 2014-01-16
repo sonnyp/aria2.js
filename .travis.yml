@@ -5,6 +5,4 @@ node_js:
   - "0.10"
   - "0.11"
 
-before_script: npm install -g grunt-cli
-
 script: grunt test --verbose

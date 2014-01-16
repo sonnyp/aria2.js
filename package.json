@@ -1,34 +1,31 @@
 {
-  "name": "aria2.js",
+  "name": "aria2",
   "version": "0.0.1",
-  "description": "JavaScript library for aria2.",
-  "scripts": {
-    "test": "grunt test"
-  },
+  "description": "JavaScript client library for aria2.",
+  "homepage": "https://github.com/sonnyp/aria2.js",
+  "bugs": "https://github.com/sonnyp/aria2.js/issues",
+  "license": "MIT",
+  "author": "Sonny Piers <sonny@fastmail.net>",
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/grunt test --verbose"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/sonnyp/aria2.js.git"
   },
-  "author": {
-    "name": "Sonny Piers",
-    "email": "sonny@fastmail.net"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sonnyp/aria2.js/issues"
+  "main": "lib/",
+  "dependencies": {
+    "ws": "~0.4.31"
   },
   "devDependencies": {
-    "mocha": "~1.16.2",
+    "mocha": "~1.17.0",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",
     "grunt-jsvalidate": "~0.2.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-mocha-test": "~0.8.1"
-  },
-  "dependencies": {
-    "ws": "~0.4.31"
   }
 }

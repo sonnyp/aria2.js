@@ -1,0 +1,8 @@
+test
+example
+.jshintignore
+.jshintrc
+.travis.yml
+.gitignore
+.npmignore
+Gruntfile.js

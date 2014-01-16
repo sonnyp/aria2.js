@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       targetName:{
         files:{
           src:[
-            'Gruntfile.js',
+            '*.js',
             'lib/**/*.js',
             'test/**/*.js',
             'example/**/*.js',
@@ -23,13 +23,14 @@ module.exports = function(grunt) {
     jshint: {
       files:[
         'package.json',
-        'Gruntfile.js',
+        '*.js',
         'lib/**/*.js',
         'test/**/*.js',
         'example/**/*.js',
       ],
       options: {
         jshintrc: '.jshintrc',
+        jshintignore: '.jshintignore',
         ignores: ['node_modules/**.js']
       }
     },
@@ -42,22 +43,12 @@ module.exports = function(grunt) {
         },
         src: ['test/**/*.js']
       }
-    },
-    watch: {
-      scripts: {
-        files: "<%= concat.dist.src %>",
-        tasks: ['build'],
-        options: {
-          spawn: false,
-        },
-      },
     }
   });
 
   grunt.loadNpmTasks('grunt-jsvalidate');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('mocha', ['mochaTest']);
   grunt.registerTask('syntax', ['jsvalidate', 'jshint']);
