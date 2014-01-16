@@ -3,7 +3,9 @@ aria2.js
 
 JavaScript library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
+[![NPM version](https://badge.fury.io/js/aria2.png)](https://npmjs.org/package/aria2)
 [![Build Status](https://travis-ci.org/sonnyp/aria2.js.png?branch=master)](https://travis-ci.org/sonnyp/aria2.js)
+
 [![Dependency Status](https://david-dm.org/sonnyp/aria2.js.png)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://david-dm.org/sonnyp/aria2.js/dev-status.png)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
 

@@ -6,6 +6,7 @@
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "MIT",
   "author": "Sonny Piers <sonny@fastmail.net>",
+  "keywords": ["aria2", "download", "bittorrent"],
   "engines": {
     "node": ">=0.8.0"
   },
