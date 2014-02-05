@@ -1,0 +1,30 @@
+{
+  "name": "aria.js",
+  "version": "0.1.0",
+  "description": "Client library for aria2.",
+  "homepage": "https://github.com/sonnyp/aria2.js",
+  "authors": [
+    "Sonny Piers <sonny@fastmail.net>"
+  ],
+  "main": "aria2.js",
+  "keywords": [
+    "aria2",
+    "download",
+    "bittorrent"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "bower_components",
+    "example",
+    "lib",
+    "test",
+    "node_modules",
+    ".gitignore",
+    ".jshintignore",
+    ".jshintrc",
+    ".npmignore",
+    ".travis.yml",
+    "Gruntfile.js",
+    "package.json"
+  ]
+}
