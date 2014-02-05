@@ -1,15 +1,17 @@
 aria2.js
 ========
 
-JavaScript library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
+JavaScript (Node.js and browsers) library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
-[![NPM version](https://badge.fury.io/js/aria2.png)](https://npmjs.org/package/aria2)
+
 [![Build Status](https://travis-ci.org/sonnyp/aria2.js.png?branch=master)](https://travis-ci.org/sonnyp/aria2.js)
 
 [![Dependency Status](https://david-dm.org/sonnyp/aria2.js.png)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://david-dm.org/sonnyp/aria2.js/dev-status.png)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
 
-## Use
+## Intro
+
+aria2.js supports the WebSocket and HTTP transports.
 
 ### Install
 ```
@@ -24,46 +26,6 @@ npm install aria2
 ### Node.js
 ```
 var aria2 = require('aria2');
-```
-
-### Example
-
-```javascript
-var aria2 = new Aria2();
-aria2.onopen = function() {
-  console.log('OPEN');
-
-  //aria2 method
-  aria2.getVersion(function(err, res) {
-    console.log(err || res);
-  });
-};
-aria2.onclose = function() {
-  console.log('close');
-};
-aria2.onsend = function(m) {
-  console.log('message out:', m);
-};
-aria2.onmessage = function(m) {
-  console.log('message in:', m);
-};
-
-//aria2 notification
-aria2.onDownloadStart = function(e) {
-  console.log(e);
-};
-aria2.open();
-```
-
-## Init
-Aria2 constructor can take a option object to specify aria2 location.
-Here is an example with default values:
-```javascript
-var aria2 = new Aria2({
-  host: 'localhost',
-  port: 6800,
-  secure: false
-});
 ```
 
 ## Open
@@ -99,7 +61,9 @@ aria2.onmessage = function(m) {
 ```
 
 ## Methods
-See [aria2 methods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods)
+For a complete listing see [aria2 methods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods).
+
+When sending a request to aria2, if the WebSocket isn't available or closed, aria2.js will use the HTTP transport.
 
 For every method you can use
 ```javascript
@@ -115,7 +79,7 @@ aria2.method([params,] function(err, res) {
 ```
 
 ## Notifications
-See [aria2 notifications](http://aria2.sourceforge.net/manual/en/html/aria2c.html#json-rpc-over-websocket)
+For a complete listing see [aria2 notifications](http://aria2.sourceforge.net/manual/en/html/aria2c.html#json-rpc-over-websocket).
 
 For every notifications you can attach a function to call.
 ```javascript
@@ -124,3 +88,5 @@ aria2.onDownloadStart = function(event) {
 };
 ```
 
+## Example
+See [example.js](https://github.com/sonnyp/aria2.js/blob/master/example/example.js)
