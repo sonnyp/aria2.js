@@ -2,24 +2,20 @@
 
 module.exports = function(grunt) {
   grunt.initConfig({
+
     pkg: grunt.file.readJSON('package.json'),
+
     jsvalidate: {
-      options:{
-        globals: {},
-        esprimaOptions: {},
-        verbose: true
-      },
-      targetName:{
-        files:{
-          src:[
-            '*.js',
-            'lib/**/*.js',
-            'test/**/*.js',
-            'example/**/*.js',
-          ]
-        }
+      files:{
+        src:[
+          '*.js',
+          'lib/**/*.js',
+          'test/**/*.js',
+          'example/**/*.js',
+        ]
       }
     },
+
     jshint: {
       files:[
         'package.json',
@@ -30,10 +26,10 @@ module.exports = function(grunt) {
       ],
       options: {
         jshintrc: '.jshintrc',
-        jshintignore: '.jshintignore',
-        ignores: ['node_modules/**.js']
+        jshintignore: '.jshintignore'
       }
     },
+
     mochaTest: {
       test: {
         options: {
