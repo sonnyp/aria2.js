@@ -9,8 +9,8 @@
   else
     Aria2 = global.Aria2;
 
-  var aria2 = new Aria2();
-  aria2.open('ws://127.0.0.1:6800/jsonrpc');
+  var aria2 = new Aria2({host: 'localhost', port: 6800, secure: false});
+  aria2.open();
   aria2.onopen = function() {
     console.log('OPEN');
     aria2.getVersion(function(err, res) {

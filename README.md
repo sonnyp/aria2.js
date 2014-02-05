@@ -30,9 +30,6 @@ var aria2 = require('aria2');
 
 ```javascript
 var aria2 = new Aria2();
-
-aria2.open('ws://127.0.0.1:6800/jsonrpc')
-
 aria2.onopen = function() {
   console.log('OPEN');
 
@@ -45,17 +42,59 @@ aria2.onclose = function() {
   console.log('close');
 };
 aria2.onsend = function(m) {
-  console.log('message out:')
-  console.log(m);
+  console.log('message out:', m);
 };
 aria2.onmessage = function(m) {
-  console.log('message in:');
-  console.log(m);
+  console.log('message in:', m);
 };
 
 //aria2 notification
 aria2.onDownloadStart = function(e) {
   console.log(e);
+};
+aria2.open();
+```
+
+## Init
+Aria2 constructor can take a option object to specify aria2 location.
+Here is an example with default values:
+```javascript
+var aria2 = new Aria2({
+  host: 'localhost',
+  port: 6800,
+  secure: false
+});
+```
+
+## Open
+
+aria2.open() will open the WebSocket connexion.
+```javascript
+aria2.onopen = function() {
+  console.log('I\'m open!');
+};
+aria2.open();
+```
+
+## Close
+
+aria2.close() will close the WebSocket connexion.
+```javascript
+aria2.onclose = function() {
+  console.log('I\'m closed!');
+};
+aria2.close();
+```
+
+## Send and message events
+
+onsend() is called everytime a message is being sent, onmessage() is called everytime a message has been received.
+```javascript
+aria2.onsend = function(m) {
+  console.log('OUT', m);
+};
+aria2.onmessage = function(m) {
+  console.log('IN', m);
 };
 ```
 
@@ -64,14 +103,13 @@ See [aria2 methods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#meth
 
 For every method you can use
 ```javascript
-aria2.send(method, [params], function(err, res) {
+aria2.send(method, [params,] function(err, res) {
   console.log(err || res);
 });
 ```
-
 or directly
 ```javascript
-aria2.method([params], function(err, res) {
+aria2.method([params,] function(err, res) {
   console.log(err || res);
 });
 ```
