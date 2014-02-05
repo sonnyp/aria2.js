@@ -13,9 +13,9 @@
   aria2.open('ws://127.0.0.1:6800/jsonrpc');
   aria2.onopen = function() {
     console.log('OPEN');
-    // aria2.getVersion(function(err, res) {
-    //   console.log(err || res);
-    // });
+    aria2.getVersion(function(err, res) {
+      console.log(err || res);
+    });
   };
   aria2.onclose = function() {
     console.log('close');
@@ -27,7 +27,7 @@
     console.log('in:', m);
   };
   aria2.req('getVersion', function(err, res) {
-    console.log(res)
+    console.log(err || res);
   });
 
 })(this);
