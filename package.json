@@ -15,7 +15,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/grunt test --verbose"
+    "test": "grunt test --verbose"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,6 @@
   "devDependencies": {
     "mocha": "~1.17.1",
     "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.13",
     "grunt-jsvalidate": "~0.2.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-mocha-test": "~0.9.0"
