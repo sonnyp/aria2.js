@@ -1,6 +1,6 @@
 {
   "name": "aria2",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "JavaScript client library for aria2.",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
