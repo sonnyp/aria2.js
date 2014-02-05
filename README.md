@@ -67,13 +67,13 @@ When sending a request to aria2, if the WebSocket isn't available or closed, ari
 
 For every method you can use
 ```javascript
-aria2.send(method, [params,] function(err, res) {
+aria2.send('getVersion', [params,] function(err, res) {
   console.log(err || res);
 });
 ```
 or directly
 ```javascript
-aria2.method([params,] function(err, res) {
+aria2.getVersion([params,] function(err, res) {
   console.log(err || res);
 });
 ```
