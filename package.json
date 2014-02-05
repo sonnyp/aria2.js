@@ -6,7 +6,11 @@
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "MIT",
   "author": "Sonny Piers <sonny@fastmail.net>",
-  "keywords": ["aria2", "download", "bittorrent"],
+  "keywords": [
+    "aria2",
+    "download",
+    "bittorrent"
+  ],
   "engines": {
     "node": ">=0.8.0"
   },
@@ -19,7 +23,8 @@
   },
   "main": "lib/",
   "dependencies": {
-    "ws": "~0.4.31"
+    "ws": "~0.4.31",
+    "httpclient": "0.0.1"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
