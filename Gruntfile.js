@@ -44,9 +44,6 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-          'node_modules/httpclient/lib/xhr.js',
-          'node_modules/httpclient/index.js',
-          'node_modules/httpclient/lib/utils.js',
           'lib/index.js'
         ],
         dest: 'aria2.js'

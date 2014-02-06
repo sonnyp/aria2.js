@@ -1,7 +1,7 @@
 {
   "name": "aria.js",
-  "version": "0.1.0",
-  "description": "Client library for aria2.",
+  "version": "0.0.2",
+  "description": "Library for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "authors": [
     "Sonny Piers <sonny@fastmail.net>"

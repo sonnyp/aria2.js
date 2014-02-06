@@ -13,17 +13,18 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 aria2.js supports the WebSocket and HTTP transports.
 
-### Install
-```
-npm install aria2
-```
-
 ### Browsers
+```
+bower install aria2
+```
 ```xml
 <script src="aria2.js/lib/index.js"></script>
 ```
 
 ### Node.js
+```
+npm install aria2
+```
 ```
 var aria2 = require('aria2');
 ```
