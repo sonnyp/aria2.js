@@ -24,7 +24,9 @@
   "main": "lib/",
   "dependencies": {
     "ws": "~0.4.31",
-    "httpclient": "0.0.1"
+    "httpclient": "0.0.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.3.2"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

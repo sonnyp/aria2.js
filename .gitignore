@@ -1,4 +1,6 @@
 node_modules
+aria2.js
+aria2.min.js
 !.gitignore
 !.jshintrc
 !.jshintignore

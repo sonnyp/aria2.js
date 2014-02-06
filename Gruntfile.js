@@ -39,15 +39,39 @@ module.exports = function(grunt) {
         },
         src: ['test/**/*.js']
       }
+    },
+
+    concat: {
+      dist: {
+        src: [
+          'node_modules/httpclient/lib/xhr.js',
+          'node_modules/httpclient/index.js',
+          'node_modules/httpclient/lib/utils.js',
+          'lib/index.js'
+        ],
+        dest: 'aria2.js'
+      }
+    },
+
+    uglify: {
+      my_target: {
+        files: {
+          'aria2.min.js': ['aria2.js']
+        }
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-jsvalidate');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('mocha', ['mochaTest']);
+  grunt.registerTask('mocha', 'mochaTest');
   grunt.registerTask('syntax', ['jsvalidate', 'jshint']);
   grunt.registerTask('test', ['jsvalidate', 'mocha', 'jshint']);
+  grunt.registerTask('build', ['concat', 'uglify']);
   grunt.registerTask('default', 'test');
 };
