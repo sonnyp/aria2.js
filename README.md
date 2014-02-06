@@ -25,7 +25,7 @@ bower install aria2
 ```
 npm install aria2
 ```
-```
+```javascript
 var aria2 = require('aria2');
 ```
 ## Init
@@ -34,7 +34,7 @@ var aria2 = require('aria2');
 var aria2 = new Aria2([options]);
 ```
 default and only valid options are
-```json
+```javascript
 {
   host: 'localhost',
   port: 6800,
