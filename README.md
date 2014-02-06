@@ -18,7 +18,7 @@ aria2.js supports the WebSocket and HTTP transports.
 bower install aria2
 ```
 ```xml
-<script src="aria2.js/lib/index.js"></script>
+<script src="bower_components/aria2/aria2.min.js"></script>
 ```
 
 ### Node.js
@@ -27,6 +27,19 @@ npm install aria2
 ```
 ```
 var aria2 = require('aria2');
+```
+## Init
+
+```javascript
+var aria2 = new Aria2([options]);
+```
+default and only valid options are
+```json
+{
+  host: 'localhost',
+  port: 6800,
+  secure: false
+}
 ```
 
 ## Open
