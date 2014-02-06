@@ -1,8 +1,10 @@
-test
+bower_components
 example
+test
+.gitignore
 .jshintignore
 .jshintrc
-.travis.yml
-.gitignore
 .npmignore
+.travis.yml
+bower.json
 Gruntfile.js

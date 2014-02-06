@@ -1,6 +1,5 @@
 node_modules
-aria2.js
-aria2.min.js
+bower_components
 !.gitignore
 !.jshintrc
 !.jshintignore

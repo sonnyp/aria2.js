@@ -1,72 +1,22 @@
+!function(a){"use strict";var b=function(a,b,c){b=b||"&",c=c||"=";var d="";if("object"==typeof a){for(var e in a)d+=e+c+a[e]+b;d.length>0&&(d="?"+d.slice(0,-1))}return d},c=function(a){var c=b(a.query);return[a.secure?"https":"http","://",a.host,a.port?":"+a.port:"",a.path||"/",c,a.hash||""].join("")},d=a.XMLHttpRequest,e=function(){},f=function(b,d){var e=b.query[b.jsonp],f=c(b),g=document.createElement("script");g.src=f,g.async=!0,a[e]=function(b){d(null,b),delete a[e],delete g.onerror,g.parentNode.remove(g)},g.onerror=function(b){d(b),delete g.onerror,delete a[e],g.parentNode.remove(g)};var h=document.head||document.getElementsByTagName("head")[0];h.appendChild(g)},g=function(a){for(var b=["response","error","end"],g=0;g<b.length;g++)this["on"+b[g]]=e;var h=HTTPClient.utils.handleOptions(a);for(var i in h)this[i]=h[i];if("string"==typeof h.jsonp)return void f(h,function(a,b){a?this.onerror(a):this.onend(b)}.bind(this));var j=new d;j.addEventListener("error",function(a){this.onerror(a)}.bind(this)),j.addEventListener("readystatechange",function(){if(2===j.readyState){var a={},b=j.getAllResponseHeaders();if(b)for(var c=b.split("\n"),d=0;d<c.length;d++)if(c[d]){var e=c[d].split(":");a[e[0].toLowerCase()]=e.slice(1).join().trim()}var f=j.status;this.onresponse({headers:a,status:f,type:HTTPClient.utils.getTypeFromHeaders(a)})}else 4===j.readyState&&this.onend(j.response)}.bind(this)),j.open(h.method,c(h),!0);for(var k in h.headers)j.setRequestHeader(k,h.headers[k]);j.send(h.body),this.req=j};g.prototype.abort=function(){this.req.abort()},a.HTTPRequest=g}(this),function(a){"use strict";var b;b="undefined"!=typeof module&&module.exports?require("./lib/node"):a.HTTPRequest;var c=function(a,c){if(!c)return new b(a);var d=new b(a);d.onerror=function(a){c(a)};var e;return d.onresponse=function(a){e=a},d.onend=function(a){e=e||{},e.body=a,c(null,e)},d};"undefined"!=typeof module&&module.exports?module.exports=c:a.HTTPClient=c}(this),function(a){"use strict";var b;b="undefined"!=typeof Buffer?function(a){return new Buffer(a).toString("base64")}:a.btoa;var c=function(a){return Object.getPrototypeOf?Object.getPrototypeOf(a):a.__proto__},d=c({}),e=function(a){return"object"!=typeof a?!1:c(a)===d||null===c(a)},f=function(a){var c={};c.query="object"==typeof a.query?a.query:{},c.secure=!!a.secure||!1,c.port=a.port||(c.secure?443:80),c.host=a.host||"localhost",c.path=a.path||"/",c.headers="object"==typeof a.headers?a.headers:{},c.method="string"==typeof a.method?a.method.toUpperCase():"GET",a.jsonp===!0&&(a.jsonp="callback"),"string"==typeof a.jsonp&&(c.jsonp=a.jsonp,c.query[a.jsonp]="HTTPClient"+Date.now());for(var d in c.headers){var f=c.headers[d];delete c.headers[d],c.headers[d.toLowerCase()]=f}if("string"==typeof a.username&&"string"==typeof a.password){var g=a.username+":"+a.password;c.headers.authorization="Basic "+b(g)}return Array.isArray(a.body)||e(a.body)?(c.body=JSON.stringify(a.body),c.headers["tontent-type"]||(c.headers["content-type"]="application/json; charset=utf-8")):"string"==typeof a.body?(c.body=a.body,c.headers["content-type"]||(c.headers["content-type"]="text/plain; charset=utf-8")):(void 0!==a.body||null!==a.body)&&(c.body=a.body),c},g=function(a){var b="";if("object"==typeof a){var c=a["content-type"];c&&(b=c.split(";")[0])}return b},h={handleOptions:f,getTypeFromHeaders:g,getPrototypeOf:c};"undefined"!=typeof module&&module.exports?module.exports=h:a.HTTPClient.utils=h}(this);
 (function(global) {
 
   'use strict';
 
   var WebSocket;
   var b64;
-  var http;
+  var httpclient;;
   if (typeof module !== 'undefined' && module.exports) {
     WebSocket = require('ws');
     b64 = function(str) {
       return new Buffer(str).toString('base64');
     };
-    var httpclient = require('httpclient');
-    http = function(m, fn) {
-
-      //FIXME json-rpc post won't work
-      var opts = {
-        host: this.host,
-        port: this.port,
-        path: '/jsonrpc',
-        secure: this.secure,
-        query: {
-          method: m.method,
-          id: m.id,
-          params: (typeof m.params === 'object' && m.params !== null) ? b64(JSON.stringify(m.params)) : undefined
-        }
-      };
-
-      httpclient(opts, (function(err, res) {
-        if (err)
-          return fn(err);
-
-        var m = JSON.parse(res.body.toString());
-        this._onmessage(m);
-      }).bind(this));
-    };
+    httpclient = require('httpclient');
   }
   else {
     WebSocket = global.WebSocket;
-    b64 = atob;
-    http = function(m, fn) {
-      var jc = 'aria2jsonp' + Date.now();
-
-      var protocol = this.secure === true ? 'https' : 'http';
-      var url = protocol + '://' + this.host + ':' + this.port + '/jsonrpc?jsoncallback=' + jc + '&id=' + m.id + '&method=' + m.method;
-
-      if (m.params)
-        url += '&params=' + b64(JSON.stringify(m.params));
-
-      var el = document.createElement('script');
-      el.src = url;
-      el.async = true;
-
-      global[jc] = (function(m) {
-        this._onmessage(m);
-        delete global[jc];
-        delete el.onerror;
-        el.parentNode.remove(el);
-      }).bind(this);
-
-      el.onerror = function(e) {
-        fn(e);
-        delete el.onerror;
-        el.parentNode.remove(el);
-      };
-
-      var head = document.head || document.getElementsByTagName('head')[0];
-      head.appendChild(el);
-    };
+    b64 = global.atob;
+    httpclient = global.HTTPClient;
   }
 
   var defaultOpts = {
@@ -82,10 +32,38 @@
     for (var i in defaultOpts)
       this[i] = typeof opts === 'object' && i in opts ? opts[i] : defaultOpts[i];
   };
-  ['open', 'close', 'send', 'message'].forEach(function(e) {
-    Aria2.prototype['on' + e] = function() {};
-  });
-  Aria2.prototype.http = http;
+  Aria2.prototype.http = function(m, fn) {
+    //FIXME json-rpc post wouldn't work
+    var opts = {
+      host: this.host,
+      port: this.port,
+      path: '/jsonrpc',
+      secure: this.secure,
+      query: {
+        method: m.method,
+        id: m.id,
+      }
+    };
+    if (typeof m.params === 'object' && m.params !== null)
+      opts.query.params = b64(JSON.stringify(m.params));
+
+
+    //browser, use jsonp
+    if (typeof module === 'undefined')
+      opts.jsonp = 'jsoncallback';
+
+    httpclient(opts, (function(err, res) {
+      if (err)
+        return fn(err);
+
+      if (opts.jsonp)
+        return this._onmessage(res.body);
+
+      var m = JSON.parse(res.body.toString())
+      this._onmessage(m);
+
+    }).bind(this));
+  };
   Aria2.prototype.send = function(method, params, fn) {
     var m = {
       'method': 'aria2.' + method,
@@ -95,7 +73,7 @@
 
     if (typeof params === 'function')
       fn = params;
-    else
+    else if (typeof m.params === 'object' && m.params !== null)
       m.params = params;
 
     if (fn)
@@ -106,12 +84,12 @@
     //send via websocket
     if (this.socket && this.socket.readyState === 1)
       return this.socket.send(JSON.stringify(m));
+
     //send via http
-    else
-      this.http(m, (function(err) {
-        fn(err);
-        delete this.callbacks[m.id];
-      }).bind(this));
+    this.http(m, (function(err) {
+      fn(err);
+      delete this.callbacks[m.id];
+    }).bind(this));
   };
   Aria2.prototype._onmessage = function(m) {
     if (m.id !== undefined) {
@@ -200,6 +178,10 @@
   for (var y in Aria2.notifications) {
     Aria2.prototype[y] = function() {};
   }
+
+  ['open', 'close', 'send', 'message'].forEach(function(e) {
+    Aria2.prototype['on' + e] = function() {};
+  });
 
   if (typeof module !== 'undefined' && module.exports)
     module.exports = Aria2;
