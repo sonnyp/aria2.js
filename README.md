@@ -25,7 +25,7 @@ bower install aria2
 npm install aria2
 ```
 ```javascript
-var aria2 = require('aria2');
+var Aria2 = require('aria2');
 ```
 ## Init
 
