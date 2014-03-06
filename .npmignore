@@ -8,3 +8,5 @@ test
 .travis.yml
 bower.json
 Gruntfile.js
+aria2.js
+aria2.min.js
