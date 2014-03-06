@@ -64,7 +64,7 @@
 
     }).bind(this));
   };
-  Aria2.prototype.send = function(method, params, fn) {
+  Aria2.prototype.send = function(method, params) {
     var m = {
       'method': 'aria2.' + method,
       'json-rpc': '2.0',
