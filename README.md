@@ -36,7 +36,7 @@ default options are
 ```javascript
 {
   host: 'localhost',
-  port: 6800,
+  port: 8600,
   secure: false
 }
 ```
