@@ -10,7 +10,7 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 ## Intro
 
-aria2.js supports the WebSocket and HTTP transports.
+aria2.js supports the WebSocket, HTTP and JSONP transports.
 
 ### Browser
 ```

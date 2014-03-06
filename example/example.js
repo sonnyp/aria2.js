@@ -28,9 +28,14 @@
     aria2.getGlobalOption(function(err, res) {
       console.log('global options: ', err || res);
 
-      //close socket
-      aria2.close();
+      aria2.send('addUri', ['http://example.org/file', 'http://mirror/file'], {dir: '/tmp'}, function(err, gid) {
+        console.log(err || 'gid: ' + gid);
+
+        //close socket
+        aria2.close();
+      });
     });
+
   };
 
   //triggered when socket is closed
