@@ -9,7 +9,9 @@
   else
     Aria2 = global.Aria2;
 
-  var aria2 = new Aria2({host: 'localhost', port: 6800, secure: false});
+  //those are default options
+  var options = {host: 'localhost', port: 6800, secure: false};
+  var aria2 = new Aria2(options);
 
   //socket is not open yet so it will use HTTP interface
   aria2.send('getVersion', function(err, res) {
