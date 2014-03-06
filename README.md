@@ -32,7 +32,7 @@ var Aria2 = require('aria2');
 ```javascript
 var aria2 = new Aria2([options]);
 ```
-default and only valid options are
+default options are
 ```javascript
 {
   host: 'localhost',
@@ -61,7 +61,7 @@ aria2.onclose = function() {
 aria2.close();
 ```
 
-## Send and message events
+## onsend and onmessage
 
 onsend() is called everytime a message is being sent, onmessage() is called everytime a message has been received.
 ```javascript
