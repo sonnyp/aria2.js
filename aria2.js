@@ -5,7 +5,7 @@
 
   var WebSocket;
   var b64;
-  var httpclient;;
+  var httpclient;
   if (typeof module !== 'undefined' && module.exports) {
     WebSocket = require('ws');
     b64 = function(str) {
@@ -44,7 +44,7 @@
         id: m.id,
       }
     };
-    if (typeof m.params === 'object' && m.params !== null)
+    if (Array.isArray(m.params) && m.params.length > 0)
       opts.query.params = b64(JSON.stringify(m.params));
 
 
@@ -59,7 +59,7 @@
       if (opts.jsonp)
         return this._onmessage(res.body);
 
-      var m = JSON.parse(res.body.toString())
+      var m = JSON.parse(res.body.toString());
       this._onmessage(m);
 
     }).bind(this));
@@ -71,13 +71,19 @@
       'id': this.lastId++
     };
 
-    if (typeof params === 'function')
-      fn = params;
-    else if (typeof m.params === 'object' && m.params !== null)
-      m.params = params;
+    if (arguments.length > 1) {
+      params = [];
+      for (var i = 1; i < arguments.length; i++) {
+        if (typeof arguments[i] === 'function') {
+          this.callbacks[m.id] = arguments[i];
+          break;
+        }
 
-    if (fn)
-      this.callbacks[m.id] = fn;
+        params.push(arguments[i]);
+      }
+      if (params.length > 0)
+        m.params = params;
+    }
 
     this.onsend(m);
 

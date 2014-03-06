@@ -1,6 +1,6 @@
 {
   "name": "aria.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Library for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "authors": [
