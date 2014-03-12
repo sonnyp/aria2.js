@@ -4,8 +4,10 @@
 
   var Aria2;
 
+  //Node.js
   if (typeof module !== 'undefined' && module.exports)
     Aria2 = require('..');
+  //browsers
   else
     Aria2 = global.Aria2;
 
