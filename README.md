@@ -37,7 +37,8 @@ default options are
 {
   host: 'localhost',
   port: 6800,
-  secure: false
+  secure: false,
+  secret:'' //optional , will be ignored if empty
 }
 ```
 
