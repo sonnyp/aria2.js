@@ -37,9 +37,12 @@ default options are
 {
   host: 'localhost',
   port: 6800,
-  secure: false
+  secure: false,
+  secret: ''
 }
 ```
+
+Secret is optional and refers to [--rpc-secret](http://aria2.sourceforge.net/manual/en/html/aria2c.html#cmdoption--rpc-secret).
 
 ## Open
 
