@@ -1,6 +1,7 @@
-bower_components
-example
-test
+bower_components/
+dist/
+example/
+test/
 .gitignore
 .jshintignore
 .jshintrc
@@ -8,5 +9,3 @@ test
 .travis.yml
 bower.json
 Gruntfile.js
-aria2.js
-aria2.min.js

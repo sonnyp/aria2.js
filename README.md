@@ -27,8 +27,8 @@ npm install aria2
 ```javascript
 var Aria2 = require('aria2');
 ```
-## Init
 
+## Init
 ```javascript
 var aria2 = new Aria2([options]);
 ```
@@ -79,17 +79,19 @@ aria2.onmessage = function(m) {
 ## Methods
 For a complete listing see [aria2 methods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods).
 
+Note that if you have passed the secret option to aria2.js, it will be automatically added it to every request so there is no need to include it.
+
 When sending a request to aria2, if the WebSocket isn't available or closed, aria2.js will use the HTTP transport.
 
-For every method you can use
+For every aria2 methods you can use
 ```javascript
-aria2.send('getVersion', [params,] function(err, res) {
+aria2.getVersion([params,] function(err, res) {
   console.log(err || res);
 });
 ```
-or directly
+or
 ```javascript
-aria2.getVersion([params,] function(err, res) {
+aria2.send('getVersion', [params,] function(err, res) {
   console.log(err || res);
 });
 ```
@@ -99,8 +101,8 @@ For a complete listing see [aria2 notifications](http://aria2.sourceforge.net/ma
 
 For every notifications you can bind a function.
 ```javascript
-aria2.onDownloadStart = function(event) {
-  console.log(event);
+aria2.onDownloadStart = function(gid) {
+  console.log(gid);
 };
 ```
 

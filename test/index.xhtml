@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>HTTPClient.js tests</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+    <script src="../node_modules/mocha/mocha.js"/>
+    <!-- concat -->
+    <!-- <script src="../dist/aria2.js"/> -->
+    <!-- plain -->
+    <script src="../lib/index.js"/>
+    <!-- <script src="config.js"/> -->
+    <script>
+      mocha.setup('tdd');
+      mocha.checkLeaks();
+      mocha.bail();
+      mocha.timeout(10000);
+      document.addEventListener('DOMContentLoaded', function() {
+        mocha.run();
+      });
+    </script>
+    <script src="test.js"/>
+  </head>
+  <body>
+    <div id="mocha"></div>
+  </body>
+</html>

@@ -6,7 +6,7 @@
   "authors": [
     "Sonny Piers <sonny@fastmail.net>"
   ],
-  "main": "aria2.js",
+  "main": "dist/aria2.js",
   "keywords": [
     "aria2",
     "download",
@@ -17,11 +17,11 @@
   },
   "license": "MIT",
   "ignore": [
-    "bower_components",
-    "example",
-    "lib",
-    "test",
-    "node_modules",
+    "bower_components/",
+    "example/",
+    "lib/",
+    "node_modules/",
+    "test/",
     ".gitignore",
     ".jshintignore",
     ".jshintrc",
