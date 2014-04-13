@@ -94,7 +94,7 @@ aria2.getVersion([params,] function(err, res) {
 ## Notifications
 For a complete listing see [aria2 notifications](http://aria2.sourceforge.net/manual/en/html/aria2c.html#json-rpc-over-websocket).
 
-For every notifications you can attach a function to call.
+For every notifications you can bind a function.
 ```javascript
 aria2.onDownloadStart = function(event) {
   console.log(event);

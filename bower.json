@@ -1,6 +1,6 @@
 {
   "name": "aria.js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Library for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "authors": [
@@ -12,7 +12,7 @@
     "download",
     "bittorrent"
   ],
-  "dependencies": {
+  "devDependencies": {
     "httpclient": "~0.0.3"
   },
   "license": "MIT",
