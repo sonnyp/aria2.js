@@ -17,7 +17,7 @@ aria2.js supports the WebSocket, HTTP and JSONP transports.
 bower install aria2
 ```
 ```xml
-<script src="bower_components/aria2/aria2.min.js"></script>
+<script src="bower_components/aria2/dist/aria2.min.js"></script>
 ```
 
 ### Node.js
