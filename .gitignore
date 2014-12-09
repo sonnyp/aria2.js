@@ -1,7 +1,7 @@
 node_modules
 bower_components
 !.gitignore
-!.jshintrc
-!.jshintignore
+!.eslintrc
+!.eslintignore
 !.travis.yml
 !.npmignore

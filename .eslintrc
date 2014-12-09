@@ -1,0 +1,61 @@
+env:
+  node: true
+
+rules:
+  # Possible Errors
+  no-comma-dangle: false
+  valid-jsdoc: true
+
+  # Best Practices
+  block-scoped-var: true
+  complexity: true
+  consistent-return: false
+  curly: false
+  default-case: true
+  no-div-regex: true
+  no-else-return: true
+  no-eq-null: true
+  no-floating-decimal: true
+  no-process-env: true
+  no-self-compare: true
+  no-void: true
+  radix: true
+  wrap-iife: true
+
+  # Strict Mode
+  global-strict: false
+
+  # Variables
+  no-catch-shadow: false
+  no-undefined: true
+
+  # Node.js
+  handle-callback-err: true
+  no-mixed-requires: true
+  no-new-require: true
+  no-path-concat: true
+  no-process-exit: true
+  no-restricted-modules: false
+  no-sync: true
+
+  # Stylistic Issues
+  brace-style: 1tbs
+  camelcase: false
+  comma-style: true
+  consistent-this: true
+  func-style: [2, 'expression']
+  max-nested-callbacks: [2, 3]
+  no-lonely-if: true
+  no-nested-ternary: true
+  no-multiple-empty-lines: true
+  no-underscore-dangle: false
+  padded-blocks: 'never'
+  quotes: 'single'
+  quote-props: 'as-needed'
+  space-after-keywords: 'always'
+  space-before-blocks: 'always'
+  space-in-brackets: 'never'
+  space-in-parens: 'never'
+  space-unary-word-ops: true
+  spaced-line-comment: 'always'
+  wrap-regex: true

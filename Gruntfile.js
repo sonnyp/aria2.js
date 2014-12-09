@@ -5,18 +5,14 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
-    jshint: {
-      files:[
-        '*.json',
+    eslint: {
+      config: '.eslintrc',
+      target: [
         '*.js',
+        'example/**/*.js',
         'lib/**/*.js',
         'test/**/*.js',
-        'example/**/*.js',
-      ],
-      options: {
-        jshintrc: '.jshintrc',
-        jshintignore: '.jshintignore'
-      }
+      ]
     },
 
     mochaTest: {
@@ -53,14 +49,14 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('mocha', 'mochaTest');
-  grunt.registerTask('syntax', ['jshint']);
-  grunt.registerTask('test', ['mocha', 'jshint']);
+  grunt.registerTask('syntax', ['eslint']);
+  grunt.registerTask('test', ['mocha', 'syntax']);
   grunt.registerTask('build', ['concat', 'uglify']);
   grunt.registerTask('default', 'test');
 };
