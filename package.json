@@ -15,7 +15,11 @@
     "node": ">=0.10.0"
   },
   "testling": {
-    "scripts": "test/test.js",
+    "scripts": [
+      "lib/index.js",
+      "test/test.js"
+    ],
+    "harness": "mocha-tdd",
     "browsers": [
       "ie/latest",
       "chrome/latest",
