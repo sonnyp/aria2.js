@@ -10,7 +10,7 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 ## Intro
 
-aria2.js supports the WebSocket, HTTP and JSONP transports.
+aria2.js supports WebSocket, HTTP and JSONP transports.
 
 ### Browser
 ```
@@ -20,7 +20,7 @@ bower install aria2
 <script src="bower_components/aria2/dist/aria2.min.js"></script>
 ```
 
-### Node.js
+### Node.js and io.js
 ```
 npm install aria2
 ```
@@ -46,7 +46,7 @@ Secret is optional and refers to [--rpc-secret](http://aria2.sourceforge.net/man
 
 ## Open
 
-aria2.open() will open the WebSocket connexion.
+```aria2.open()``` will open the WebSocket connexion.
 ```javascript
 aria2.onopen = function() {
   console.log('I\'m open!');
@@ -56,7 +56,7 @@ aria2.open();
 
 ## Close
 
-aria2.close() will close the WebSocket connexion.
+```aria2.close()``` will close the WebSocket connexion.
 ```javascript
 aria2.onclose = function() {
   console.log('I\'m closed!');
@@ -66,7 +66,7 @@ aria2.close();
 
 ## onsend and onmessage
 
-onsend() is called everytime a message is being sent, onmessage() is called everytime a message has been received.
+```aria2.onsend()``` is called everytime a message is being sent, ```aria2.onmessage()``` is called everytime a message has been received.
 ```javascript
 aria2.onsend = function(m) {
   console.log('OUT', m);
