@@ -12,7 +12,20 @@
     "bittorrent"
   ],
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
+  },
+  "testling": {
+    "scripts": "test/test.js",
+    "browsers": [
+      "ie/latest",
+      "chrome/latest",
+      "firefox/latest",
+      "opera/latest",
+      "safari/latest",
+      "iphone/latest",
+      "ipad/latest",
+      "android-browser/latest"
+    ]
   },
   "scripts": {
     "test": "grunt test --verbose"

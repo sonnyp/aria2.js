@@ -5,6 +5,9 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 [![Build Status](https://travis-ci.org/sonnyp/aria2.js.png?branch=master)](https://travis-ci.org/sonnyp/aria2.js)
 
+[![browser support](https://ci.testling.com/sonnyp/aria2.js.png)
+](https://ci.testling.com/sonnyp/aria2.js)
+
 [![Dependency Status](https://david-dm.org/sonnyp/aria2.js.png)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://david-dm.org/sonnyp/aria2.js/dev-status.png)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
 
