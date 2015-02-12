@@ -27,6 +27,7 @@ rules:
 
   # Variables
   no-catch-shadow: false
+  no-shadow: false
   no-undefined: true
 
   # Node.js
