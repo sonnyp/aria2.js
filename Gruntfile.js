@@ -19,7 +19,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
-          ui: 'tdd',
+          ui: 'bdd',
           bail: false
         },
         src: ['test/**/*.js']
