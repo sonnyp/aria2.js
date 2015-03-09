@@ -5,6 +5,9 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
     <script src="../node_modules/mocha/mocha.js"/>
+    <script src="../node_modules/chai/chai.js"/>
+    <script src="../node_modules/sinon/pkg/sinon.js"/>
+    <script src="../node_modules/sinon-chai/lib/sinon-chai.js"/>
     <!-- concat -->
     <!-- <script src="../dist/aria2.js"/> -->
     <!-- plain -->
@@ -12,10 +15,8 @@
     <script src="../lib/index.js"/>
     <!-- <script src="config.js"/> -->
     <script>
-      mocha.setup('tdd');
+      mocha.setup('bdd');
       mocha.checkLeaks();
-      mocha.bail();
-      mocha.timeout(10000);
       document.addEventListener('DOMContentLoaded', function() {
         mocha.run();
       });
