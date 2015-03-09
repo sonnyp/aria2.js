@@ -1,10 +1,11 @@
 bower_components/
 dist/
 example/
+node_modules/
 test/
 .gitignore
-.jshintignore
-.jshintrc
+.eslintignore
+.eslintrc
 .npmignore
 .travis.yml
 bower.json

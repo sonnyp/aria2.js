@@ -2,7 +2,8 @@
 
   'use strict';
 
-  /*global beforeEach, describe, it */
+  /*eslint-env mocha */
+  /*eslint max-nested-callbacks: 0, no-unused-expressions: 0*/
 
   var Aria2;
   var sinon;
@@ -80,7 +81,7 @@
         var spy = sinon.spy(client, 'onsend');
         var lastId = client.lastId;
         client.send('barfoo');
-        expect(spy.args[0][0]).to.have.deep.property('id', lastId)
+        expect(spy.args[0][0]).to.have.deep.property('id', lastId);
         expect(client.lastId).to.equal(lastId + 1);
       });
 

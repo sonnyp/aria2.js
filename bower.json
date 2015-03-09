@@ -13,7 +13,7 @@
     "bittorrent"
   ],
   "devDependencies": {
-    "httpclient": "~0.0.3"
+    "httpclient": "~0.0.4"
   },
   "license": "MIT",
   "ignore": [
@@ -22,9 +22,10 @@
     "lib/",
     "node_modules/",
     "test/",
+    ".editorconfig",
+    ".eslintignore",
+    ".eslintrc",
     ".gitignore",
-    ".jshintignore",
-    ".jshintrc",
     ".npmignore",
     ".travis.yml",
     "Gruntfile.js",
