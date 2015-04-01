@@ -11,7 +11,7 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 ## Intro
 
-aria2.js pilotes aria2 via its [JSON-RPC interface](http://aria2.sourceforge.net/manual/en/html/aria2c.html#rpc-interface) and supports WebSocket, HTTP and JSONP transports.
+aria2.js controls aria2 via its [JSON-RPC interface](http://aria2.sourceforge.net/manual/en/html/aria2c.html#rpc-interface) and supports WebSocket, HTTP and JSONP transports.
 
 ### Browser
 ```
