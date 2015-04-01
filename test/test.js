@@ -1,5 +1,6 @@
-(function(global) {
+/* eslint padded-blocks: 0 */
 
+(function(global) {
   'use strict';
 
   /*eslint-env mocha */
@@ -129,7 +130,7 @@
       it('should call the notification function once with correct arguments when receiving a notification', function() {
         Aria2.notifications.forEach(function(notification) {
           var spy = sinon.spy(client, notification);
-          var message = {'method': 'aria2.' + notification, params: ['foo', 'bar']};
+          var message = {'method': 'aria2.' + notification, 'params': ['foo', 'bar']};
           client._onmessage(message);
 
           expect(spy).to.have.been.calledOnce;
@@ -177,12 +178,6 @@
 
     });
 
-    // describe('notfications', function() {
-
-
-
-    // });
-
     describe('methods', function() {
 
       it('should call send once with correct arguments for each methods function', function() {
@@ -197,4 +192,4 @@
 
   });
 
-})(this);
+}(this));

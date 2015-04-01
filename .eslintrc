@@ -2,61 +2,60 @@ env:
   node: true
 
 rules:
+  comma-dangle: always
+
   # Possible Errors
-  no-comma-dangle: false
-  valid-jsdoc: true
+  no-console: 2
+  valid-jsdoc: [2, {requireReturn: false, requireParamDescription: false, requireReturnDescription: false}]
 
   # Best Practices
-  block-scoped-var: true
-  complexity: true
-  consistent-return: false
-  curly: false
-  default-case: true
-  no-div-regex: true
-  no-else-return: true
-  no-eq-null: true
-  no-floating-decimal: true
-  no-process-env: true
-  no-self-compare: true
-  no-void: true
-  radix: true
-  wrap-iife: true
+  consistent-return: 0
+  curly: 0
+  block-scoped-var: 2
+  no-else-return: 2
+  no-process-env: 2
+  no-self-compare: 2
+  no-throw-literal: 2
+  no-void: 2
+  radix: 2
+  wrap-iife: [2, outside]
 
   # Strict Mode
-  global-strict: false
+  strict: [2, function]
 
   # Variables
-  no-catch-shadow: false
-  no-shadow: false
-  no-undefined: true
+  no-shadow: 0
+  no-use-before-define: nofunc
 
   # Node.js
-  handle-callback-err: true
-  no-mixed-requires: true
-  no-new-require: true
-  no-path-concat: true
-  no-process-exit: true
-  no-restricted-modules: false
-  no-sync: true
+  no-process-exit: 0
+  handle-callback-err: [2, err]
+  no-new-require: 2
+  no-path-concat: 2
 
   # Stylistic Issues
-  brace-style: 1tbs
-  camelcase: false
-  comma-style: true
-  consistent-this: true
-  func-style: [2, 'expression']
+  quotes: [2, single]
+  camelcase: 0
+  indent: [2, 2]
+  no-lonely-if: 2
+  no-floating-decimal: 2
+  brace-style: [2, stroustrup]
+  comma-style: [2, last]
+  consistent-this: [0, that]
+  func-style: [2, expression]
   max-nested-callbacks: [2, 3]
-  no-lonely-if: true
-  no-nested-ternary: true
-  no-multiple-empty-lines: true
-  no-underscore-dangle: false
-  padded-blocks: 'never'
-  quotes: 'single'
-  quote-props: 'as-needed'
-  space-after-keywords: 'always'
-  space-before-blocks: 'always'
-  space-in-brackets: 'never'
-  space-in-parens: 'never'
-  space-unary-word-ops: true
-  spaced-line-comment: 'always'
-  wrap-regex: true
+  no-multiple-empty-lines: [2, {max: 1}]
+  no-nested-ternary: 2
+  no-underscore-dangle: 0
+  semi-spacing: [2, {before: false, after: true}]
+  operator-assignment: [2, always]
+  padded-blocks: [2, never]
+  quote-props: [2, always]
+  space-before-function-parentheses: [2, never]
+  space-after-keywords: [2, always]
+  space-before-blocks: [2, always]
+  space-in-brackets: [2, never]
+  space-in-parens: [2, never]
+  space-unary-ops: [2, {words: true, nonwords: false}]
+  #spaced-line-comment: [2, always]
+  wrap-regex: 2

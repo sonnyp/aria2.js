@@ -1,5 +1,6 @@
-(function(global) {
+/* eslint no-console: 0 */
 
+(function(global) {
   'use strict';
 
   var Aria2;
@@ -12,7 +13,7 @@
     Aria2 = global.Aria2;
 
   //those are default options
-  var options = {host: 'localhost', port: 6800, secure: false};
+  var options = {'host': 'localhost', 'port': 6800, 'secure': false};
   var aria2 = new Aria2(options);
 
   //socket is not open yet so it will use HTTP interface
@@ -30,14 +31,13 @@
     aria2.getGlobalOption(function(err, res) {
       console.log('global options: ', err || res);
 
-      aria2.send('addUri', ['http://example.org/file', 'http://mirror/file'], {dir: '/tmp'}, function(err, gid) {
+      aria2.send('addUri', ['http://example.org/file', 'http://mirror/file'], {'dir': '/tmp'}, function(err, gid) {
         console.log(err || 'gid: ' + gid);
 
         //close socket
         aria2.close();
       });
     });
-
   };
 
   //triggered when socket is closed
@@ -54,5 +54,4 @@
   aria2.onmessage = function(m) {
     console.log('IN:', m);
   };
-
-})(this);
+}(this));

@@ -1,3 +1,5 @@
+/* eslint strict:0, quote-props:0 */
+
 'use strict';
 
 module.exports = function(grunt) {
