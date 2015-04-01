@@ -28,7 +28,6 @@
     ".gitignore",
     ".npmignore",
     ".travis.yml",
-    "Gruntfile.js",
     "package.json"
   ]
 }

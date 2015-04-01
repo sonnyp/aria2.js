@@ -9,4 +9,3 @@ test/
 .npmignore
 .travis.yml
 bower.json
-Gruntfile.js
