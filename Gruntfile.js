@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         '*.js',
         'example/**/*.js',
         'lib/**/*.js',
-        'test/**/*.js',
+        'test/**/*.js'
       ]
     },
 
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         options: {
           sourceMap: true
         }
-      },
+      }
     }
 
   });

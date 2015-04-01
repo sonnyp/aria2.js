@@ -111,9 +111,20 @@
         expect(spy.args[0][0].params[0]).to.equal('token:oo');
       });
 
+      it('should add the function argument to callbacks', function() {
+        var spy = sinon.spy(client, 'onsend');
+        client.secret = 'oo';
+        var cb = function() {};
+        client.send('foobar', 'foo', 'bar', cb);
+        expect(spy.args[0][0].params).to.be.an('array');
+        expect(spy.args[0][0].params).to.deep.equal(['token:oo', 'foo', 'bar']);
+        var id = spy.args[0][0].id;
+        expect(client.callbacks[id]).to.equal(cb);
+      });
+
     });
 
-    describe('notfications', function() {
+    describe('_onmessage', function() {
 
       it('should call the notification function once with correct arguments when receiving a notification', function() {
         Aria2.notifications.forEach(function(notification) {
@@ -126,7 +137,51 @@
         });
       });
 
+      it('should call the callback of a request when receiving a response', function() {
+        var spySend = sinon.spy(client, 'onsend');
+        var callback = sinon.spy();
+        client.send('foobar', callback);
+        var id = spySend.args[0][0].id;
+        expect(client.callbacks[id]).to.equal(callback);
+        var message = {'method': 'aria2.foobar', 'id': id};
+        client._onmessage(message);
+
+        expect(callback).to.have.been.calledOnce;
+      });
+
+      it('should call and delete the callback of a request with error when receiving a response with error', function() {
+        var spySend = sinon.spy(client, 'onsend');
+        var callback = sinon.spy();
+        client.send('foobar', callback);
+        var id = spySend.args[0][0].id;
+        expect(client.callbacks[id]).to.equal(callback);
+        var message = {'method': 'aria2.foobar', 'id': id, 'error': 'whatever'};
+        client._onmessage(message);
+
+        expect(callback).to.have.been.calledWith('whatever');
+        expect(client.callbacks[id]).to.equal(undefined);
+      });
+
+      it('should call and delete the callback of a request with result when receiving a response with result', function() {
+        var spySend = sinon.spy(client, 'onsend');
+        var callback = sinon.spy();
+        client.send('foobar', callback);
+        var id = spySend.args[0][0].id;
+        expect(client.callbacks[id]).to.equal(callback);
+        var message = {'method': 'aria2.foobar', 'id': id, 'result': 'foobar'};
+        client._onmessage(message);
+
+        expect(callback).to.have.been.calledWith(null, 'foobar');
+        expect(client.callbacks[id]).to.equal(undefined);
+      });
+
     });
+
+    // describe('notfications', function() {
+
+
+
+    // });
 
     describe('methods', function() {
 
