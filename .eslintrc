@@ -27,7 +27,7 @@ rules:
   no-shadow: 0
   no-use-before-define: nofunc
 
-  # Node.js
+  # Node.js, io.js
   no-process-exit: 0
   handle-callback-err: [2, err]
   no-new-require: 2

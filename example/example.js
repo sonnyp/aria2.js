@@ -5,7 +5,7 @@
 
   var Aria2;
 
-  //Node.js
+  //Node.js, io.js
   if (typeof module !== 'undefined' && module.exports)
     Aria2 = require('..');
   //browsers
