@@ -2,8 +2,6 @@ env:
   node: true
 
 rules:
-  comma-dangle: always
-
   # Possible Errors
   no-console: 2
   valid-jsdoc: [2, {requireReturn: false, requireParamDescription: false, requireReturnDescription: false}]
@@ -25,7 +23,7 @@ rules:
 
   # Variables
   no-shadow: 0
-  no-use-before-define: nofunc
+  no-use-before-define: [2, nofunc]
 
   # Node.js, io.js
   no-process-exit: 0

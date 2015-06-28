@@ -10,7 +10,14 @@
   "keywords": [
     "aria2",
     "download",
-    "bittorrent"
+    "BitTorrent",
+    "HTTP",
+    "HTTPS",
+    "FTP",
+    "SFTP",
+    "MetaLink",
+    "magnet",
+    "torrent"
   ],
   "devDependencies": {
     "httpclient": "~0.0.4"

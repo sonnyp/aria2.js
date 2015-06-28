@@ -9,7 +9,14 @@
   "keywords": [
     "aria2",
     "download",
-    "bittorrent"
+    "BitTorrent",
+    "HTTP",
+    "HTTPS",
+    "FTP",
+    "SFTP",
+    "MetaLink",
+    "magnet",
+    "torrent"
   ],
   "engines": {
     "node": ">=0.10.0"
@@ -17,21 +24,18 @@
   "scripts": {
     "syntax": "eslint .",
     "unit": "node_modules/.bin/mocha test/",
-    "test": "npm run syntax && npm run unit"
+    "test": "npm run unit && npm run syntax"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/sonnyp/aria2.js.git"
-  },
+  "repository": "github:sonnyp/aria2.js",
   "main": "lib/",
   "dependencies": {
-    "ws": "^0.7.1",
+    "ws": "^0.7.2",
     "httpclient": "0.0.4"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
-    "mocha": "^2.2.1",
-    "sinon": "^1.14.1",
-    "sinon-chai": "^2.7.0"
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0"
   }
 }
