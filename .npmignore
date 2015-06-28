@@ -2,9 +2,12 @@ bower_components/
 example/
 node_modules/
 test/
-.gitignore
+
+.editorconfig
 .eslintignore
 .eslintrc
+.gitignore
 .npmignore
 .travis.yml
+
 bower.json

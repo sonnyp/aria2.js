@@ -50,7 +50,7 @@ Secret is optional and refers to [--rpc-secret](http://aria2.sourceforge.net/man
 ```aria2.open()``` will open the WebSocket connexion.
 ```javascript
 aria2.onopen = function() {
-  console.log('I\'m open!');
+  console.log('aria2 open');
 };
 aria2.open();
 ```
@@ -60,20 +60,22 @@ aria2.open();
 ```aria2.close()``` will close the WebSocket connexion.
 ```javascript
 aria2.onclose = function() {
-  console.log('I\'m closed!');
+  console.log('aria2 closed!');
 };
 aria2.close();
 ```
 
 ## onsend and onmessage
 
-```aria2.onsend()``` is called everytime a message is being sent, ```aria2.onmessage()``` is called everytime a message has been received.
+```aria2.onsend()``` is called everytime a message is being sent
+```aria2.onmessage()``` is called everytime a message has been received.
+
 ```javascript
 aria2.onsend = function(m) {
-  console.log('OUT', m);
+  console.log('aria2 OUT', m);
 };
 aria2.onmessage = function(m) {
-  console.log('IN', m);
+  console.log('aria2 IN', m);
 };
 ```
 
@@ -82,7 +84,7 @@ For a complete listing see [aria2 methods](http://aria2.sourceforge.net/manual/e
 
 Note that if you have passed the secret option to aria2.js, it will be automatically added it to every request so there is no need to include it.
 
-When sending a request to aria2, if the WebSocket isn't available or closed, aria2.js will use the HTTP transport.
+When sending a request to aria2, if the WebSocket is closed, aria2.js will use the HTTP transport.
 
 For every aria2 methods you can use
 ```javascript
