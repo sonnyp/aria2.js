@@ -47,6 +47,7 @@ rules:
   no-lonely-if: 2
   no-floating-decimal: 2
   brace-style: [2, stroustrup]
+  comma-dangle: [2, always-multiline]
   comma-style: [2, last]
   consistent-this: [0, that]
   func-style: [2, expression]

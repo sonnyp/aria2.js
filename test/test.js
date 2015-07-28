@@ -1,5 +1,3 @@
-/* eslint padded-blocks: 0 */
-
 (function(global) {
   'use strict'
 
@@ -71,12 +69,15 @@
           expect(client[notification]).to.be.a('function')
         })
       })
-
     })
 
     describe('instance methods', () => {
 
       describe('send', () => {
+
+        it('throws a TypeError if method is not a string', () => {
+          expect(client.send.bind(client, null)).to.throw(TypeError)
+        })
 
         it('should call onsend once with one argument', () => {
           const spy = sinon.spy(client, 'onsend')
@@ -129,7 +130,6 @@
           const id = spy.args[0][0].id
           expect(client.callbacks[id]).to.equal(cb)
         })
-
       })
 
       describe('_onmessage', () => {
@@ -179,14 +179,13 @@
           const message = {
             id,
             'method': 'aria2.foobar',
-            'result': 'foobar'
+            'result': 'foobar',
           }
           client._onmessage(message)
 
           expect(callback).to.have.been.calledWith(null, 'foobar')
           expect(client.callbacks[id]).to.equal(undefined)
         })
-
       })
 
       describe('aria2 methods', () => {
@@ -198,7 +197,6 @@
             expect(spy).to.have.been.calledWith(method, 'foo', 'bar')
           })
         })
-
       })
     })
   })

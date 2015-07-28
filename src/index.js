@@ -35,8 +35,8 @@
       'secure': this.secure,
       'query': {
         'method': m.method,
-        'id': m.id
-      }
+        'id': m.id,
+      },
     }
 
     if (Array.isArray(m.params) && m.params.length > 0)
@@ -54,28 +54,22 @@
     })
   }
 
-  Aria2.prototype.send = function(method /*, [param1], [param2], ..., [callback] */) {
+  Aria2.prototype.send = function(method, ...params) {
+    if (typeof method !== 'string')
+      throw new TypeError(method + ' is not a string')
+
     const m = {
       'method': 'aria2.' + method,
       'json-rpc': '2.0',
-      'id': this.lastId++
+      'id': this.lastId++,
     }
 
-    const params = this.secret ? ['token:' + this.secret] : []
+    if (typeof params[params.length - 1] === 'function')
+      this.callbacks[m.id] = params.pop()
 
-    if (arguments.length > 1) {
-      for (let i = 1; i < arguments.length; i++) {
-        if (typeof arguments[i] === 'function') {
-          this.callbacks[m.id] = arguments[i]
-          break
-        }
+    if (this.secret) params.unshift('token:' + this.secret)
 
-        params.push(arguments[i])
-      }
-    }
-
-    if (params.length > 0)
-      m.params = params
+    if (params.length > 0) m.params = params
 
     this.onsend(m)
 
@@ -91,6 +85,8 @@
   }
 
   Aria2.prototype._onmessage = function(m) {
+    this.onmessage(m)
+
     if (m.id !== undefined) {
       const callback = this.callbacks[m.id]
       if (callback) {
@@ -105,9 +101,8 @@
     else if (m.method) {
       const n = m.method.split('aria2.')[1]
       if (n.indexOf('on') === 0 && typeof this[n] === 'function' && Aria2.notifications.indexOf(n) > -1)
-        this[n].apply(this, m.params)
+        this[n](...m.params)
     }
-    this.onmessage(m)
   }
 
   Aria2.prototype.open = function(fn) {
@@ -143,65 +138,111 @@
     this.socket.close()
   }
 
+  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods
   Aria2.methods = [
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addUri
     'addUri',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addTorrent
     'addTorrent',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addMetalink
     'addMetalink',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.remove
     'remove',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forceRemove
     'forceRemove',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.pause
     'pause',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.pauseAll
     'pauseAll',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forcePause
     'forcePause',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forcePauseAll
     'forcePauseAll',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.unpause
     'unpause',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.unpauseAll
     'unpauseAll',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellStatus
     'tellStatus',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getUris
     'getUris',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getFiles
     'getFiles',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getPeers
     'getPeers',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getServers
     'getServers',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellActive
     'tellActive',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellWaiting
     'tellWaiting',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellStopped
     'tellStopped',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changePosition
     'changePosition',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeUri
     'changeUri',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getOption
     'getOption',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeOption
     'changeOption',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getGlobalOption
     'getGlobalOption',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeGlobalOption
     'changeGlobalOption',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getGlobalStat
     'getGlobalStat',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.purgeDownloadResult
     'purgeDownloadResult',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.removeDownloadResult
     'removeDownloadResult',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getVersion
     'getVersion',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getSessionInfo
     'getSessionInfo',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.shutdown
     'shutdown',
-    'forceShutdown'
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forceShutdown
+    'forceShutdown',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.saveSession
+    'saveSession',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#system.multicall
     // multicall: {},
   ]
+
+  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#notifications
   Aria2.notifications = [
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadStart
     'onDownloadStart',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadPause
     'onDownloadPause',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadStop
     'onDownloadStop',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadComplete
     'onDownloadComplete',
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadError
     'onDownloadError',
-    'onBtDownloadComplete'
+    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onBtDownloadComplete
+    'onBtDownloadComplete',
   ]
+
   Aria2.events = [
     'onopen',
     'onclose',
     'onsend',
-    'onmessage'
+    'onmessage',
   ]
+
   Aria2.options = {
     'secure': false,
     'host': 'localhost',
     'port': 6800,
-    'secret': ''
+    'secret': '',
   }
 
   Aria2.methods.forEach(function(method) {
-    Aria2.prototype[method] = function() {
-      this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
+    Aria2.prototype[method] = function(...args) {
+      this.send(method, ...args)
     }
   })
 
