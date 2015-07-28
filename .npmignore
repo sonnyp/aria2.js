@@ -1,6 +1,7 @@
 bower_components/
 example/
 node_modules/
+src/
 test/
 
 .editorconfig

@@ -22,9 +22,11 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "syntax": "eslint .",
-    "unit": "node_modules/.bin/mocha test/",
-    "test": "npm run unit && npm run syntax"
+    "preversion": "npm test",
+    "lint": "eslint .",
+    "unit": "mocha --compilers js:babel/register --recursive test/",
+    "build": "babel src/index.js -o lib/index.js",
+    "test": "npm run build && npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
   "main": "lib/",
@@ -33,8 +35,7 @@
     "httpclient": "0.0.4"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "mocha": "^2.2.5",
+    "chai": "^3.2.0",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
   }

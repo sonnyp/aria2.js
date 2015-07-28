@@ -1,3 +1,5 @@
+sudo: false
+
 language: node_js
 
 node_js:
@@ -6,6 +8,4 @@ node_js:
   - "iojs"
 
 before_script:
-  - npm install -g eslint
-
-script: npm test
+  - npm install -g eslint mocha babel browserify

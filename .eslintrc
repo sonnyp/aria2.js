@@ -1,7 +1,16 @@
 env:
   node: true
+  es6: true
+
+//ecmaFeatures:
+//  modules: true
 
 rules:
+  # ECMAScript 6
+  no-var: 2
+  object-shorthand: [2, always]
+  prefer-const: 2
+
   # Possible Errors
   no-console: 2
   valid-jsdoc: [2, {requireReturn: false, requireParamDescription: false, requireReturnDescription: false}]
@@ -45,7 +54,8 @@ rules:
   no-multiple-empty-lines: [2, {max: 1}]
   no-nested-ternary: 2
   no-underscore-dangle: 0
-  semi-spacing: [2, {before: false, after: true}]
+  semi: [2, never]
+  semi-spacing: 0
   operator-assignment: [2, always]
   padded-blocks: [2, never]
   quote-props: [2, always]
