@@ -1,16 +1,7 @@
 env:
   node: true
-  es6: true
-
-//ecmaFeatures:
-//  modules: true
 
 rules:
-  # ECMAScript 6
-  no-var: 2
-  object-shorthand: [2, always]
-  prefer-const: 2
-
   # Possible Errors
   no-console: 2
   valid-jsdoc: [2, {requireReturn: false, requireParamDescription: false, requireReturnDescription: false}]
@@ -41,7 +32,7 @@ rules:
   no-path-concat: 2
 
   # Stylistic Issues
-  quotes: [2, single]
+  quotes: 0
   camelcase: 0
   indent: [2, 2]
   no-lonely-if: 2

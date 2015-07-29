@@ -4,5 +4,4 @@ env:
 rules:
   padded-blocks: 0
   max-nested-callbacks: 0
-  quote-props: 0
   no-unused-expressions: 0

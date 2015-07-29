@@ -24,12 +24,12 @@
   "scripts": {
     "preversion": "npm test",
     "lint": "eslint .",
-    "unit": "mocha --compilers js:babel/register --recursive test/",
-    "build": "babel src/index.js -o lib/index.js",
-    "test": "npm run build && npm run unit && npm run lint"
+    "unit": "mocha test/unit.js",
+    "integration": "mocha test/integration.js",
+    "test": "npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
-  "main": "lib/",
+  "main": "Aria2.js",
   "dependencies": {
     "ws": "^0.7.2",
     "httpclient": "0.0.4"

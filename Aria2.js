@@ -1,9 +1,9 @@
 (function(global) {
   'use strict'
 
-  let WebSocket
-  let b64
-  let httpclient
+  var WebSocket
+  var b64
+  var httpclient
 
   if (typeof module !== 'undefined' && module.exports) {
     WebSocket = require('ws')
@@ -18,17 +18,17 @@
     httpclient = global.HTTPClient
   }
 
-  const Aria2 = function(opts) {
+  var Aria2 = function(opts) {
     this.callbacks = Object.create(null)
     this.lastId = 0
 
-    for (const i in Aria2.options)
+    for (var i in Aria2.options)
       this[i] = typeof opts === 'object' && i in opts ? opts[i] : Aria2.options[i]
   }
 
   Aria2.prototype.http = function(m, fn) {
     //FIXME json-rpc post wouldn't work
-    const opts = {
+    var opts = {
       'host': this.host,
       'port': this.port,
       'path': '/jsonrpc',
@@ -46,28 +46,33 @@
     if (typeof module !== 'undefined' && module.exports)
       opts.jsonp = 'jsoncallback'
 
-    httpclient.request(opts, (err, res) => {
+    httpclient.request(opts, function(err, res) {
       if (err) return fn(err)
 
-      const msg = opts.jsonp ? res.body : JSON.parse(res.body.toString())
+      var msg = opts.jsonp ? res.body : JSON.parse(res.body.toString())
       this._onmessage(msg)
     })
   }
 
-  Aria2.prototype.send = function(method, ...params) {
+  Aria2.prototype.send = function(method /* [,param] [,param] [,...] [, fn]*/) {
     if (typeof method !== 'string')
       throw new TypeError(method + ' is not a string')
 
-    const m = {
+    var m = {
       'method': 'aria2.' + method,
       'json-rpc': '2.0',
       'id': this.lastId++,
     }
 
-    if (typeof params[params.length - 1] === 'function')
-      this.callbacks[m.id] = params.pop()
+    var params = this.secret ? ['token:' + this.secret] : []
 
-    if (this.secret) params.unshift('token:' + this.secret)
+    for (var i = 1, l = arguments.length; i < l; i++) {
+      var arg = arguments[i]
+      if (i === arguments.length - 1 && typeof arg === 'function')
+        this.callbacks[m.id] = arg
+      else
+        params.push(arg)
+    }
 
     if (params.length > 0) m.params = params
 
@@ -78,7 +83,7 @@
       return this.socket.send(JSON.stringify(m))
 
     //send via http
-    this.http(m, (err) => {
+    this.http(m, function(err) {
       this.callbacks[m.id](err)
       delete this.callbacks[m.id]
     })
@@ -88,7 +93,7 @@
     this.onmessage(m)
 
     if (m.id !== undefined) {
-      const callback = this.callbacks[m.id]
+      var callback = this.callbacks[m.id]
       if (callback) {
         if (m.error)
           callback(m.error)
@@ -99,34 +104,34 @@
       }
     }
     else if (m.method) {
-      const n = m.method.split('aria2.')[1]
+      var n = m.method.split('aria2.')[1]
       if (n.indexOf('on') === 0 && typeof this[n] === 'function' && Aria2.notifications.indexOf(n) > -1)
-        this[n](...m.params)
+        this[n].apply(this, m.params)
     }
   }
 
   Aria2.prototype.open = function(fn) {
-    const url = (this.secure ? 'wss' : 'ws') + '://' + this.host + ':' + this.port + '/jsonrpc'
+    var url = (this.secure ? 'wss' : 'ws') + '://' + this.host + ':' + this.port + '/jsonrpc'
     this.socket = new WebSocket(url)
 
-    let called = false
-    this.socket.onopen = () => {
+    var called = false
+    this.socket.onopen = function() {
       if (fn && !called) {
         fn()
         called = true
       }
       this.onopen()
     }
-    this.socket.onerror = (err) => {
+    this.socket.onerror = function(err) {
       if (fn && !called) {
         fn(err)
         called = true
       }
     }
-    this.socket.onclose = () => {
+    this.socket.onclose = function() {
       this.onclose()
     }
-    this.socket.onmessage = (event) => {
+    this.socket.onmessage = function(event) {
       this._onmessage(JSON.parse(event.data))
     }
   }
@@ -241,8 +246,8 @@
   }
 
   Aria2.methods.forEach(function(method) {
-    Aria2.prototype[method] = function(...args) {
-      this.send(method, ...args)
+    Aria2.prototype[method] = function(/* [param] [,param] [,...]*/) {
+      this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
     }
   })
 
@@ -254,8 +259,10 @@
     Aria2.prototype[event] = function() {}
   })
 
-  if (typeof module !== 'undefined' && module.exports)
+  if (typeof module !== 'undefined' && module.exports) {
     module.exports = Aria2
-  else
+  }
+  else {
     global.Aria2 = Aria2
+  }
 }(this))

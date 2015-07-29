@@ -1,7 +1,5 @@
-bower_components/
 example/
 node_modules/
-src/
 test/
 
 .editorconfig
@@ -10,5 +8,3 @@ test/
 .gitignore
 .npmignore
 .travis.yml
-
-bower.json

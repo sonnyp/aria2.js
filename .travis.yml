@@ -9,3 +9,4 @@ node_js:
 
 before_script:
   - npm install -g eslint mocha babel browserify
+  - npm link mocha
