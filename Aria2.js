@@ -46,11 +46,13 @@
     if (typeof module !== 'undefined' && module.exports)
       opts.jsonp = 'jsoncallback'
 
+    var that = this
+
     httpclient.request(opts, function(err, res) {
       if (err) return fn(err)
 
       var msg = opts.jsonp ? res.body : JSON.parse(res.body.toString())
-      this._onmessage(msg)
+      that._onmessage(msg)
     })
   }
 
@@ -82,10 +84,12 @@
     if (this.socket && this.socket.readyState === 1)
       return this.socket.send(JSON.stringify(m))
 
+    var that = this
+
     //send via http
     this.http(m, function(err) {
-      this.callbacks[m.id](err)
-      delete this.callbacks[m.id]
+      that.callbacks[m.id](err)
+      delete that.callbacks[m.id]
     })
   }
 
@@ -112,27 +116,28 @@
 
   Aria2.prototype.open = function(fn) {
     var url = (this.secure ? 'wss' : 'ws') + '://' + this.host + ':' + this.port + '/jsonrpc'
-    this.socket = new WebSocket(url)
-
+    var socket = this.socket = new WebSocket(url)
+    var that = this
     var called = false
-    this.socket.onopen = function() {
+
+    socket.onopen = function() {
       if (fn && !called) {
         fn()
         called = true
       }
-      this.onopen()
+      that.onopen()
     }
-    this.socket.onerror = function(err) {
+    socket.onerror = function(err) {
       if (fn && !called) {
         fn(err)
         called = true
       }
     }
-    this.socket.onclose = function() {
-      this.onclose()
+    socket.onclose = function() {
+      that.onclose()
     }
-    this.socket.onmessage = function(event) {
-      this._onmessage(JSON.parse(event.data))
+    socket.onmessage = function(event) {
+      that._onmessage(JSON.parse(event.data))
     }
   }
 
