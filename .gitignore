@@ -1,5 +1,5 @@
-!.gitignore
-!.eslintrc
 !.eslintignore
-!.travis.yml
+!.eslintrc
+!.gitignore
 !.npmignore
+!.travis.yml
