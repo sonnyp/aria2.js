@@ -4,7 +4,7 @@
   "description": "Library for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
-  "license": "MIT",
+  "license": "ISC",
   "author": "Sonny Piers <sonny@fastmail.net>",
   "keywords": [
     "aria2",
@@ -18,12 +18,9 @@
     "magnet",
     "torrent"
   ],
-  "engines": {
-    "node": ">=0.10.0"
-  },
   "scripts": {
     "preversion": "npm test",
-    "lint": "eslint .",
+    "lint": "./node_modules/.bin/eslint .",
     "unit": "mocha test/unit.js",
     "integration": "mocha test/integration.js",
     "test": "npm run unit && npm run lint"
@@ -31,11 +28,12 @@
   "repository": "github:sonnyp/aria2.js",
   "main": "Aria2.js",
   "dependencies": {
-    "ws": "^0.7.2",
+    "ws": "^0.8.0",
     "httpclient": "0.0.4"
   },
   "devDependencies": {
     "chai": "^3.2.0",
+    "eslint": "^0.24.1",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
   }

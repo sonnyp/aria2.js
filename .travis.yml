@@ -3,10 +3,10 @@ sudo: false
 language: node_js
 
 node_js:
-  - "0.10"
-  - "0.12"
-  - "iojs"
+  - 0.10
+  - 0.12
+  - 4.0
+  - 4.1
 
 before_script:
-  - npm install -g eslint mocha babel browserify
-  - npm link mocha
+  - npm install -g mocha

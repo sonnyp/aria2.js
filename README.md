@@ -1,9 +1,9 @@
 aria2.js
 ========
 
-JavaScript (Node.js, io.js and browsers) library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
+JavaScript (Node.js and browsers) library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
-[![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js)
+[![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
 [![Code quality](https://img.shields.io/codeclimate/github/kabisaict/flow.svg?style=flat-square)](https://codeclimate.com/github/sonnyp/aria2.js)
 
 [![Dependency Status](https://img.shields.io/david/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js)
