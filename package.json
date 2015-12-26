@@ -23,7 +23,7 @@
   },
   "scripts": {
     "preversion": "npm test",
-    "lint": "eslint .",
+    "lint": "standard",
     "unit": "mocha test/unit.js",
     "integration": "mocha test/integration.js",
     "test": "npm run unit && npm run lint"
