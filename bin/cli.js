@@ -7,7 +7,7 @@ var cli = require('commander')
 
 process.title = 'aria2rpc'
 
-var makeOptions = function() {
+var makeOptions = function () {
   var options = {'secret': cli.secret}
   if (cli.url) {
     var parsed = url.parse(cli.url)
@@ -29,7 +29,7 @@ cli
 cli
   .command('call <method> [params...]')
   .description('call an aria2 RPC method and print result')
-  .action(function(method, params) {
+  .action(function (method, params) {
     var options = makeOptions()
     require('./call')(cli, options, method, params)
   })
@@ -38,7 +38,7 @@ cli
 cli
   .command('console')
   .description('start interactive console')
-  .action(function() {
+  .action(function () {
     var options = makeOptions()
     require('./console')(cli, options)
   })

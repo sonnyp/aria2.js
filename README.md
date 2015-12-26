@@ -1,7 +1,7 @@
 aria2.js
 ========
 
-JavaScript (Node.js and browsers) library and cli for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
+JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/aria2.js/blob/master/bin/README.md) for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
 [![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
 [![Code quality](https://img.shields.io/codeclimate/github/kabisaict/flow.svg?style=flat-square)](https://codeclimate.com/github/sonnyp/aria2.js)
@@ -201,7 +201,7 @@ See [example.js](https://github.com/sonnyp/aria2.js/blob/master/example/example.
 # Tests
 
 ```
-npm install -g eslint mocha babel
+npm install (-g) mocha standard
 npm test
 ```
 
