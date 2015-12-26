@@ -4,7 +4,7 @@ aria2.js
 JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/aria2.js/blob/master/bin/README.md) for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
 [![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
-[![Code quality](https://img.shields.io/codeclimate/github/kabisaict/flow.svg?style=flat-square)](https://codeclimate.com/github/sonnyp/aria2.js)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 
 [![Dependency Status](https://img.shields.io/david/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://img.shields.io/david/dev/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
@@ -50,6 +50,8 @@ aria2.js controls aria2 via its [JSON-RPC interface](http://aria2.sourceforge.ne
     - [shutdown](http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.shutdown)
     - [forceShutdown](http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forceShutdown)
     - [saveSession](http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.saveSession)
+    - [system.multicall](http://aria2.sourceforge.net/manual/en/html/aria2c.html#system.multicall)
+    - [system.listMethods](http://aria2.sourceforge.net/manual/en/html/aria2c.html#system.listMethods)
   - [aria2 events](#aria2-events)
     - [onDownloadStart](http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadStart)
     - [onDownloadPause](http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadPause)

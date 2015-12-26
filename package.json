@@ -33,12 +33,11 @@
   "dependencies": {
     "commander": "^2.9.0",
     "httpclient": "0.0.4",
-    "ws": "^0.8.0"
+    "ws": "^0.8.1"
   },
   "devDependencies": {
-    "chai": "^3.2.0",
-    "eslint": "^0.24.1",
-    "sinon": "^1.15.4",
+    "chai": "^3.4.1",
+    "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   }
 }
