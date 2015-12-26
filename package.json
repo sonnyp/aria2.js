@@ -1,7 +1,7 @@
 {
   "name": "aria2",
   "version": "1.0.1",
-  "description": "Library for aria2, \"The next generation download utility.\"",
+  "description": "Library and cli for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "ISC",
@@ -18,9 +18,12 @@
     "magnet",
     "torrent"
   ],
+  "bin": {
+    "aria2rpc" : "./bin/cli.js"
+  },
   "scripts": {
     "preversion": "npm test",
-    "lint": "./node_modules/.bin/eslint .",
+    "lint": "eslint .",
     "unit": "mocha test/unit.js",
     "integration": "mocha test/integration.js",
     "test": "npm run unit && npm run lint"
@@ -28,8 +31,9 @@
   "repository": "github:sonnyp/aria2.js",
   "main": "Aria2.js",
   "dependencies": {
-    "ws": "^0.8.0",
-    "httpclient": "0.0.4"
+    "commander": "^2.9.0",
+    "httpclient": "0.0.4",
+    "ws": "^0.8.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",

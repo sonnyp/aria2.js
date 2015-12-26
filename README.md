@@ -1,7 +1,7 @@
 aria2.js
 ========
 
-JavaScript (Node.js and browsers) library for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
+JavaScript (Node.js and browsers) library and cli for [aria2, "The next generation download utility."](http://aria2.sourceforge.net/)
 
 [![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
 [![Code quality](https://img.shields.io/codeclimate/github/kabisaict/flow.svg?style=flat-square)](https://codeclimate.com/github/sonnyp/aria2.js)
@@ -76,11 +76,17 @@ var Aria2 = require('aria2');
 or
 
 ```xml
-<script src="node_modules/aria2/lib/index.js"></script>
+<script src="node_modules/aria2/Aria2.js"></script>
 ```
 ```javascript
 var Aria2 = window.Aria2
 ```
+
+----
+
+Start aria2c in daemon mode with
+
+```aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all```
 
 [↑](#aria2js)
 
@@ -90,14 +96,15 @@ var Aria2 = window.Aria2
 var aria2 = new Aria2([options]);
 ```
 
-default options are
+default options match aria2c defaults and are
 
 ```javascript
 {
   host: 'localhost',
   port: 6800,
   secure: false,
-  secret: ''
+  secret: '',
+  path: '/jsonrpc'
 }
 ```
 
@@ -113,7 +120,7 @@ Secret is optional and refers to [--rpc-secret](http://aria2.sourceforge.net/man
 aria2.onopen = function() {
   console.log('aria2 open');
 };
-aria2.open();
+aria2.open([cb]);
 ```
 
 [↑](#aria2js)
@@ -126,7 +133,7 @@ aria2.open();
 aria2.onclose = function() {
   console.log('aria2 closed!');
 };
-aria2.close();
+aria2.close([cb]);
 ```
 
 [↑](#aria2js)
