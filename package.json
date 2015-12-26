@@ -1,6 +1,6 @@
 {
   "name": "aria2",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Library and cli for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
@@ -19,7 +19,7 @@
     "torrent"
   ],
   "bin": {
-    "aria2rpc" : "./bin/cli.js"
+    "aria2rpc": "./bin/cli.js"
   },
   "scripts": {
     "preversion": "npm test",
