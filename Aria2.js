@@ -4,6 +4,7 @@
   var WebSocket
   var b64
   var httpclient
+  var noop = function() {}
 
   if (typeof module !== 'undefined' && module.exports) {
     WebSocket = require('ws')
@@ -31,7 +32,7 @@
     var opts = {
       'host': this.host,
       'port': this.port,
-      'path': '/jsonrpc',
+      'path': this.path,
       'secure': this.secure,
       'query': {
         'method': m.method,
@@ -115,7 +116,7 @@
   }
 
   Aria2.prototype.open = function(fn) {
-    var url = (this.secure ? 'wss' : 'ws') + '://' + this.host + ':' + this.port + '/jsonrpc'
+    var url = 'ws' + (this.secure ? 's' : '') + '://' + this.host + ':' + this.port + this.path
     var socket = this.socket = new WebSocket(url)
     var that = this
     var called = false
@@ -141,10 +142,16 @@
     }
   }
 
-  Aria2.prototype.close = function() {
-    if (!this.socket)
+  Aria2.prototype.close = function(fn) {
+    fn = fn || noop
+    if (!this.socket) {
+      fn()
       return
+    }
 
+    this.socket.addEventListener('close', function() {
+      fn()
+    })
     this.socket.close()
   }
 
@@ -248,6 +255,7 @@
     'host': 'localhost',
     'port': 6800,
     'secret': '',
+    'path': '/jsonrpc',
   }
 
   Aria2.methods.forEach(function(method) {
