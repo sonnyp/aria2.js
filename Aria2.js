@@ -163,93 +163,93 @@
     this.socket.close()
   }
 
-  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#methods
+  // https://aria2.github.io/manual/en/html/aria2c.html#methods
   Aria2.methods = [
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addUri
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri
     'addUri',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addTorrent
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
     'addTorrent',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.addMetalink
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addMetalink
     'addMetalink',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.remove
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.remove
     'remove',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forceRemove
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceRemove
     'forceRemove',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.pause
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.pause
     'pause',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.pauseAll
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.pauseAll
     'pauseAll',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forcePause
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePause
     'forcePause',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forcePauseAll
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePauseAll
     'forcePauseAll',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.unpause
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpause
     'unpause',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.unpauseAll
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpauseAll
     'unpauseAll',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellStatus
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStatus
     'tellStatus',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getUris
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getUris
     'getUris',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getFiles
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getFiles
     'getFiles',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getPeers
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getPeers
     'getPeers',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getServers
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getServers
     'getServers',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellActive
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellActive
     'tellActive',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellWaiting
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellWaiting
     'tellWaiting',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.tellStopped
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStopped
     'tellStopped',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changePosition
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changePosition
     'changePosition',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeUri
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeUri
     'changeUri',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getOption
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getOption
     'getOption',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeOption
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeOption
     'changeOption',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getGlobalOption
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalOption
     'getGlobalOption',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.changeGlobalOption
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeGlobalOption
     'changeGlobalOption',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getGlobalStat
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalStat
     'getGlobalStat',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.purgeDownloadResult
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.purgeDownloadResult
     'purgeDownloadResult',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.removeDownloadResult
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.removeDownloadResult
     'removeDownloadResult',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getVersion
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getVersion
     'getVersion',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.getSessionInfo
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getSessionInfo
     'getSessionInfo',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.shutdown
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.shutdown
     'shutdown',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.forceShutdown
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceShutdown
     'forceShutdown',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.saveSession
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.saveSession
     'saveSession'
-  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#system.multicall
+  // https://aria2.github.io/manual/en/html/aria2c.html#system.multicall
   // 'system.multicall',
-  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#system.listMethods
+  // https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods
   // 'system.listMethods',
   ]
 
-  // http://aria2.sourceforge.net/manual/en/html/aria2c.html#notifications
+  // https://aria2.github.io/manual/en/html/aria2c.html#notifications
   Aria2.notifications = [
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadStart
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStart
     'onDownloadStart',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadPause
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadPause
     'onDownloadPause',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadStop
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStop
     'onDownloadStop',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadComplete
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadComplete
     'onDownloadComplete',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onDownloadError
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadError
     'onDownloadError',
-    // http://aria2.sourceforge.net/manual/en/html/aria2c.html#aria2.onBtDownloadComplete
+    // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onBtDownloadComplete
     'onBtDownloadComplete'
   ]
 
