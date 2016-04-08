@@ -67,7 +67,7 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
 # Getting started
 
 
-```npm install aria2```
+`npm install aria2`
 
 ----
 
@@ -88,7 +88,7 @@ var Aria2 = window.Aria2
 
 Start aria2c in daemon mode with
 
-```aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all```
+`aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
 
 [↑](#aria2js)
 
@@ -116,7 +116,7 @@ Secret is optional and refers to [--rpc-secret](https://aria2.github.io/manual/e
 
 ## open
 
-```aria2.open()``` opens the WebSocket connection.
+`aria2.open()` opens the WebSocket connection.
 
 ```javascript
 aria2.onopen = function() {
@@ -129,7 +129,7 @@ aria2.open([cb]);
 
 ## close
 
-```aria2.close()``` closes the WebSocket connection.
+`aria2.close()` closes the WebSocket connection.
 
 ```javascript
 aria2.onclose = function() {
@@ -142,8 +142,8 @@ aria2.close([cb]);
 
 ## onsend and onmessage
 
-```aria2.onsend()``` is called everytime a message is being sent
-```aria2.onmessage()``` is called everytime a message has been received.
+`aria2.onsend()` is called for every message sent.
+`aria2.onmessage()` is called for every message received.
 
 ```javascript
 aria2.onsend = function(m) {
@@ -203,7 +203,7 @@ See [example.js](https://github.com/sonnyp/aria2.js/blob/master/example/example.
 # Tests
 
 ```
-npm install (-g) mocha standard
+npm install mocha standard
 npm test
 ```
 
