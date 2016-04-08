@@ -22,8 +22,9 @@
     this.callbacks = Object.create(null)
     this.lastId = 0
 
-    for (var i in Aria2.options)
+    for (var i in Aria2.options) {
       this[i] = typeof opts === 'object' && i in opts ? opts[i] : Aria2.options[i]
+    }
   }
 
   Aria2.prototype.http = function (m, fn) {
@@ -230,11 +231,11 @@
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceShutdown
     'forceShutdown',
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.saveSession
-    'saveSession'
-  // https://aria2.github.io/manual/en/html/aria2c.html#system.multicall
-  // 'system.multicall',
-  // https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods
-  // 'system.listMethods',
+    'saveSession',
+    // https://aria2.github.io/manual/en/html/aria2c.html#system.multicall
+    'system.multicall',
+    // https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods
+    'system.listMethods'
   ]
 
   // https://aria2.github.io/manual/en/html/aria2c.html#notifications
@@ -269,7 +270,8 @@
   }
 
   Aria2.methods.forEach(function (method) {
-    Aria2.prototype[method] = function (/* [param] [,param] [,...]*/) {
+    var sufix = method.indexOf('.') > -1 ? method.split('.')[1] : method
+    Aria2.prototype[sufix] = function (/* [param] [,param] [,...]*/) {
       this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
     }
   })

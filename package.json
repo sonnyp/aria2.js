@@ -33,7 +33,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "httpclient": "0.0.4",
-    "ws": "^0.8.1"
+    "ws": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",

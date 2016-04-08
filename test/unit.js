@@ -60,7 +60,8 @@
 
       it('should have a function property for each methods', function () {
         Aria2.methods.forEach(function (method) {
-          expect(client[method]).to.be.a('function')
+          var sufix = method.indexOf('system.') === 0 ? method.split('system.')[1] : method
+          expect(client[sufix]).to.be.a('function')
         })
       })
 
@@ -202,7 +203,8 @@
           var spy = sinon.spy(client, 'send')
           var cb = function () {}
           Aria2.methods.forEach(function (method) {
-            client[method]('foo', 'bar', cb)
+            var sufix = method.indexOf('system.') === 0 ? method.split('system.')[1] : method
+            client[sufix]('foo', 'bar', cb)
             expect(spy).to.have.been.calledWith(method, 'foo', 'bar', cb)
           })
         })
