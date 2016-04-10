@@ -235,7 +235,9 @@
     // https://aria2.github.io/manual/en/html/aria2c.html#system.multicall
     'system.multicall',
     // https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods
-    'system.listMethods'
+    'system.listMethods',
+    // https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications
+    'system.listNotifications'
   ]
 
   // https://aria2.github.io/manual/en/html/aria2c.html#notifications
