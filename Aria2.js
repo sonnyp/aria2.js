@@ -45,7 +45,7 @@
     }
 
     // browser, use jsonp
-    if (typeof module !== 'undefined' && module.exports) {
+    if (!(typeof module !== 'undefined' && module.exports)) {
       opts.jsonp = 'jsoncallback'
     }
 
@@ -54,7 +54,7 @@
     httpclient.request(opts, function (err, res) {
       if (err) return fn(err)
 
-      var msg = opts.jsonp ? res.body : JSON.parse(res.body.toString())
+      var msg = opts.jsonp ? res.body : JSON.parse(res.toString())
       that._onmessage(msg)
     })
   }
