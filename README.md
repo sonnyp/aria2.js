@@ -52,6 +52,7 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
     - [saveSession](https://aria2.github.io/manual/en/html/aria2c.html#aria2.saveSession)
     - [system.multicall](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall)
     - [system.listMethods](https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods)
+    - [system.listNotifications](https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications)
   - [aria2 events](#aria2-events)
     - [onDownloadStart](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStart)
     - [onDownloadPause](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadPause)
