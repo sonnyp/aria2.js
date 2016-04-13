@@ -1,25 +1,35 @@
-;(function (global) {
+;(function () {
   'use strict'
 
   var Aria2
 
-  // Node.js, io.js
+  // Node.js, browserify, ...
   if (typeof module !== 'undefined' && module.exports) {
     Aria2 = require('..')
   // browsers
   } else {
-    Aria2 = global.Aria2
+    Aria2 = window.Aria2
   }
 
   // those are default options
-  var options = {'host': 'localhost', 'port': 6800, 'secure': false}
+  var options = {'host': 'localhost', 'port': 6800, 'secure': false, jsonp: false}
   var aria2 = new Aria2(options)
 
-  // socket is not open yet so it will use HTTP interface
+  // triggered when a message is being sent
+  aria2.onsend = function (m) {
+    console.log('OUT:', m)
+  }
+
+  // triggered when a message has been received
+  aria2.onmessage = function (m) {
+    console.log('IN:', m)
+  }
+
+  // WebSocket is not open so HTTP transport will be used
   aria2.send('getVersion', function (err, res) {
     console.log('version: ', err || res)
 
-    // open socket
+    // open WebSocket
     aria2.open()
   })
 
@@ -27,6 +37,7 @@
   aria2.onopen = function () {
     console.log('OPEN')
 
+    // WebSocket is open so WebSocket transport will be used
     aria2.getGlobalOption(function (err, res) {
       console.log('global options: ', err || res)
 
@@ -43,14 +54,4 @@
   aria2.onclose = function () {
     console.log('CLOSED')
   }
-
-  // triggered when a message is being sent
-  aria2.onsend = function (m) {
-    console.log('OUT:', m)
-  }
-
-  // triggered when a message has been received
-  aria2.onmessage = function (m) {
-    console.log('IN:', m)
-  }
-}(this))
+}())
