@@ -165,7 +165,7 @@ aria2.onmessage = function(m) {
 ## aria2 methods
 For a complete listing see [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods).
 
-Note that if you have passed the secret option to aria2.js, it will be automatically added it to every request so there is no need to include it.
+If you have passed the secret option to aria2.js, it will be automatically added to every request so there is no need to include it.
 
 When sending a request to aria2, if the WebSocket is closed, aria2.js will use the HTTP transport.
 
