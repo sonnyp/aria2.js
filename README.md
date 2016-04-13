@@ -9,8 +9,7 @@ JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/ar
 [![Dependency Status](https://img.shields.io/david/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://img.shields.io/david/dev/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js#info=devDependencies)
 
-aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface) and supports WebSocket, HTTP and JSONP transports.
-
+- [Introduction](#introduction)
 - [Getting started](#getting-started)
 - [Usage](#usage)
   - [open](#open)
@@ -64,6 +63,20 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
 - [Contributing](#contributing)
 
 
+# Introduction
+
+aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface) and  features
+
+- Node.js and browsers support
+- multiple transports
+  - WebSocket
+  - HTTP
+  - JSONP
+- callback API style
+- promise API style
+- light (1.5KB minified and gzipped)
+
+[↑](#aria2js)
 
 # Getting started
 
@@ -81,7 +94,7 @@ or
 ```xml
 <!-- optional for HTTP/JSONP support -->
 <script src="node_modules/httpclient/bundle.js"></script>
-<script src="node_modules/aria2/Aria2.js"></script>
+<script src="node_modules/aria2/bundle.js"></script>
 ```
 ```javascript
 var Aria2 = window.Aria2
@@ -128,7 +141,10 @@ default options match aria2c defaults and are
 aria2.onopen = function() {
   console.log('aria2 open');
 };
+
 aria2.open([cb]);
+// or
+aria2.open().then(fn)
 ```
 
 [↑](#aria2js)
@@ -141,7 +157,10 @@ aria2.open([cb]);
 aria2.onclose = function() {
   console.log('aria2 closed!');
 };
-aria2.close([cb]);
+
+aria2.close([cb]); // callback style
+// or
+aria2.close().then(fn); // promise style
 ```
 
 [↑](#aria2js)
@@ -165,12 +184,13 @@ aria2.onmessage = function(m) {
 ## aria2 methods
 For a complete listing see [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods).
 
-If you have passed the secret option to aria2.js, it will be automatically added to every request so there is no need to include it.
+If you passed the secret option to aria2.js, it will be automatically added to every request so there is no need to include it.
 
 When sending a request to aria2, if the WebSocket is closed, aria2.js will use the HTTP transport.
 
 For every aria2 methods you can use
 
+#### callback style
 ```javascript
 aria2.getVersion([params,] function(err, res) {
   console.log(err || res);
@@ -185,9 +205,22 @@ aria2.send('getVersion', [params,] function(err, res) {
 });
 ```
 
+#### promise style
+
+```javascript
+aria2.getVersion([params,]).then(fn)
+```
+
+or
+
+```javascript
+aria2.send('getVersion', [params,]).then(fn)
+```
+
 [↑](#aria2js)
 
 ## aria2 events
+
 For a complete listing see [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket).
 
 For every notifications you can bind a function.

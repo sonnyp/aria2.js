@@ -24,15 +24,16 @@
   "scripts": {
     "preversion": "npm test",
     "lint": "standard",
+    "bundle": "cat node_modules/polygoat/index.js index.js > bundle.js",
     "unit": "mocha test/unit.js",
     "integration": "mocha test/integration.js",
     "test": "npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
-  "main": "Aria2.js",
   "dependencies": {
     "commander": "^2.9.0",
     "httpclient": "0.1.0",
+    "polygoat": "^1.1.2",
     "ws": "^1.0.1"
   },
   "devDependencies": {

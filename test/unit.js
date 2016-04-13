@@ -139,7 +139,7 @@
           expect(spy.args[0][0].params).to.be.an('array')
           expect(spy.args[0][0].params).to.deep.equal(['token:oo', 'foo', 'bar'])
           var id = spy.args[0][0].id
-          expect(client.callbacks[id]).to.equal(cb)
+          expect(client.callbacks[id]).to.be.a('function')
         })
       })
 
@@ -160,7 +160,7 @@
           var callback = sinon.spy()
           client.send('foobar', callback)
           var id = spySend.args[0][0].id
-          expect(client.callbacks[id]).to.equal(callback)
+          expect(client.callbacks[id]).to.be.a('function')
           var message = {'method': 'aria2.foobar', 'id': id}
           client._onmessage(message)
 
@@ -172,7 +172,7 @@
           var callback = sinon.spy()
           client.send('foobar', callback)
           var id = spySend.args[0][0].id
-          expect(client.callbacks[id]).to.equal(callback)
+          expect(client.callbacks[id]).to.be.a('function')
           var message = {'method': 'aria2.foobar', 'id': id, 'error': 'whatever'}
           client._onmessage(message)
 
@@ -185,7 +185,7 @@
           var callback = sinon.spy()
           client.send('foobar', callback)
           var id = spySend.args[0][0].id
-          expect(client.callbacks[id]).to.equal(callback)
+          expect(client.callbacks[id]).to.be.a('function')
           var message = {
             'id': id,
             'method': 'aria2.foobar',
