@@ -4,7 +4,7 @@
   var WebSocket
   var b64
   var httpclient
-  var noop = function () {}
+  var pg
 
   function isNode () {
     return typeof module !== 'undefined' && module.exports
@@ -16,10 +16,12 @@
       return new Buffer(str).toString('base64')
     }
     httpclient = require('httpclient')
+    pg = require('polygoat')
   } else {
     WebSocket = global.WebSocket
     b64 = global.atob
     httpclient = global.HTTPClient
+    pg = global.polygoat
   }
 
   var Aria2 = function (opts) {
@@ -71,6 +73,12 @@
   }
 
   Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn]*/) {
+    var params = Array.prototype.slice.call(arguments, 1)
+    var cb = typeof params[params.length - 1] === 'function' ? params.pop() : null
+    return this.exec(method, params, cb)
+  }
+
+  Aria2.prototype.exec = function (method, parameters, cb) {
     if (typeof method !== 'string') {
       throw new TypeError(method + ' is not a string')
     }
@@ -86,32 +94,30 @@
     }
 
     var params = this.secret ? ['token:' + this.secret] : []
-
-    for (var i = 1, l = arguments.length; i < l; i++) {
-      var arg = arguments[i]
-      if (i === arguments.length - 1 && typeof arg === 'function') {
-        this.callbacks[m.id] = arg
-      } else {
-        params.push(arg)
-      }
+    if (Array.isArray(parameters)) {
+      params = params.concat(parameters)
     }
 
     if (params.length > 0) m.params = params
 
     this.onsend(m)
 
-    // send via websocket
-    if (this.socket && this.socket.readyState === 1) {
-      return this.socket.send(JSON.stringify(m))
-    }
-
     var that = this
 
+    // send via websocket
+    if (this.socket && this.socket.readyState === 1) {
+      this.socket.send(JSON.stringify(m))
     // send via http
-    this.http(m, function (err) {
-      that.callbacks[m.id](err)
-      delete that.callbacks[m.id]
-    })
+    } else {
+      this.http(m, function (err) {
+        that.callbacks[m.id](err)
+        delete that.callbacks[m.id]
+      })
+    }
+
+    return pg(function (done) {
+      that.callbacks[m.id] = done
+    }, cb)
   }
 
   Aria2.prototype._onmessage = function (m) {
@@ -141,38 +147,42 @@
     var that = this
     var called = false
 
-    socket.onopen = function () {
-      if (fn && !called) {
-        fn()
-        called = true
-      }
-      that.onopen()
-    }
-    socket.onerror = function (err) {
-      if (fn && !called) {
-        fn(err)
-        called = true
-      }
-    }
     socket.onclose = function () {
       that.onclose()
     }
     socket.onmessage = function (event) {
       that._onmessage(JSON.parse(event.data))
     }
+
+    return pg(function (done) {
+      socket.onopen = function () {
+        if (!called) {
+          done()
+          called = true
+        }
+        that.onopen()
+      }
+      socket.onerror = function (err) {
+        if (!called) {
+          done(err)
+          called = true
+        }
+      }
+    }, fn)
   }
 
   Aria2.prototype.close = function (fn) {
-    fn = fn || noop
-    if (!this.socket) {
-      fn()
-      return
-    }
-
-    this.socket.addEventListener('close', function () {
-      fn()
-    })
-    this.socket.close()
+    var socket = this.socket
+    return pg(function (done) {
+      if (!socket) {
+        done()
+      } else {
+        socket.addEventListener('close', function () {
+          done()
+        })
+        socket.close()
+      }
+    }, fn)
   }
 
   // https://aria2.github.io/manual/en/html/aria2c.html#methods
@@ -286,7 +296,7 @@
   Aria2.methods.forEach(function (method) {
     var sufix = method.indexOf('.') > -1 ? method.split('.')[1] : method
     Aria2.prototype[sufix] = function (/* [param] [,param] [,...]*/) {
-      this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
+      return this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
     }
   })
 
