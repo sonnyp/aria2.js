@@ -79,6 +79,8 @@ var Aria2 = require('aria2');
 or
 
 ```xml
+<!-- optional for HTTP/JSONP support -->
+<script src="node_modules/httpclient/bundle.js"></script>
 <script src="node_modules/aria2/Aria2.js"></script>
 ```
 ```javascript
@@ -107,11 +109,14 @@ default options match aria2c defaults and are
   port: 6800,
   secure: false,
   secret: '',
-  path: '/jsonrpc'
+  path: '/jsonrpc',
+  jsonp: false
 }
 ```
 
-Secret is optional and refers to [--rpc-secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption--rpc-secret).
+`secret` is optional and refers to [--rpc-secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption--rpc-secret).
+
+`jsonp: true` will make aria2.js uses [JSONP](https://en.wikipedia.org/wiki/JSONP) for non WebSocket requests, useful if you cannot make aria2c allow your origin. It has no effect on Node.js.
 
 [↑](#aria2js)
 

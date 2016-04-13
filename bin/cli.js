@@ -23,7 +23,7 @@ cli
   .version(require('../package.json').version)
   .option('-d, --debug', 'output debug information')
   .option('-u, --url [url]', 'websocket url to connect to', 'ws://localhost:6800/jsonrpc')
-  .option('-s --secret [secret]', 'aria2 secret to use')
+  .option('-s, --secret [secret]', 'aria2 secret to use')
 
 // call
 cli

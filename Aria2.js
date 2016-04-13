@@ -6,7 +6,11 @@
   var httpclient
   var noop = function () {}
 
-  if (typeof module !== 'undefined' && module.exports) {
+  function isNode () {
+    return typeof module !== 'undefined' && module.exports
+  }
+
+  if (isNode()) {
     WebSocket = require('ws')
     b64 = function (str) {
       return new Buffer(str).toString('base64')
@@ -28,33 +32,40 @@
   }
 
   Aria2.prototype.http = function (m, fn) {
-    // FIXME json-rpc post wouldn't work
     var opts = {
       'host': this.host,
       'port': this.port,
       'path': this.path,
-      'secure': this.secure,
-      'query': {
-        'method': m.method,
-        'id': m.id
+      'secure': this.secure
+    }
+
+    var content = {
+      method: m.method,
+      id: m.id
+    }
+
+    // use POST (default)
+    if (isNode() || !this.jsonp) {
+      opts.body = content
+      opts.method = 'POST'
+      if (Array.isArray(m.params) && m.params.length > 0) {
+        opts.body.params = m.params
       }
-    }
-
-    if (Array.isArray(m.params) && m.params.length > 0) {
-      opts.query.params = b64(JSON.stringify(m.params))
-    }
-
-    // browser, use jsonp
-    if (!(typeof module !== 'undefined' && module.exports)) {
+    // use JSONP
+    } else {
+      opts.query = content
       opts.jsonp = 'jsoncallback'
+      if (Array.isArray(m.params) && m.params.length > 0) {
+        opts.query.params = b64(JSON.stringify(m.params))
+      }
     }
 
     var that = this
 
-    httpclient.request(opts, function (err, res) {
+    httpclient.request(opts, function (err, res, body) {
       if (err) return fn(err)
 
-      var msg = opts.jsonp ? res.body : JSON.parse(res.toString())
+      var msg = opts.jsonp ? body : JSON.parse(body.toString())
       that._onmessage(msg)
     })
   }
@@ -268,7 +279,8 @@
     'host': 'localhost',
     'port': 6800,
     'secret': '',
-    'path': '/jsonrpc'
+    'path': '/jsonrpc',
+    'jsonp': false
   }
 
   Aria2.methods.forEach(function (method) {
@@ -286,7 +298,7 @@
     Aria2.prototype[event] = function () {}
   })
 
-  if (typeof module !== 'undefined' && module.exports) {
+  if (isNode()) {
     module.exports = Aria2
   } else {
     global.Aria2 = Aria2
