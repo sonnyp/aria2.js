@@ -27,7 +27,7 @@
     "bundle": "cat node_modules/polygoat/index.js index.js > bundle.js",
     "unit": "mocha test/unit.js",
     "integration": "mocha test/integration.js",
-    "test": "npm run unit && npm run lint"
+    "test": "npm run bundle && npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
