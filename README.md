@@ -129,6 +129,8 @@ default options match aria2c defaults and are
 
 `secret` is optional and refers to [--rpc-secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption--rpc-secret).
 
+If the WebSocket is open (via the [open method](#open)) aria2.js will use the WebSocket transport, otherwise the HTTP transport.
+
 `jsonp: true` will make aria2.js uses [JSONP](https://en.wikipedia.org/wiki/JSONP) for non WebSocket requests, useful if you cannot make aria2c allow your origin. It has no effect on Node.js.
 
 [↑](#aria2js)
@@ -185,8 +187,6 @@ aria2.onmessage = function(m) {
 For a complete listing see [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods).
 
 If you passed the secret option to aria2.js, it will be automatically added to every request so there is no need to include it.
-
-When sending a request to aria2, if the WebSocket is closed, aria2.js will use the HTTP transport.
 
 For every aria2 methods you can use
 
