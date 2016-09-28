@@ -32,13 +32,15 @@
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
     "commander": "^2.9.0",
-    "httpclient": "0.1.0",
+    "node-fetch": "^1.6.3",
     "polygoat": "^1.1.2",
     "ws": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "mocha": "^3.1.0",
     "sinon": "^1.17.2",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "standard": "^8.2.0"
   }
 }

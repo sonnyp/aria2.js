@@ -12,7 +12,7 @@
   }
 
   // those are default options
-  var options = {'host': 'localhost', 'port': 6800, 'secure': false, jsonp: false}
+  var options = {'host': 'localhost', 'port': 6800, 'secure': false}
   var aria2 = new Aria2(options)
 
   // triggered when a message is being sent

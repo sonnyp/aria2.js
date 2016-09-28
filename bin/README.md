@@ -15,8 +15,12 @@ Check `aria2rpc -h` and https://aria2.github.io/manual/en/html/aria2c.html#metho
 
 ## call
 
+Uses HTTP transport.
+
 ![](./call.gif)
 
 ## console
+
+Uses Websocket transport.
 
 ![](./console.gif)
