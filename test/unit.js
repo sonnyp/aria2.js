@@ -1,4 +1,4 @@
-(function (global) {
+;(function (global) {
   'use strict'
 
   /* global describe, it, beforeEach */
@@ -6,7 +6,6 @@
   var Aria2
   var sinon
   var chai
-  var expect
   var sinonChai
 
   if (typeof module !== 'undefined' && module.exports) {
@@ -22,7 +21,7 @@
     sinonChai = global.sinonChai
   }
 
-  expect = chai.expect
+  var expect = chai.expect
 
   describe('Aria2', function () {
     var client

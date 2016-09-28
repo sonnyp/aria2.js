@@ -102,7 +102,7 @@ var Aria2 = window.Aria2
 
 ----
 
-Start aria2c in daemon mode with
+Start aria2c with
 
 `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
 
