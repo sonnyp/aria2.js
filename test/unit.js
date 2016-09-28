@@ -1,4 +1,4 @@
-(function (global) {
+;(function (global) {
   'use strict'
 
   /* global describe, it, beforeEach */
@@ -211,4 +211,4 @@
       })
     })
   })
-}(this))
+}(typeof global !== 'undefined' ? global : this))

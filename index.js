@@ -2,25 +2,18 @@
   'use strict'
 
   var WebSocket
-  var b64
-  var httpclient
+  var fetch
   var pg
 
-  function isNode () {
-    return typeof module !== 'undefined' && module.exports
-  }
+  var isNode = typeof module !== 'undefined' && module.exports
 
-  if (isNode()) {
+  if (isNode) {
     WebSocket = require('ws')
-    b64 = function (str) {
-      return new Buffer(str).toString('base64')
-    }
-    httpclient = require('httpclient')
+    fetch = require('node-fetch')
     pg = require('polygoat')
   } else {
     WebSocket = global.WebSocket
-    b64 = global.atob
-    httpclient = global.HTTPClient
+    fetch = global.fetch
     pg = global.polygoat
   }
 
@@ -34,45 +27,34 @@
   }
 
   Aria2.prototype.http = function (m, fn) {
-    var opts = {
-      'host': this.host,
-      'port': this.port,
-      'path': this.path,
-      'secure': this.secure
-    }
-
+    var that = this
     var content = {
       method: m.method,
       id: m.id
     }
 
-    // use POST (default)
-    if (isNode() || !this.jsonp) {
-      opts.body = content
-      opts.method = 'POST'
-      if (Array.isArray(m.params) && m.params.length > 0) {
-        opts.body.params = m.params
-      }
-    // use JSONP
-    } else {
-      opts.query = content
-      opts.jsonp = 'jsoncallback'
-      if (Array.isArray(m.params) && m.params.length > 0) {
-        opts.query.params = b64(JSON.stringify(m.params))
-      }
+    if (Array.isArray(m.params) && m.params.length > 0) {
+      content.params = m.params
     }
 
-    var that = this
-
-    httpclient.request(opts, function (err, res, body) {
-      if (err) return fn(err)
-
-      var msg = opts.jsonp ? body : JSON.parse(body.toString())
-      that._onmessage(msg)
-    })
+    var url = 'http' + (this.secure ? 's' : '') + '://' + this.host + ':' + this.port + this.path
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(content),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }})
+      .then(function (res) {
+        return res.json()
+      })
+      .then(function (msg) {
+        that._onmessage(msg)
+      })
+      .catch(fn)
   }
 
-  Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn]*/) {
+  Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn] */) {
     var params = Array.prototype.slice.call(arguments, 1)
     var cb = typeof params[params.length - 1] === 'function' ? params.pop() : null
     return this.exec(method, params, cb)
@@ -289,13 +271,12 @@
     'host': 'localhost',
     'port': 6800,
     'secret': '',
-    'path': '/jsonrpc',
-    'jsonp': false
+    'path': '/jsonrpc'
   }
 
   Aria2.methods.forEach(function (method) {
     var sufix = method.indexOf('.') > -1 ? method.split('.')[1] : method
-    Aria2.prototype[sufix] = function (/* [param] [,param] [,...]*/) {
+    Aria2.prototype[sufix] = function (/* [param] [,param] [,...] */) {
       return this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
     }
   })
@@ -308,7 +289,7 @@
     Aria2.prototype[event] = function () {}
   })
 
-  if (isNode()) {
+  if (isNode) {
     module.exports = Aria2
   } else {
     global.Aria2 = Aria2

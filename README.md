@@ -71,7 +71,7 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
 - multiple transports
   - [HTTP](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface)
   - [WebSocket](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket)
-  - [JSONP](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-using-http-get)
+  - ~~[JSONP](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-using-http-get)~~ [#25](https://github.com/sonnyp/aria2.js/pull/25)
 - callback API
 - promise API
 - light (1.5KB minified and gzipped)
@@ -92,8 +92,6 @@ var Aria2 = require('aria2');
 or
 
 ```xml
-<!-- optional for HTTP/JSONP support -->
-<script src="node_modules/httpclient/bundle.js"></script>
 <script src="node_modules/aria2/bundle.js"></script>
 ```
 ```javascript
@@ -122,8 +120,7 @@ default options match aria2c defaults and are
   port: 6800,
   secure: false,
   secret: '',
-  path: '/jsonrpc',
-  jsonp: false
+  path: '/jsonrpc'
 }
 ```
 
@@ -131,7 +128,7 @@ default options match aria2c defaults and are
 
 If the WebSocket is open (via the [open method](#open)) aria2.js will use the WebSocket transport, otherwise the HTTP transport.
 
-`jsonp: true` will make aria2.js uses [JSONP](https://en.wikipedia.org/wiki/JSONP) for non WebSocket requests, useful if you cannot make aria2c allow your origin. It has no effect on Node.js.
+For HTTP, aria2.js makes use of the new fetch standard, you might need a [polyfill](https://github.com/github/fetch) if you want to support older browsers.
 
 [↑](#aria2js)
 

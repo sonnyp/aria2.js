@@ -12,31 +12,18 @@ module.exports = function (cli, options, method, params) {
   client.onmessage = function (m) {
     debug('IN', m)
   }
-  debug('CONNECTING')
-  client.open(function (err) {
+
+  var cb = function (err, res) {
     if (err) {
       console.error(err)
       process.exit(1)
     }
 
-    debug('CONNECTED')
+    console.log(res)
+    process.exit(0)
+  }
 
-    var cb = function (err, res) {
-      debug('CLOSING')
-      client.close(function () {
-        debug('CLOSED')
-        if (err) {
-          console.error(err)
-          process.exit(1)
-        }
+  var args = [method].concat(params, cb)
 
-        console.log(res)
-        process.exit(0)
-      })
-    }
-
-    var args = [method].concat(params, cb)
-
-    client.send.apply(client, args)
-  })
+  client.send.apply(client, args)
 }
