@@ -232,21 +232,16 @@ aria2.onDownloadStart = function(gid) {
 
 # Example
 
-See [example.js](https://github.com/sonnyp/aria2.js/blob/master/example/example.js)
+See [example](https://github.com/sonnyp/aria2.js/blob/master/example/).
 
 [↑](#aria2js)
 
 # Tests
 
 ```
-npm install mocha standard
+npm install
 npm test
 ```
 
 [↑](#aria2js)
 
-# Contributing
-
-See [CONTRIBUTING.md](https://github.com/sonnyp/aria2.js/blob/master/CONTRIBUTING.md)
-
-[↑](#aria2js)
