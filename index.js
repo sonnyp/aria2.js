@@ -72,7 +72,7 @@
     })
   }
 
-  Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn]*/) {
+  Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn] */) {
     var params = Array.prototype.slice.call(arguments, 1)
     var cb = typeof params[params.length - 1] === 'function' ? params.pop() : null
     return this.exec(method, params, cb)
@@ -295,7 +295,7 @@
 
   Aria2.methods.forEach(function (method) {
     var sufix = method.indexOf('.') > -1 ? method.split('.')[1] : method
-    Aria2.prototype[sufix] = function (/* [param] [,param] [,...]*/) {
+    Aria2.prototype[sufix] = function (/* [param] [,param] [,...] */) {
       return this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
     }
   })
