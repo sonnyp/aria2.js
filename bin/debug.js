@@ -1,9 +1,9 @@
-'use strict'
+"use strict";
 
-module.exports = function (cli) {
-  return function () {
+module.exports = function(cli) {
+  return function() {
     if (cli.debug) {
-      console.log.apply(console, arguments)
+      console.log.apply(console, arguments);
     }
-  }
-}
+  };
+};

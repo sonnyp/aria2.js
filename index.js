@@ -1,297 +1,318 @@
-;(function (global) {
-  'use strict'
+(function(global) {
+  "use strict";
 
-  var WebSocket
-  var fetch
-  var pg
+  var WebSocket;
+  var fetch;
+  var pg;
 
-  var isNode = typeof module !== 'undefined' && module.exports
+  var isNode = typeof module !== "undefined" && module.exports;
 
   if (isNode) {
-    WebSocket = require('ws')
-    fetch = require('node-fetch')
-    pg = require('polygoat')
+    WebSocket = require("ws");
+    fetch = require("node-fetch");
+    pg = require("polygoat");
   } else {
-    WebSocket = global.WebSocket
-    fetch = global.fetch
-    pg = global.polygoat
+    WebSocket = global.WebSocket;
+    fetch = global.fetch;
+    pg = global.polygoat;
   }
 
-  var Aria2 = function (opts) {
-    this.callbacks = Object.create(null)
-    this.lastId = 0
+  var Aria2 = function(opts) {
+    this.callbacks = Object.create(null);
+    this.lastId = 0;
 
     for (var i in Aria2.options) {
-      this[i] = typeof opts === 'object' && i in opts ? opts[i] : Aria2.options[i]
+      this[i] =
+        typeof opts === "object" && i in opts ? opts[i] : Aria2.options[i];
     }
-  }
+  };
 
-  Aria2.prototype.http = function (m, fn) {
-    var that = this
+  Aria2.prototype.http = function(m, fn) {
+    var that = this;
     var content = {
       method: m.method,
       id: m.id
-    }
+    };
 
     if (Array.isArray(m.params) && m.params.length > 0) {
-      content.params = m.params
+      content.params = m.params;
     }
 
-    var url = 'http' + (this.secure ? 's' : '') + '://' + this.host + ':' + this.port + this.path
+    var url =
+      "http" +
+      (this.secure ? "s" : "") +
+      "://" +
+      this.host +
+      ":" +
+      this.port +
+      this.path;
     fetch(url, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(content),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }})
-      .then(function (res) {
-        return res.json()
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(function(res) {
+        return res.json();
       })
-      .then(function (msg) {
-        that._onmessage(msg)
+      .then(function(msg) {
+        that._onmessage(msg);
       })
-      .catch(fn)
-  }
+      .catch(fn);
+  };
 
-  Aria2.prototype.send = function (method /* [,param] [,param] [,...] [, fn] */) {
-    var params = Array.prototype.slice.call(arguments, 1)
-    var cb = typeof params[params.length - 1] === 'function' ? params.pop() : null
-    return this.exec(method, params, cb)
-  }
+  Aria2.prototype.send = function(
+    method /* [,param] [,param] [,...] [, fn] */
+  ) {
+    var params = Array.prototype.slice.call(arguments, 1);
+    var cb =
+      typeof params[params.length - 1] === "function" ? params.pop() : null;
+    return this.exec(method, params, cb);
+  };
 
-  Aria2.prototype.exec = function (method, parameters, cb) {
-    if (typeof method !== 'string') {
-      throw new TypeError(method + ' is not a string')
+  Aria2.prototype.exec = function(method, parameters, cb) {
+    if (typeof method !== "string") {
+      throw new TypeError(method + " is not a string");
     }
 
-    if (method.indexOf('system.') !== 0 && method.indexOf('aria2.') !== 0) {
-      method = 'aria2.' + method
+    if (method.indexOf("system.") !== 0 && method.indexOf("aria2.") !== 0) {
+      method = "aria2." + method;
     }
 
     var m = {
-      'method': method,
-      'json-rpc': '2.0',
-      'id': this.lastId++
-    }
+      method: method,
+      "json-rpc": "2.0",
+      id: this.lastId++
+    };
 
-    var params = this.secret ? ['token:' + this.secret] : []
+    var params = this.secret ? ["token:" + this.secret] : [];
     if (Array.isArray(parameters)) {
-      params = params.concat(parameters)
+      params = params.concat(parameters);
     }
 
-    if (params.length > 0) m.params = params
+    if (params.length > 0) m.params = params;
 
-    this.onsend(m)
+    this.onsend(m);
 
-    var that = this
+    var that = this;
 
     // send via websocket
     if (this.socket && this.socket.readyState === 1) {
-      this.socket.send(JSON.stringify(m))
-    // send via http
+      this.socket.send(JSON.stringify(m));
+      // send via http
     } else {
-      this.http(m, function (err) {
-        that.callbacks[m.id](err)
-        delete that.callbacks[m.id]
-      })
+      this.http(m, function(err) {
+        that.callbacks[m.id](err);
+        delete that.callbacks[m.id];
+      });
     }
 
-    return pg(function (done) {
-      that.callbacks[m.id] = done
-    }, cb)
-  }
+    return pg(function(done) {
+      that.callbacks[m.id] = done;
+    }, cb);
+  };
 
-  Aria2.prototype._onmessage = function (m) {
-    this.onmessage(m)
+  Aria2.prototype._onmessage = function(m) {
+    this.onmessage(m);
 
     if (m.id !== undefined) {
-      var callback = this.callbacks[m.id]
+      var callback = this.callbacks[m.id];
       if (callback) {
         if (m.error) {
-          callback(m.error)
+          callback(m.error);
         } else {
-          callback(null, m.result)
+          callback(null, m.result);
         }
-        delete this.callbacks[m.id]
+        delete this.callbacks[m.id];
       }
     } else if (m.method) {
-      var n = m.method.split('aria2.')[1]
-      if (n.indexOf('on') === 0 && typeof this[n] === 'function' && Aria2.notifications.indexOf(n) > -1) {
-        this[n].apply(this, m.params)
+      var n = m.method.split("aria2.")[1];
+      if (
+        n.indexOf("on") === 0 &&
+        typeof this[n] === "function" &&
+        Aria2.notifications.indexOf(n) > -1
+      ) {
+        this[n].apply(this, m.params);
       }
     }
-  }
+  };
 
-  Aria2.prototype.open = function (fn) {
-    var url = 'ws' + (this.secure ? 's' : '') + '://' + this.host + ':' + this.port + this.path
-    var socket = this.socket = new WebSocket(url)
-    var that = this
-    var called = false
+  Aria2.prototype.open = function(fn) {
+    var url =
+      "ws" +
+      (this.secure ? "s" : "") +
+      "://" +
+      this.host +
+      ":" +
+      this.port +
+      this.path;
+    var socket = (this.socket = new WebSocket(url));
+    var that = this;
+    var called = false;
 
-    socket.onclose = function () {
-      that.onclose()
-    }
-    socket.onmessage = function (event) {
-      that._onmessage(JSON.parse(event.data))
-    }
+    socket.onclose = function() {
+      that.onclose();
+    };
+    socket.onmessage = function(event) {
+      that._onmessage(JSON.parse(event.data));
+    };
 
-    return pg(function (done) {
-      socket.onopen = function () {
+    return pg(function(done) {
+      socket.onopen = function() {
         if (!called) {
-          done()
-          called = true
+          done();
+          called = true;
         }
-        that.onopen()
-      }
-      socket.onerror = function (err) {
+        that.onopen();
+      };
+      socket.onerror = function(err) {
         if (!called) {
-          done(err)
-          called = true
+          done(err);
+          called = true;
         }
-      }
-    }, fn)
-  }
+      };
+    }, fn);
+  };
 
-  Aria2.prototype.close = function (fn) {
-    var socket = this.socket
-    return pg(function (done) {
+  Aria2.prototype.close = function(fn) {
+    var socket = this.socket;
+    return pg(function(done) {
       if (!socket) {
-        done()
+        done();
       } else {
-        socket.addEventListener('close', function () {
-          done()
-        })
-        socket.close()
+        socket.addEventListener("close", function() {
+          done();
+        });
+        socket.close();
       }
-    }, fn)
-  }
+    }, fn);
+  };
 
   // https://aria2.github.io/manual/en/html/aria2c.html#methods
   Aria2.methods = [
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri
-    'addUri',
+    "addUri",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent
-    'addTorrent',
+    "addTorrent",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.addMetalink
-    'addMetalink',
+    "addMetalink",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.remove
-    'remove',
+    "remove",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceRemove
-    'forceRemove',
+    "forceRemove",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.pause
-    'pause',
+    "pause",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.pauseAll
-    'pauseAll',
+    "pauseAll",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePause
-    'forcePause',
+    "forcePause",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePauseAll
-    'forcePauseAll',
+    "forcePauseAll",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpause
-    'unpause',
+    "unpause",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpauseAll
-    'unpauseAll',
+    "unpauseAll",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStatus
-    'tellStatus',
+    "tellStatus",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getUris
-    'getUris',
+    "getUris",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getFiles
-    'getFiles',
+    "getFiles",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getPeers
-    'getPeers',
+    "getPeers",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getServers
-    'getServers',
+    "getServers",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellActive
-    'tellActive',
+    "tellActive",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellWaiting
-    'tellWaiting',
+    "tellWaiting",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStopped
-    'tellStopped',
+    "tellStopped",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changePosition
-    'changePosition',
+    "changePosition",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeUri
-    'changeUri',
+    "changeUri",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getOption
-    'getOption',
+    "getOption",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeOption
-    'changeOption',
+    "changeOption",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalOption
-    'getGlobalOption',
+    "getGlobalOption",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeGlobalOption
-    'changeGlobalOption',
+    "changeGlobalOption",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalStat
-    'getGlobalStat',
+    "getGlobalStat",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.purgeDownloadResult
-    'purgeDownloadResult',
+    "purgeDownloadResult",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.removeDownloadResult
-    'removeDownloadResult',
+    "removeDownloadResult",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getVersion
-    'getVersion',
+    "getVersion",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.getSessionInfo
-    'getSessionInfo',
+    "getSessionInfo",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.shutdown
-    'shutdown',
+    "shutdown",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceShutdown
-    'forceShutdown',
+    "forceShutdown",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.saveSession
-    'saveSession',
+    "saveSession",
     // https://aria2.github.io/manual/en/html/aria2c.html#system.multicall
-    'system.multicall',
+    "system.multicall",
     // https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods
-    'system.listMethods',
+    "system.listMethods",
     // https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications
-    'system.listNotifications'
-  ]
+    "system.listNotifications"
+  ];
 
   // https://aria2.github.io/manual/en/html/aria2c.html#notifications
   Aria2.notifications = [
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStart
-    'onDownloadStart',
+    "onDownloadStart",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadPause
-    'onDownloadPause',
+    "onDownloadPause",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStop
-    'onDownloadStop',
+    "onDownloadStop",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadComplete
-    'onDownloadComplete',
+    "onDownloadComplete",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadError
-    'onDownloadError',
+    "onDownloadError",
     // https://aria2.github.io/manual/en/html/aria2c.html#aria2.onBtDownloadComplete
-    'onBtDownloadComplete'
-  ]
+    "onBtDownloadComplete"
+  ];
 
-  Aria2.events = [
-    'onopen',
-    'onclose',
-    'onsend',
-    'onmessage'
-  ]
+  Aria2.events = ["onopen", "onclose", "onsend", "onmessage"];
 
   Aria2.options = {
-    'secure': false,
-    'host': 'localhost',
-    'port': 6800,
-    'secret': '',
-    'path': '/jsonrpc'
-  }
+    secure: false,
+    host: "localhost",
+    port: 6800,
+    secret: "",
+    path: "/jsonrpc"
+  };
 
-  Aria2.methods.forEach(function (method) {
-    var sufix = method.indexOf('.') > -1 ? method.split('.')[1] : method
-    Aria2.prototype[sufix] = function (/* [param] [,param] [,...] */) {
-      return this.send.apply(this, [method].concat(Array.prototype.slice.call(arguments)))
-    }
-  })
+  Aria2.methods.forEach(function(method) {
+    var sufix = method.indexOf(".") > -1 ? method.split(".")[1] : method;
+    Aria2.prototype[sufix] = function(/* [param] [,param] [,...] */) {
+      return this.send.apply(
+        this,
+        [method].concat(Array.prototype.slice.call(arguments))
+      );
+    };
+  });
 
-  Aria2.notifications.forEach(function (notification) {
-    Aria2.prototype[notification] = function () {}
-  })
+  Aria2.notifications.forEach(function(notification) {
+    Aria2.prototype[notification] = function() {};
+  });
 
-  Aria2.events.forEach(function (event) {
-    Aria2.prototype[event] = function () {}
-  })
+  Aria2.events.forEach(function(event) {
+    Aria2.prototype[event] = function() {};
+  });
 
   if (isNode) {
-    module.exports = Aria2
+    module.exports = Aria2;
   } else {
-    global.Aria2 = Aria2
+    global.Aria2 = Aria2;
   }
-}(this))
+})(this);
