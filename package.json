@@ -23,24 +23,23 @@
   },
   "scripts": {
     "preversion": "npm test",
-    "lint": "standard",
+    "lint": "prettier -l **/*.js",
     "bundle": "cat node_modules/polygoat/index.js index.js > bundle.js",
-    "unit": "mocha test/unit.js",
-    "integration": "mocha test/integration.js",
+    "unit": "mocha test/test.js",
     "test": "npm run bundle && npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
     "commander": "^2.9.0",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.1.2",
     "polygoat": "^1.1.4",
-    "ws": "^1.1.1"
+    "ws": "^5.1.1"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "mocha": "^3.1.0",
-    "sinon": "^1.17.2",
-    "sinon-chai": "^2.8.0",
-    "standard": "^8.2.0"
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "prettier": "1.12.1",
+    "sinon": "^4.5.0",
+    "sinon-chai": "^3.0.0"
   }
 }
