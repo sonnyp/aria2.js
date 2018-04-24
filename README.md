@@ -2,7 +2,7 @@
 
 JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/aria2.js/blob/master/bin/README.md) for [aria2, "The next generation download utility."](https://aria2.github.io/)
 
-[![license](https://img.shields.io/github/license/sonnyp/aria2.js.svg?maxAge=2592000&style=flat-square)](https://raw.githubusercontent.com/sonnyp/aria2.js/master/LICENSE.md)
+[![license](https://img.shields.io/github/license/sonnyp/aria2.js.svg?maxAge=2592000&style=flat-square)](https://raw.githubusercontent.com/sonnyp/aria2.js/master/LICENSE)
 
 [![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
