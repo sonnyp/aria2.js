@@ -15,53 +15,12 @@ JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/ar
 * [Usage](#usage)
   * [open](#open)
   * [close](#close)
-  * [onsend and onmessage](#onsend-and-onmessage)
-  * [aria2 methods](#aria2-methods)
-    * [addUri](https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri)
-    * [addTorrent](https://aria2.github.io/manual/en/html/aria2c.html#aria2.addTorrent)
-    * [addMetaLink](https://aria2.github.io/manual/en/html/aria2c.html#aria2.addMetalink)
-    * [remove](https://aria2.github.io/manual/en/html/aria2c.html#aria2.remove)
-    * [forceRemove](https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceRemove)
-    * [pause](https://aria2.github.io/manual/en/html/aria2c.html#aria2.pause)
-    * [pauseAll](https://aria2.github.io/manual/en/html/aria2c.html#aria2.pauseAll)
-    * [forcePause](https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePause)
-    * [forcePauseAll](https://aria2.github.io/manual/en/html/aria2c.html#aria2.forcePauseAll)
-    * [unpause](https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpause)
-    * [unpauseAll](https://aria2.github.io/manual/en/html/aria2c.html#aria2.unpauseAll)
-    * [tellStatus](https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStatus)
-    * [getUris](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getUris)
-    * [getFiles](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getFiles)
-    * [getPeers](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getPeers)
-    * [getServers](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getServers)
-    * [tellActive](https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellActive)
-    * [tellWaiting](https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellWaiting)
-    * [tellStopped](https://aria2.github.io/manual/en/html/aria2c.html#aria2.tellStopped)
-    * [changePosition](https://aria2.github.io/manual/en/html/aria2c.html#aria2.changePosition)
-    * [changeUri](https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeUri)
-    * [getOption](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getOption)
-    * [changeOption](https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeOption)
-    * [getGlobalOption](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalOption)
-    * [changeGlobalOption](https://aria2.github.io/manual/en/html/aria2c.html#aria2.changeGlobalOption)
-    * [getGlobalStat](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getGlobalStat)
-    * [purgeDownloadResult](https://aria2.github.io/manual/en/html/aria2c.html#aria2.purgeDownloadResult)
-    * [removeDownloadResult](https://aria2.github.io/manual/en/html/aria2c.html#aria2.removeDownloadResult)
-    * [getVersion](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getVersion)
-    * [getSessionInfo](https://aria2.github.io/manual/en/html/aria2c.html#aria2.getSessionInfo)
-    * [shutdown](https://aria2.github.io/manual/en/html/aria2c.html#aria2.shutdown)
-    * [forceShutdown](https://aria2.github.io/manual/en/html/aria2c.html#aria2.forceShutdown)
-    * [saveSession](https://aria2.github.io/manual/en/html/aria2c.html#aria2.saveSession)
-    * [system.multicall](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall)
-    * [system.listMethods](https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods)
-    * [system.listNotifications](https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications)
-  * [aria2 events](#aria2-events)
-    * [onDownloadStart](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStart)
-    * [onDownloadPause](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadPause)
-    * [onDownloadStop](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadStop)
-    * [onDownloadComplete](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadComplete)
-    * [onDownloadError](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onDownloadError)
-    * [onBtDownloadComplete](https://aria2.github.io/manual/en/html/aria2c.html#aria2.onBtDownloadComplete)
-* [Example](#example)
-* [Contributing](#contributing)
+  * [call](#call)
+  * [multicall](#multicall)
+  * [batch](#batch)
+  * [listNotifications](#listNotifications)
+  * [listMethods](#listMethods)
+  * [events](#events)
 
 # Introduction
 
@@ -72,44 +31,32 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
   * [HTTP](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface)
   * [WebSocket](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket)
   * ~~[JSONP](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-using-http-get)~~ [#25](https://github.com/sonnyp/aria2.js/pull/25)
-* callback API
 * promise API
-* light (1.5KB minified and gzipped)
+
+See [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods) and [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications).
 
 [↑](#aria2js)
 
 # Getting started
 
-`npm install aria2`
-
----
-
-```javascript
-var Aria2 = require("aria2");
-```
-
-or
-
-```xml
-<script src="node_modules/aria2/bundle.js"></script>
-```
-
-```javascript
-var Aria2 = window.Aria2;
-```
-
----
-
 Start aria2c in daemon mode with
 
 `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
+
+Install aria2
+
+`npm install aria2`
+
+```javascript
+const Aria2 = require("aria2");
+```
 
 [↑](#aria2js)
 
 # Usage
 
 ```javascript
-var aria2 = new Aria2([options]);
+const aria2 = new Aria2([options]);
 ```
 
 default options match aria2c defaults and are
@@ -124,11 +71,11 @@ default options match aria2c defaults and are
 }
 ```
 
-`secret` is optional and refers to [--rpc-secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption--rpc-secret).
+`secret` is optional and refers to [--rpc-secret](https://aria2.github.io/manual/en/html/aria2c.html#cmdoption--rpc-secret). If you define it, it will be added to every call for you.
 
 If the WebSocket is open (via the [open method](#open)) aria2.js will use the WebSocket transport, otherwise the HTTP transport.
 
-For HTTP, aria2.js makes use of the new fetch standard, you might need a [polyfill](https://github.com/github/fetch) if you want to support older browsers.
+The `"aria2."` prefix can be omitted from both methods and notifications.
 
 [↑](#aria2js)
 
@@ -137,13 +84,10 @@ For HTTP, aria2.js makes use of the new fetch standard, you might need a [polyfi
 `aria2.open()` opens the WebSocket connection.
 
 ```javascript
-aria2.onopen = function() {
-  console.log("aria2 open");
-};
-
-aria2.open([cb]);
-// or
-aria2.open().then(fn);
+aria2
+  .open()
+  .then(() => console.log("open"))
+  .catch(err => console.log("error", err));
 ```
 
 [↑](#aria2js)
@@ -153,96 +97,128 @@ aria2.open().then(fn);
 `aria2.close()` closes the WebSocket connection.
 
 ```javascript
-aria2.onclose = function() {
-  console.log("aria2 closed!");
-};
-
-aria2.close([cb]); // callback style
-// or
-aria2.close().then(fn); // promise style
+aria2
+  .close()
+  .then(() => console.log("closed"))
+  .catch(err => console.log("error", err));
 ```
 
 [↑](#aria2js)
 
-## onsend and onmessage
+## call
 
-`aria2.onsend()` is called for every message sent.
-`aria2.onmessage()` is called for every message received.
+`aria2.call()` calls a method. Parameters are provided as arguments.
 
 ```javascript
-aria2.onsend = function(m) {
+// http://bbb3d.renderfarming.net/download.html
+  const magnet =
+    "magnet:?xt=urn:btih:88594AAACBDE40EF3E2510C47374EC0AA396C08E&dn=bbb_sunflower_1080p_30fps_normal.mp4&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&ws=http%3a%2f%2fdistribution.bbb3d.renderfarming.net%2fvideo%2fmp4%2fbbb_sunflower_1080p_30fps_normal.mp4";
+  const [guid] = await aria2.call("addUri", [magnet], { dir: "/tmp" });
+```
+
+[↑](#aria2js)
+
+## multicall
+
+`aria2.multicall()` is a helper for [system.multicall](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall). It returns an array of results or throw if any of the call failed.
+
+```javascript
+const multicall = [
+  [methodA, param1, param2],
+  [methodB, param1, param2]
+]
+
+const results = await aria2.multicall(multicall);
+```
+
+## batch
+
+`aria2.batch()` is a helper for [batch](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall). It behaves the same as [multicall](#multicall) except it returns an array of promises which gives more flexibility in handling errors.
+
+```javascript
+const batch = [
+  [methodA, param1, param2],
+  [methodB, param1, param2]
+]
+
+const promises = await aria2.batch(batch);
+```
+
+[↑](#aria2js)
+
+## listNotifications
+
+`aria2.listNotifications()` is a helper for [system.listNotifications](https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications). The difference with `aria2.call('listNotifications')` is that it removes the `"aria2."` prefix from the results.
+
+```javascript
+const notifications = await aria2.listNotifications();
+/*
+[
+  'onDownloadStart',
+  'onDownloadPause',
+  'onDownloadStop',
+  'onDownloadComplete',
+  'onDownloadError',
+  'onBtDownloadComplete'
+]
+*/
+
+// notifications logger example
+notifications.forEach((notification) => {
+  aria2.on(notification, (params) => {
+    console.log('aria2', notification, params)
+  })
+})
+```
+
+[↑](#aria2js)
+
+## listMethods
+
+`aria2.listMethods()` is a helper for [system.listMethods](https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods). The difference with `aria2.call('listMethods')` is that it removes the `"aria2."` prefix for the results.
+
+```javascript
+const methods = await aria2.listMethods();
+/*
+[ 'addUri',
+  [...]
+  'system.listNotifications' ]
+
+*/
+```
+
+[↑](#aria2js)
+
+## events
+
+```javascript
+// emitted when the WebSocket is open.
+aria2.on('open' () => {
+  console.log('aria2 OPEN');
+});
+
+// emitted when the WebSocket is closed.
+aria2.on('close' () => {
+  console.log('aria2 CLOSE');
+});
+
+// emitted for every message sent.
+aria2.on("output", m => {
   console.log("aria2 OUT", m);
-};
-aria2.onmessage = function(m) {
+});
+
+// emitted for every message received.
+aria2.on("input", m => {
   console.log("aria2 IN", m);
-};
-```
-
-[↑](#aria2js)
-
-## aria2 methods
-
-For a complete listing see [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods).
-
-If you passed the secret option to aria2.js, it will be automatically added to every request so there is no need to include it.
-
-For every aria2 methods you can use
-
-#### callback style
-
-```javascript
-aria2.getVersion([params,] function(err, res) {
-  console.log(err || res);
 });
 ```
 
-or
+Additionally every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix).
 
 ```javascript
-aria2.send('getVersion', [params,] function(err, res) {
-  console.log(err || res);
+aria2.on("onDownloadStart", [guid] => {
+  console.log("aria2 onDownloadStart", guid);
 });
-```
-
-#### promise style
-
-```javascript
-aria2.getVersion([params]).then(fn);
-```
-
-or
-
-```javascript
-aria2.send("getVersion", [params]).then(fn);
-```
-
-[↑](#aria2js)
-
-## aria2 events
-
-For a complete listing see [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket).
-
-For every notifications you can bind a function.
-
-```javascript
-aria2.onDownloadStart = function(gid) {
-  console.log(gid);
-};
-```
-
-[↑](#aria2js)
-
-# Example
-
-See [example](https://github.com/sonnyp/aria2.js/blob/master/example/).
-
-[↑](#aria2js)
-
-# Tests
-
-```
-npm install
-npm test
 ```
 
 [↑](#aria2js)

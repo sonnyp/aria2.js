@@ -2,15 +2,15 @@
 
 "use strict";
 
-var url = require("url");
-var cli = require("commander");
+const url = require("url");
+const cli = require("commander");
 
 process.title = "aria2rpc";
 
-var makeOptions = function() {
-  var options = { secret: cli.secret };
+const makeOptions = function() {
+  const options = { secret: cli.secret };
   if (cli.url) {
-    var parsed = url.parse(cli.url);
+    const parsed = url.parse(cli.url);
     options.secure = parsed.protocol === "wss:";
     options.host = parsed.hostname;
     options.port = parsed.port;
@@ -31,10 +31,13 @@ cli
 
 // call
 cli
-  .command("call <method> [params...]")
-  .description("call an aria2 RPC method and print result")
-  .action(function(method, params) {
-    var options = makeOptions();
+  .command("call <method> [params]")
+  .description(
+    "call an aria2 RPC method with params provided as a JSON array and print result"
+  )
+  .action((method, params) => {
+    params = params ? JSON.parse(params) : [];
+    const options = makeOptions();
     require("./call")(cli, options, method, params);
   });
 
@@ -42,8 +45,8 @@ cli
 cli
   .command("console")
   .description("start interactive console")
-  .action(function() {
-    var options = makeOptions();
+  .action(() => {
+    const options = makeOptions();
     require("./console")(cli, options);
   });
 

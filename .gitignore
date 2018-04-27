@@ -3,6 +3,5 @@
 !.npmignore
 !.travis.yml
 
-bundle.js
 node_modules/
 .vscode/
