@@ -1,8 +1,7 @@
 {
   "name": "aria2",
-  "version": "3.0.1",
-  "description":
-    "Library and cli for aria2, \"The next generation download utility.\"",
+  "version": "4.0.0",
+  "description": "Library and cli for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "ISC",
