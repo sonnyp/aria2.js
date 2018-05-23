@@ -1,12 +1,12 @@
 "use strict";
 
-var readline = require("readline");
-var Aria2 = require("..");
+const readline = require("readline");
+const Aria2 = require("..");
 
-module.exports = function(cli, options) {
-  var debug = require("./debug")(cli);
+module.exports = async function(cli, options) {
+  const debug = require("./debug")(cli);
 
-  var client = new Aria2(options);
+  const client = new Aria2(options);
   client.onsend = function(m) {
     debug("OUT", m);
   };
@@ -17,40 +17,42 @@ module.exports = function(cli, options) {
     }
   };
   debug("CONNECTING");
-  client.open(function(err) {
-    if (err) {
+
+  try {
+    await client.open();
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+    return;
+  }
+
+  debug("CONNECTED");
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  rl.setPrompt("aria2rpc ≻ ");
+  rl.prompt();
+  rl.on("line", async function(line) {
+    line = line.trim();
+    if (!line) return rl.prompt();
+    const [method, args] = line.split(" ");
+    const params = args ? JSON.parse(args) : [];
+
+    try {
+      const res = await client.call(method, ...params);
+      console.log(res);
+    } catch (err) {
       console.error(err);
-      process.exit(1);
     }
-
-    debug("CONNECTED");
-
-    var rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    rl.setPrompt("aria2rpc ≻ ");
     rl.prompt();
-    rl.on("line", function(line) {
-      line = line.trim();
-      if (!line) return rl.prompt();
-      var params = line.split(" ");
-      var cb = function(err, res) {
-        if (err) console.error(err);
-        else console.log(res);
-        rl.prompt();
-      };
-
-      var args = params.concat(cb);
-
-      client.send.apply(client, args);
-    });
-    rl.on("close", function() {
-      debug("CLOSING");
-      client.close(function() {
-        debug("CLOSED");
-        process.exit(0);
-      });
+  });
+  rl.on("close", function() {
+    debug("CLOSING");
+    client.close(function() {
+      debug("CLOSED");
+      process.exit(0);
     });
   });
 };

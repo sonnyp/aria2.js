@@ -1,11 +1,11 @@
 "use strict";
 
-var Aria2 = require("..");
+const Aria2 = require("..");
 
-module.exports = function(cli, options, method, params) {
-  var debug = require("./debug")(cli);
+module.exports = async function(cli, options, method, params) {
+  const debug = require("./debug")(cli);
 
-  var client = new Aria2(options);
+  const client = new Aria2(options);
   client.onsend = function(m) {
     debug("OUT", m);
   };
@@ -13,17 +13,12 @@ module.exports = function(cli, options, method, params) {
     debug("IN", m);
   };
 
-  var cb = function(err, res) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-
+  try {
+    const res = await client.call(method, ...params);
     console.log(res);
     process.exit(0);
-  };
-
-  var args = [method].concat(params, cb);
-
-  client.send.apply(client, args);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 };

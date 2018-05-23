@@ -1,9 +1,9 @@
 "use strict";
 
 module.exports = function(cli) {
-  return function() {
+  return function(...args) {
     if (cli.debug) {
-      console.log.apply(console, arguments);
+      console.log(...args);
     }
   };
 };
