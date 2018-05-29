@@ -10,19 +10,20 @@ JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/ar
 [![Dependency Status](https://img.shields.io/david/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js)
 [![devDependency Status](https://img.shields.io/david/dev/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js?type=dev)
 
-* [Introduction](#introduction)
-* [Getting started](#getting-started)
-* [Usage](#usage)
-  * [open](#open)
-  * [close](#close)
-  * [call](#call)
-  * [multicall](#multicall)
-  * [batch](#batch)
-  * [listNotifications](#listNotifications)
-  * [listMethods](#listMethods)
-  * [events](#events)
+- [aria2.js](#aria2js)
+  - [Introduction](#introduction)
+  - [Getting started](#getting-started)
+  - [Usage](#usage)
+    - [open](#open)
+    - [close](#close)
+    - [call](#call)
+    - [multicall](#multicall)
+    - [batch](#batch)
+    - [listNotifications](#listnotifications)
+    - [listMethods](#listmethods)
+    - [events](#events)
 
-# Introduction
+## Introduction
 
 aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface) and features
 
@@ -37,7 +38,7 @@ See [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods) 
 
 [↑](#aria2js)
 
-# Getting started
+## Getting started
 
 Start aria2c in daemon mode with
 
@@ -53,7 +54,7 @@ const Aria2 = require("aria2");
 
 [↑](#aria2js)
 
-# Usage
+## Usage
 
 ```javascript
 const aria2 = new Aria2([options]);
@@ -79,9 +80,9 @@ The `"aria2."` prefix can be omitted from both methods and notifications.
 
 [↑](#aria2js)
 
-## open
+### open
 
-`aria2.open()` opens the WebSocket connection.
+`aria2.open()` opens the WebSocket connection. All subsequent requests will use the WebSocket transport instead of HTTP.
 
 ```javascript
 aria2
@@ -92,9 +93,9 @@ aria2
 
 [↑](#aria2js)
 
-## close
+### close
 
-`aria2.close()` closes the WebSocket connection.
+`aria2.close()` closes the WebSocket connection. All subsequent requests will use the HTTP transport instead of WebSocket.
 
 ```javascript
 aria2
@@ -105,7 +106,7 @@ aria2
 
 [↑](#aria2js)
 
-## call
+### call
 
 `aria2.call()` calls a method. Parameters are provided as arguments.
 
@@ -118,7 +119,7 @@ aria2
 
 [↑](#aria2js)
 
-## multicall
+### multicall
 
 `aria2.multicall()` is a helper for [system.multicall](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall). It returns an array of results or throw if any of the call failed.
 
@@ -131,7 +132,7 @@ const multicall = [
 const results = await aria2.multicall(multicall);
 ```
 
-## batch
+### batch
 
 `aria2.batch()` is a helper for [batch](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall). It behaves the same as [multicall](#multicall) except it returns an array of promises which gives more flexibility in handling errors.
 
@@ -146,7 +147,7 @@ const promises = await aria2.batch(batch);
 
 [↑](#aria2js)
 
-## listNotifications
+### listNotifications
 
 `aria2.listNotifications()` is a helper for [system.listNotifications](https://aria2.github.io/manual/en/html/aria2c.html#system.listNotifications). The difference with `aria2.call('listNotifications')` is that it removes the `"aria2."` prefix from the results.
 
@@ -173,7 +174,7 @@ notifications.forEach((notification) => {
 
 [↑](#aria2js)
 
-## listMethods
+### listMethods
 
 `aria2.listMethods()` is a helper for [system.listMethods](https://aria2.github.io/manual/en/html/aria2c.html#system.listMethods). The difference with `aria2.call('listMethods')` is that it removes the `"aria2."` prefix for the results.
 
@@ -189,7 +190,7 @@ const methods = await aria2.listMethods();
 
 [↑](#aria2js)
 
-## events
+### events
 
 ```javascript
 // emitted when the WebSocket is open.
@@ -213,10 +214,10 @@ aria2.on("input", m => {
 });
 ```
 
-Additionally every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix).
+Additionally every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
 
 ```javascript
-aria2.on("onDownloadStart", [guid] => {
+aria2.on("onDownloadStart", ([guid]) => {
   console.log("aria2 onDownloadStart", guid);
 });
 ```
