@@ -2,6 +2,7 @@
 
 const test = require("ava");
 const Aria2 = require("../lib/Aria2");
+const promiseEvent = require("../lib/promiseEvent");
 
 test("#call", t => {
   t.plan(1);
@@ -94,4 +95,14 @@ test("#listMethods", async t => {
 
   const methods = await aria2.listMethods();
   t.deepEqual(methods, ["foo", "bar", "system.foo"]);
+});
+
+test("#_onnotification", async t => {
+  const aria2 = new Aria2({ secret: "foobar" });
+  const params = ["foo", "bar"];
+
+  const promise = promiseEvent(aria2, "onDownloadStart");
+  aria2._onnotification({ method: "aria2.onDownloadStart", params });
+
+  t.is(await promise, params);
 });
