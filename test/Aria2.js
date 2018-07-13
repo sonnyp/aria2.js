@@ -25,8 +25,10 @@ test("#multicall", t => {
     t.deepEqual(m, {
       method: "system.multicall",
       params: [
-        [{ methodName: "aria2.a", params: ["token:foobar", "1", "2"] }],
-        [{ methodName: "aria2.b", params: ["token:foobar", "1", "2"] }]
+        [
+          { methodName: "aria2.a", params: ["token:foobar", "1", "2"] },
+          { methodName: "aria2.b", params: ["token:foobar", "1", "2"] }
+        ]
       ],
       id: 0,
       "json-rpc": "2.0"
