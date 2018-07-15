@@ -29,13 +29,13 @@
   },
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
-    "commander": "^2.9.0",
+    "commander": "^2.16.0",
     "node-fetch": "^2.1.2",
-    "ws": "^5.1.1"
+    "ws": "^5.2.2"
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "prettier": "1.12.1"
+    "prettier": "1.13.7"
   },
   "engines": {
     "node": ">= 7.6.0"
