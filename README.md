@@ -194,12 +194,12 @@ const methods = await aria2.listMethods();
 
 ```javascript
 // emitted when the WebSocket is open.
-aria2.on('open' () => {
+aria2.on('open', () => {
   console.log('aria2 OPEN');
 });
 
 // emitted when the WebSocket is closed.
-aria2.on('close' () => {
+aria2.on('close', () => {
   console.log('aria2 CLOSE');
 });
 
