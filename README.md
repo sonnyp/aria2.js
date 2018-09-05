@@ -40,23 +40,20 @@ See [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods) 
 
 ## Getting started
 
-Start aria2c in daemon mode with
+Start aria2 with rpc, example:
 
 `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
 
-Install aria2
+Install aria2.js
 
 `npm install aria2`
-
-```javascript
-const Aria2 = require("aria2");
-```
 
 [↑](#aria2js)
 
 ## Usage
 
 ```javascript
+const Aria2 = require("aria2");
 const aria2 = new Aria2([options]);
 ```
 
