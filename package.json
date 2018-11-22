@@ -24,7 +24,7 @@
   "scripts": {
     "preversion": "npm test",
     "prepublish": "npm run build",
-    "lint": "prettier -l **/*.js",
+    "lint": "prettier -l **/*.js \"!lib/*\"",
     "unit": "ava",
     "test": "npm run unit && npm run lint",
     "build": "rm -rf lib/*; babel src/ -d lib/ -s"
