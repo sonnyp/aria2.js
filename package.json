@@ -23,9 +23,11 @@
   },
   "scripts": {
     "preversion": "npm test",
+    "prepublish": "npm run build",
     "lint": "prettier -l **/*.js",
     "unit": "ava",
-    "test": "npm run unit && npm run lint"
+    "test": "npm run unit && npm run lint",
+    "build": "rm -rf lib/*; babel src/ -d lib/ -s"
   },
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
@@ -34,11 +36,14 @@
     "ws": "^6.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "ava": "^0.25.0",
     "prettier": "1.14.2"
   },
   "engines": {
-    "node": ">= 7.6.0"
+    "node": ">= 6.0.0"
   },
   "browser": {
     "ws": false,

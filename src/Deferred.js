@@ -6,4 +6,3 @@ module.exports = function Deferred() {
     this.reject = reject;
   });
 };
-//# sourceMappingURL=Deferred.js.map
