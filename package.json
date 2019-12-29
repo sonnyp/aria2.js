@@ -18,9 +18,6 @@
     "magnet",
     "torrent"
   ],
-  "bin": {
-    "aria2rpc": "./bin/cli.js"
-  },
   "scripts": {
     "preversion": "npm test",
     "lint": "prettier -l **/*.js",
@@ -29,7 +26,6 @@
   },
   "repository": "github:sonnyp/aria2.js",
   "dependencies": {
-    "commander": "^3.0.1",
     "node-fetch": "^2.6.0",
     "ws": "^7.1.2"
   },
