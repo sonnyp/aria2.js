@@ -135,7 +135,10 @@ test("#batch", async t => {
     ]);
   };
 
-  const batch = await client.batch([["foo", []], ["bar", {}]]);
+  const batch = await client.batch([
+    ["foo", []],
+    ["bar", {}]
+  ]);
 
   client._onresponse({ id: 0 });
   client._onresponse({ id: 1 });
