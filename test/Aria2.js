@@ -34,7 +34,10 @@ test("#multicall", t => {
       "json-rpc": "2.0"
     });
   };
-  aria2.multicall([["a", "1", "2"], ["b", "1", "2"]]);
+  aria2.multicall([
+    ["a", "1", "2"],
+    ["b", "1", "2"]
+  ]);
 });
 
 test("#batch", t => {
@@ -56,7 +59,10 @@ test("#batch", t => {
       }
     ]);
   };
-  aria2.batch([["a", "1", "2"], ["b", "1", "2"]]);
+  aria2.batch([
+    ["a", "1", "2"],
+    ["b", "1", "2"]
+  ]);
 });
 
 test("#listNotifications", async t => {
