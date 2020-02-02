@@ -30,7 +30,7 @@
     "ws": "^7.2.1"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "^3.2.0",
     "prettier": "1.19.1"
   },
   "engines": {

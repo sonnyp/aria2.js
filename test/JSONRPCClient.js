@@ -100,7 +100,7 @@ test("#_buildMessage", t => {
     () => {
       client._buildMessage();
     },
-    TypeError,
+    { instanceOf: TypeError },
     "undefined is not a string"
   );
 
