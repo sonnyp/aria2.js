@@ -1,14 +1,6 @@
 # aria2.js
 
-JavaScript (Node.js and browsers) library and [cli](https://github.com/sonnyp/aria2.js/blob/master/bin/README.md) for [aria2, "The next generation download utility."](https://aria2.github.io/)
-
-[![license](https://img.shields.io/github/license/sonnyp/aria2.js.svg?maxAge=2592000&style=flat-square)](https://raw.githubusercontent.com/sonnyp/aria2.js/master/LICENSE)
-
-[![Build Status](https://img.shields.io/travis/sonnyp/aria2.js/master.svg?style=flat-square)](https://travis-ci.org/sonnyp/aria2.js/branches)
-[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-
-[![Dependency Status](https://img.shields.io/david/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js)
-[![devDependency Status](https://img.shields.io/david/dev/sonnyp/aria2.js.svg?style=flat-square)](https://david-dm.org/sonnyp/aria2.js?type=dev)
+JavaScript (Node.js and browsers) library for [aria2, "The next generation download utility."](https://aria2.github.io/)
 
 - [aria2.js](#aria2js)
   - [Introduction](#introduction)
