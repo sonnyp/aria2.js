@@ -4,76 +4,76 @@ const test = require("ava");
 const Aria2 = require("../lib/Aria2");
 const promiseEvent = require("../lib/promiseEvent");
 
-test("#call", t => {
+test("#call", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
-  aria2._send = m => {
+  aria2._send = (m) => {
     t.deepEqual(m, {
       method: "aria2.foo",
       params: ["token:foobar", "bar"],
       id: 0,
-      "json-rpc": "2.0"
+      "json-rpc": "2.0",
     });
   };
   aria2.call("foo", "bar");
 });
 
-test("#multicall", t => {
+test("#multicall", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
-  aria2._send = m => {
+  aria2._send = (m) => {
     t.deepEqual(m, {
       method: "system.multicall",
       params: [
         [
           { methodName: "aria2.a", params: ["token:foobar", "1", "2"] },
-          { methodName: "aria2.b", params: ["token:foobar", "1", "2"] }
-        ]
+          { methodName: "aria2.b", params: ["token:foobar", "1", "2"] },
+        ],
       ],
       id: 0,
-      "json-rpc": "2.0"
+      "json-rpc": "2.0",
     });
   };
   aria2.multicall([
     ["a", "1", "2"],
-    ["b", "1", "2"]
+    ["b", "1", "2"],
   ]);
 });
 
-test("#batch", t => {
+test("#batch", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
-  aria2._send = m => {
+  aria2._send = (m) => {
     t.deepEqual(m, [
       {
         method: "aria2.a",
         params: ["token:foobar", "1", "2"],
         id: 0,
-        "json-rpc": "2.0"
+        "json-rpc": "2.0",
       },
       {
         method: "aria2.b",
         params: ["token:foobar", "1", "2"],
         id: 1,
-        "json-rpc": "2.0"
-      }
+        "json-rpc": "2.0",
+      },
     ]);
   };
   aria2.batch([
     ["a", "1", "2"],
-    ["b", "1", "2"]
+    ["b", "1", "2"],
   ]);
 });
 
-test("#listNotifications", async t => {
+test("#listNotifications", async (t) => {
   t.plan(2);
   const aria2 = new Aria2({ secret: "foobar" });
-  aria2._send = m => {
+  aria2._send = (m) => {
     t.deepEqual(m, {
       method: "system.listNotifications",
       params: ["token:foobar"],
       id: 0,
-      "json-rpc": "2.0"
+      "json-rpc": "2.0",
     });
   };
 
@@ -85,15 +85,15 @@ test("#listNotifications", async t => {
   t.deepEqual(notifications, ["foo", "bar", "system.foo"]);
 });
 
-test("#listMethods", async t => {
+test("#listMethods", async (t) => {
   t.plan(2);
   const aria2 = new Aria2({ secret: "foobar" });
-  aria2._send = m => {
+  aria2._send = (m) => {
     t.deepEqual(m, {
       method: "system.listMethods",
       params: ["token:foobar"],
       id: 0,
-      "json-rpc": "2.0"
+      "json-rpc": "2.0",
     });
   };
 
@@ -105,7 +105,7 @@ test("#listMethods", async t => {
   t.deepEqual(methods, ["foo", "bar", "system.foo"]);
 });
 
-test("#_onnotification", async t => {
+test("#_onnotification", async (t) => {
   const aria2 = new Aria2({ secret: "foobar" });
   const params = ["foo", "bar"];
 
