@@ -31,7 +31,6 @@ aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/man
 * multiple transports
   * [HTTP](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface)
   * [WebSocket](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket)
-  * ~~[JSONP](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-using-http-get)~~ [#25](https://github.com/sonnyp/aria2.js/pull/25)
 * promise API
 
 See [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods) and [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications).

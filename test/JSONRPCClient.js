@@ -3,14 +3,14 @@
 const test = require("ava");
 const JSONRPCClient = require("../lib/JSONRPCClient");
 
-test("#id", t => {
+test("#id", (t) => {
   const client = new JSONRPCClient();
   t.is(client.lastId, 0);
   t.is(client.id(), 0);
   t.is(client.lastId, 1);
 });
 
-test("#url", t => {
+test("#url", (t) => {
   const client = new JSONRPCClient();
   t.is(
     client.url.call(
@@ -18,7 +18,7 @@ test("#url", t => {
         secure: true,
         host: "foobar",
         port: 1234,
-        path: "/foobar"
+        path: "/foobar",
       },
       "foo"
     ),
@@ -26,7 +26,7 @@ test("#url", t => {
   );
 });
 
-test("#websocket", async t => {
+test("#websocket", async (t) => {
   t.plan(1);
   const client = new JSONRPCClient();
 
@@ -36,13 +36,13 @@ test("#websocket", async t => {
     send(str, cb) {
       t.is(str, JSON.stringify(message));
       cb();
-    }
+    },
   };
 
   await client.websocket(message);
 });
 
-test("#websocket error", async t => {
+test("#websocket error", async (t) => {
   t.plan(2);
   const client = new JSONRPCClient();
 
@@ -53,7 +53,7 @@ test("#websocket error", async t => {
     send(str, cb) {
       t.is(str, JSON.stringify(message));
       cb(error);
-    }
+    },
   };
 
   try {
@@ -63,7 +63,25 @@ test("#websocket error", async t => {
   }
 });
 
-test("#http", async t => {
+test.cb("#websocket json error", (t) => {
+  const client = new JSONRPCClient();
+
+  client.WebSocket = function () {
+    return {};
+  };
+  client.open();
+  client.socket.onopen();
+
+  client.on("error", (err) => {
+    t.true(err instanceof SyntaxError);
+    t.is(err.message, "Unexpected token o in JSON at position 1");
+    t.end();
+  });
+
+  client.socket.onmessage({ data: "foo" });
+});
+
+test.cb("#http", (t) => {
   t.plan(3);
   const client = new JSONRPCClient();
 
@@ -77,24 +95,57 @@ test("#http", async t => {
       body: JSON.stringify(request),
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
     return Promise.resolve({
       json() {
         return Promise.resolve(response);
-      }
+      },
     });
   };
 
-  client._onmessage = m => {
+  client._onmessage = (m) => {
     t.is(m, response);
+    t.end();
   };
 
-  await client.http(request);
+  client.http(request);
 });
 
-test("#_buildMessage", t => {
+test("#http fetch error", async (t) => {
+  const client = new JSONRPCClient();
+
+  client.fetch = () => Promise.reject(new Error("foo"));
+
+  await t.throwsAsync(
+    async () => {
+      await client.http({});
+    },
+    { message: "foo" }
+  );
+});
+
+test("#http json error", async (t) => {
+  const client = new JSONRPCClient();
+
+  client.fetch = () => {
+    return Promise.resolve({
+      async json() {
+        return JSON.parse("foo");
+      },
+    });
+  };
+
+  client.on("error", (err) => {
+    t.true(err instanceof SyntaxError);
+    t.is(err.message, "Unexpected token o in JSON at position 1");
+  });
+
+  await client.http({});
+});
+
+test("#_buildMessage", (t) => {
   const client = new JSONRPCClient();
   t.throws(
     () => {
@@ -107,37 +158,37 @@ test("#_buildMessage", t => {
   t.deepEqual(client._buildMessage("foobar"), {
     method: "foobar",
     ["json-rpc"]: "2.0",
-    id: 0
+    id: 0,
   });
 
   t.deepEqual(client._buildMessage("method", []), {
     method: "method",
     params: [],
     ["json-rpc"]: "2.0",
-    id: 1
+    id: 1,
   });
 
   t.deepEqual(client._buildMessage("method", {}), {
     method: "method",
     params: {},
     ["json-rpc"]: "2.0",
-    id: 2
+    id: 2,
   });
 });
 
-test("#batch", async t => {
+test("#batch", async (t) => {
   const client = new JSONRPCClient();
 
-  client._send = async message => {
+  client._send = async (message) => {
     t.deepEqual(message, [
       { method: "foo", params: [], "json-rpc": "2.0", id: 0 },
-      { method: "bar", params: {}, "json-rpc": "2.0", id: 1 }
+      { method: "bar", params: {}, "json-rpc": "2.0", id: 1 },
     ]);
   };
 
   const batch = await client.batch([
     ["foo", []],
-    ["bar", {}]
+    ["bar", {}],
   ]);
 
   client._onresponse({ id: 0 });
@@ -146,18 +197,18 @@ test("#batch", async t => {
   return Promise.all(batch);
 });
 
-test("#call", async t => {
+test("#call", async (t) => {
   const client = new JSONRPCClient();
 
   const params = {};
   const method = "foo";
 
-  client._send = async message => {
+  client._send = async (message) => {
     t.deepEqual(message, {
       method,
       params,
       "json-rpc": "2.0",
-      id: 0
+      id: 0,
     });
   };
 
@@ -171,13 +222,13 @@ test("#call", async t => {
   return promise;
 });
 
-test("#send", async t => {
+test("#send", async (t) => {
   t.plan(1);
   const client = new JSONRPCClient();
 
   const message = {};
 
-  client.on("output", m => {
+  client.on("output", (m) => {
     t.is(m, message);
   });
 
