@@ -1,7 +1,6 @@
-"use strict";
+import test from "ava";
 
-const test = require("ava");
-const JSONRPCClient = require("../lib/JSONRPCClient");
+import JSONRPCClient from "../lib/JSONRPCClient.js";
 
 test("#id", (t) => {
   const client = new JSONRPCClient();
