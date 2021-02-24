@@ -1,8 +1,7 @@
-"use strict";
+import test from "ava";
 
-const test = require("ava");
-const Aria2 = require("../lib/Aria2");
-const promiseEvent = require("../lib/promiseEvent");
+import Aria2 from "../lib/Aria2.js";
+import promiseEvent from "../lib/promiseEvent.js";
 
 test("#call", (t) => {
   t.plan(1);

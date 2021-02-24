@@ -5,6 +5,8 @@
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "ISC",
+  "type": "module",
+  "main": "./lib/Aria2.js",
   "author": "Sonny Piers <sonny@fastmail.net>",
   "keywords": [
     "aria2",
@@ -34,7 +36,7 @@
     "prettier": "2.2.1"
   },
   "engines": {
-    "node": ">= 10"
+    "node": ">= 12.4.0"
   },
   "browser": {
     "ws": false,
