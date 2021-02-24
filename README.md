@@ -19,11 +19,11 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 
 aria2.js controls aria2 via its [JSON-RPC interface](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface) and features
 
-* Node.js and browsers support
-* multiple transports
-  * [HTTP](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface)
-  * [WebSocket](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket)
-* promise API
+- Node.js and browsers support
+- multiple transports
+  - [HTTP](https://aria2.github.io/manual/en/html/aria2c.html#rpc-interface)
+  - [WebSocket](https://aria2.github.io/manual/en/html/aria2c.html#json-rpc-over-websocket)
+- promise API
 
 See [aria2 methods](https://aria2.github.io/manual/en/html/aria2c.html#methods) and [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications).
 
@@ -76,7 +76,7 @@ The `"aria2."` prefix can be omitted from both methods and notifications.
 aria2
   .open()
   .then(() => console.log("open"))
-  .catch(err => console.log("error", err));
+  .catch((err) => console.log("error", err));
 ```
 
 [↑](#aria2js)
@@ -89,7 +89,7 @@ aria2
 aria2
   .close()
   .then(() => console.log("closed"))
-  .catch(err => console.log("error", err));
+  .catch((err) => console.log("error", err));
 ```
 
 [↑](#aria2js)
@@ -98,11 +98,12 @@ aria2
 
 `aria2.call()` calls a method. Parameters are provided as arguments.
 
+Example using [`addUri`](https://aria2.github.io/manual/en/html/aria2c.html#aria2.addUri) method to download from a magnet link.
+
 ```javascript
-// http://bbb3d.renderfarming.net/download.html
-  const magnet =
-    "magnet:?xt=urn:btih:88594AAACBDE40EF3E2510C47374EC0AA396C08E&dn=bbb_sunflower_1080p_30fps_normal.mp4&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&ws=http%3a%2f%2fdistribution.bbb3d.renderfarming.net%2fvideo%2fmp4%2fbbb_sunflower_1080p_30fps_normal.mp4";
-  const [guid] = await aria2.call("addUri", [magnet], { dir: "/tmp" });
+const magnet =
+  "magnet:?xt=urn:btih:88594AAACBDE40EF3E2510C47374EC0AA396C08E&dn=bbb_sunflower_1080p_30fps_normal.mp4&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&ws=http%3a%2f%2fdistribution.bbb3d.renderfarming.net%2fvideo%2fmp4%2fbbb_sunflower_1080p_30fps_normal.mp4";
+const [guid] = await aria2.call("addUri", [magnet], { dir: "/tmp" });
 ```
 
 [↑](#aria2js)
@@ -114,8 +115,8 @@ aria2
 ```javascript
 const multicall = [
   [methodA, param1, param2],
-  [methodB, param1, param2]
-]
+  [methodB, param1, param2],
+];
 
 const results = await aria2.multicall(multicall);
 ```
@@ -127,8 +128,8 @@ const results = await aria2.multicall(multicall);
 ```javascript
 const batch = [
   [methodA, param1, param2],
-  [methodB, param1, param2]
-]
+  [methodB, param1, param2],
+];
 
 const promises = await aria2.batch(batch);
 ```
@@ -155,9 +156,9 @@ const notifications = await aria2.listNotifications();
 // notifications logger example
 notifications.forEach((notification) => {
   aria2.on(notification, (params) => {
-    console.log('aria2', notification, params)
-  })
-})
+    console.log("aria2", notification, params);
+  });
+});
 ```
 
 [↑](#aria2js)
@@ -182,22 +183,22 @@ const methods = await aria2.listMethods();
 
 ```javascript
 // emitted when the WebSocket is open.
-aria2.on('open', () => {
-  console.log('aria2 OPEN');
+aria2.on("open", () => {
+  console.log("aria2 OPEN");
 });
 
 // emitted when the WebSocket is closed.
-aria2.on('close', () => {
-  console.log('aria2 CLOSE');
+aria2.on("close", () => {
+  console.log("aria2 CLOSE");
 });
 
 // emitted for every message sent.
-aria2.on("output", m => {
+aria2.on("output", (m) => {
   console.log("aria2 OUT", m);
 });
 
 // emitted for every message received.
-aria2.on("input", m => {
+aria2.on("input", (m) => {
   console.log("aria2 IN", m);
 });
 ```
