@@ -1,12 +1,13 @@
 {
   "name": "aria2",
-  "version": "4.1.2",
+  "version": "5.0.0",
   "description": "Library and for aria2, \"The next generation download utility.\"",
   "homepage": "https://github.com/sonnyp/aria2.js",
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "ISC",
   "type": "module",
-  "main": "./lib/Aria2.js",
+  "main": "./node.js",
+  "browser": "./lib/Aria2.js",
   "author": "Sonny Piers <sonny@fastmail.net>",
   "keywords": [
     "aria2",
@@ -18,12 +19,16 @@
     "SFTP",
     "MetaLink",
     "magnet",
-    "torrent"
+    "torrent",
+    "node",
+    "deno",
+    "react-native",
+    "gjs"
   ],
   "scripts": {
     "preversion": "npm test",
     "lint": "prettier -l **/*.js",
-    "unit": "ava",
+    "unit": "ava test/*.js",
     "test": "npm run unit && npm run lint"
   },
   "repository": "github:sonnyp/aria2.js",
@@ -37,9 +42,5 @@
   },
   "engines": {
     "node": ">= 12.4.0"
-  },
-  "browser": {
-    "ws": false,
-    "node-fetch": false
   }
 }

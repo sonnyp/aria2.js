@@ -77,7 +77,10 @@ test("#listNotifications", async (t) => {
   };
 
   setTimeout(() => {
-    aria2._onresponse({ id: 0, result: ["aria2.foo", "bar", "system.foo"] });
+    aria2._handleResponse({
+      id: 0,
+      result: ["aria2.foo", "bar", "system.foo"],
+    });
   });
 
   const notifications = await aria2.listNotifications();
@@ -97,19 +100,27 @@ test("#listMethods", async (t) => {
   };
 
   setTimeout(() => {
-    aria2._onresponse({ id: 0, result: ["aria2.foo", "bar", "system.foo"] });
+    aria2._handleResponse({
+      id: 0,
+      result: ["aria2.foo", "bar", "system.foo"],
+    });
   });
 
   const methods = await aria2.listMethods();
   t.deepEqual(methods, ["foo", "bar", "system.foo"]);
 });
 
-test("#_onnotification", async (t) => {
+test.cb("#_handleNotification", (t) => {
+  t.plan(2);
+
   const aria2 = new Aria2({ secret: "foobar" });
   const params = ["foo", "bar"];
 
-  const promise = promiseEvent(aria2, "onDownloadStart");
-  aria2._onnotification({ method: "aria2.onDownloadStart", params });
+  aria2.onnotification = (method, p) => {
+    t.is(method, "onDownloadStart");
+    t.is(p, params);
 
-  t.is(await promise, params);
+    t.end();
+  };
+  aria2._handleNotification({ method: "aria2.onDownloadStart", params });
 });

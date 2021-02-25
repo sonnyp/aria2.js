@@ -1,6 +1,12 @@
 import test from "ava";
 
+import WebSocket from "ws";
+import fetch from "node-fetch";
+
 import JSONRPCClient from "../lib/JSONRPCClient.js";
+
+JSONRPCClient.defaultOptions.WebSocket = WebSocket;
+JSONRPCClient.defaultOptions.fetch = fetch;
 
 test("#id", (t) => {
   const client = new JSONRPCClient();
@@ -32,9 +38,8 @@ test("#websocket", async (t) => {
   const message = { hello: "world" };
 
   client.socket = {
-    send(str, cb) {
+    send(str) {
       t.is(str, JSON.stringify(message));
-      cb();
     },
   };
 
@@ -49,9 +54,9 @@ test("#websocket error", async (t) => {
   const error = new Error();
 
   client.socket = {
-    send(str, cb) {
+    send(str) {
       t.is(str, JSON.stringify(message));
-      cb(error);
+      throw error;
     },
   };
 
@@ -65,17 +70,14 @@ test("#websocket error", async (t) => {
 test.cb("#websocket json error", (t) => {
   const client = new JSONRPCClient();
 
-  client.WebSocket = function () {
-    return {};
-  };
   client.open();
   client.socket.onopen();
 
-  client.on("error", (err) => {
+  client.onerror = (err) => {
     t.true(err instanceof SyntaxError);
     t.is(err.message, "Unexpected token o in JSON at position 1");
     t.end();
-  });
+  };
 
   client.socket.onmessage({ data: "foo" });
 });
@@ -104,7 +106,7 @@ test.cb("#http", (t) => {
     });
   };
 
-  client._onmessage = (m) => {
+  client.oninput = (m) => {
     t.is(m, response);
     t.end();
   };
@@ -136,10 +138,10 @@ test("#http json error", async (t) => {
     });
   };
 
-  client.on("error", (err) => {
+  client.onerror = (err) => {
     t.true(err instanceof SyntaxError);
     t.is(err.message, "Unexpected token o in JSON at position 1");
-  });
+  };
 
   await client.http({});
 });
@@ -190,8 +192,8 @@ test("#batch", async (t) => {
     ["bar", {}],
   ]);
 
-  client._onresponse({ id: 0 });
-  client._onresponse({ id: 1 });
+  client._handleResponse({ id: 0 });
+  client._handleResponse({ id: 1 });
 
   return Promise.all(batch);
 });
@@ -215,7 +217,7 @@ test("#call", async (t) => {
 
   Promise.resolve().then(async () => {
     await Promise.resolve();
-    client._onresponse({ id: 0 });
+    client._handleResponse({ id: 0 });
   });
 
   return promise;
@@ -227,9 +229,9 @@ test("#send", async (t) => {
 
   const message = {};
 
-  client.on("output", (m) => {
+  client.onoutput = (m) => {
     t.is(m, message);
-  });
+  };
 
   client._send(message);
 });
