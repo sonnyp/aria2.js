@@ -5,6 +5,8 @@ JavaScript (Node.js and browsers) library for [aria2, "The next generation downl
 - [aria2.js](#aria2js)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
+    - [Browser](#browser)
+    - [Node.js](#nodejs)
   - [Usage](#usage)
     - [open](#open)
     - [close](#close)
@@ -35,20 +37,39 @@ Start aria2 with rpc, example:
 
 `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
 
-Install aria2.js
+### Browser
 
-`npm install aria2`
+```sh
+npm install aria2
+```
+
+```js
+import Aria2 from "aria2";
+
+const aria2 = new Aria2({ WebSocket: ws, fetch: nodefetch, ...options });
+```
+
+You can also use `node_modules/aria2/bundle.js` directly in `<script>` and `window.Aria2`.
+
+### Node.js
+
+```sh
+npm install aria2 node-fetch ws
+```
+
+```js
+import Aria2 from "aria2";
+import ws from "ws";
+import nodefetch from "node-fetch";
+
+const aria2 = new Aria2({ WebSocket: ws, fetch: nodefetch, ...options });
+```
 
 [↑](#aria2js)
 
 ## Usage
 
-```javascript
-const Aria2 = require("aria2");
-const aria2 = new Aria2([options]);
-```
-
-default options match aria2c defaults and are
+Default options match aria2c defaults and are
 
 ```javascript
 {
@@ -56,7 +77,7 @@ default options match aria2c defaults and are
   port: 6800,
   secure: false,
   secret: '',
-  path: '/jsonrpc'
+  path: '/jsonrpc',
 }
 ```
 

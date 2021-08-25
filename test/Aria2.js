@@ -1,7 +1,11 @@
 import test from "ava";
+import fetch from "node-fetch";
+import WebSocket from "ws";
 
-import Aria2 from "../lib/Aria2.js";
-import promiseEvent from "../lib/promiseEvent.js";
+import Aria2 from "../src/Aria2.js";
+import promiseEvent from "../src/promiseEvent.js";
+
+Object.assign(global, { fetch, WebSocket });
 
 test("#call", (t) => {
   t.plan(1);

@@ -1,6 +1,10 @@
 import test from "ava";
+import fetch from "node-fetch";
+import WebSocket from "ws";
 
-import JSONRPCClient from "../lib/JSONRPCClient.js";
+import JSONRPCClient from "../src/JSONRPCClient.js";
+
+Object.assign(global, { fetch, WebSocket });
 
 test("#id", (t) => {
   const client = new JSONRPCClient();
