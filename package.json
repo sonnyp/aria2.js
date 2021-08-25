@@ -6,7 +6,8 @@
   "bugs": "https://github.com/sonnyp/aria2.js/issues",
   "license": "ISC",
   "type": "module",
-  "main": "./lib/Aria2.js",
+  "main": "./cjs/Aria2.js",
+  "module": "./src/Aria2.js",
   "author": "Sonny Piers <sonny@fastmail.net>",
   "keywords": [
     "aria2",
@@ -24,22 +25,19 @@
     "preversion": "npm test",
     "lint": "prettier -l **/*.js",
     "unit": "ava",
-    "test": "npm run unit && npm run lint"
+    "test": "npm run unit && npm run lint",
+    "prepublishOnly": "rollup -c rollup.config.js"
   },
   "repository": "github:sonnyp/aria2.js",
-  "dependencies": {
-    "node-fetch": "^2.6.1",
-    "ws": "^7.4.3"
-  },
   "devDependencies": {
     "ava": "^3.15.0",
-    "prettier": "2.2.1"
+    "node-fetch": "^2.6.1",
+    "prettier": "2.3.2",
+    "rollup": "^2.56.3",
+    "rollup-plugin-polyfill-node": "^0.7.0",
+    "ws": "^8.2.0"
   },
   "engines": {
     "node": ">= 12.4.0"
-  },
-  "browser": {
-    "ws": false,
-    "node-fetch": false
   }
 }

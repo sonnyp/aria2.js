@@ -1,13 +1,8 @@
-import _WebSocket from "ws";
-import _fetch from "node-fetch";
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 
 import Deferred from "./Deferred.js";
 import promiseEvent from "./promiseEvent.js";
 import JSONRPCError from "./JSONRPCError.js";
-
-const WebSocket = global.WebSocket || _WebSocket;
-const fetch = global.fetch ? global.fetch.bind(global) : _fetch;
 
 class JSONRPCClient extends EventEmitter {
   constructor(options) {
@@ -15,7 +10,12 @@ class JSONRPCClient extends EventEmitter {
     this.deferreds = Object.create(null);
     this.lastId = 0;
 
-    Object.assign(this, this.constructor.defaultOptions, options);
+    Object.assign(
+      this,
+      { WebSocket: global.WebSocket, fetch: global.fetch.bind(this) },
+      this.constructor.defaultOptions,
+      options
+    );
   }
 
   id() {
@@ -186,8 +186,6 @@ JSONRPCClient.defaultOptions = {
   port: 80,
   secret: "",
   path: "/jsonrpc",
-  fetch,
-  WebSocket,
 };
 
 export default JSONRPCClient;
