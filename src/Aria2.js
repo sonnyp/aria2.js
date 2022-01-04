@@ -1,5 +1,10 @@
 import JSONRPCClient from "./JSONRPCClient.js";
 
+import fetch from "node-fetch";
+import WebSocket from "ws";
+
+Object.assign(global, { fetch, WebSocket });
+
 function prefix(str) {
   if (!str.startsWith("system.") && !str.startsWith("aria2.")) {
     str = "aria2." + str;
