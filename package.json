@@ -31,7 +31,7 @@
   "repository": "github:sonnyp/aria2.js",
   "devDependencies": {
     "ava": "^3.15.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "prettier": "2.3.2",
     "rollup": "^2.56.3",
     "rollup-plugin-polyfill-node": "^0.7.0",
