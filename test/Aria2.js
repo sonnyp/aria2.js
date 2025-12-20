@@ -1,7 +1,7 @@
 import test from "ava";
+import promiseEvent from "../src/promiseEvent.js";
 
 import Aria2 from "../src/Aria2.js";
-import promiseEvent from "../src/promiseEvent.js";
 
 Object.assign(global, { fetch, WebSocket });
 
@@ -113,5 +113,5 @@ test("#_onnotification", async (t) => {
   const promise = promiseEvent(aria2, "onDownloadStart");
   aria2._onnotification({ method: "aria2.onDownloadStart", params });
 
-  t.is(await promise, params);
+  t.is((await promise).params, params);
 });

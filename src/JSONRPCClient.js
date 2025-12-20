@@ -1,20 +1,37 @@
-import { EventEmitter } from "events";
-
 import promiseEvent from "./promiseEvent.js";
 import JSONRPCError from "./JSONRPCError.js";
 
-class JSONRPCClient extends EventEmitter {
+// https://github.com/nodejs/node/issues/58918
+if (!globalThis.ErrorEvent) {
+  globalThis.ErrorEvent = class ErrorEvent extends Event {
+    constructor(type, options) {
+      super(type, options);
+      this.error = options?.error;
+    }
+  };
+}
+
+export class JSONRPCEvent extends Event {
+  constructor(type, options) {
+    super(type, options);
+    this.data = options?.data;
+  }
+}
+
+export class JSONRPCNotificationEvent extends Event {
+  constructor(type, options) {
+    super(type, options);
+    this.params = options?.params;
+  }
+}
+
+class JSONRPCClient extends EventTarget {
   constructor(options) {
     super();
     this.deferreds = Object.create(null);
     this.lastId = 0;
 
-    Object.assign(
-      this,
-      { WebSocket: global.WebSocket, fetch: global.fetch.bind(this) },
-      this.constructor.defaultOptions,
-      options,
-    );
+    Object.assign(this, this.constructor.defaultOptions, options);
   }
 
   id() {
@@ -33,19 +50,12 @@ class JSONRPCClient extends EventEmitter {
     );
   }
 
-  websocket(message) {
-    return new Promise((resolve, reject) => {
-      const cb = (err) => {
-        if (err) reject(err);
-        else resolve();
-      };
-      this.socket.send(JSON.stringify(message), cb);
-      if (global.WebSocket && this.socket instanceof global.WebSocket) cb();
-    });
+  async websocket(message) {
+    this.socket.send(JSON.stringify(message));
   }
 
   async http(message) {
-    const response = await this.fetch(this.url("http"), {
+    const response = await fetch(this.url("http"), {
       method: "POST",
       body: JSON.stringify(message),
       headers: {
@@ -54,14 +64,16 @@ class JSONRPCClient extends EventEmitter {
       },
     });
 
-    response
-      .json()
-      .then((msg) => this._onmessage(msg))
-      .catch((err) => {
-        this.emit("error", err);
-      });
+    let msg;
+    try {
+      msg = await response.json();
+      this._onmessage(msg);
+    } catch (error) {
+      this.dispatchEvent(new ErrorEvent("error", { error }));
+      throw error;
+    }
 
-    return response;
+    return msg;
   }
 
   _buildMessage(method, params) {
@@ -80,8 +92,6 @@ class JSONRPCClient extends EventEmitter {
   }
 
   async batch(calls) {
-    const promises = [];
-
     const message = calls.map(([method, params]) => {
       return this._buildMessage(method, params);
     });
@@ -104,7 +114,7 @@ class JSONRPCClient extends EventEmitter {
   }
 
   async _send(message) {
-    this.emit("output", message);
+    this.dispatchEvent(new JSONRPCEvent("output", { data: message }));
 
     const { socket } = this;
     return socket && socket.readyState === 1
@@ -125,11 +135,11 @@ class JSONRPCClient extends EventEmitter {
   }
 
   _onnotification({ method, params }) {
-    this.emit(method, params);
+    this.dispatchEvent(new JSONRPCNotificationEvent(method, { params }));
   }
 
   _onmessage(message) {
-    this.emit("input", message);
+    this.dispatchEvent(new JSONRPCEvent("input", { data: message }));
 
     if (Array.isArray(message)) {
       for (const object of message) {
@@ -147,26 +157,26 @@ class JSONRPCClient extends EventEmitter {
   }
 
   async open() {
-    const socket = (this.socket = new this.WebSocket(this.url("ws")));
+    const socket = (this.socket = new WebSocket(this.url("ws")));
 
-    socket.onclose = (...args) => {
-      this.emit("close", ...args);
+    socket.onclose = (evt) => {
+      this.dispatchEvent(new Event("close"));
     };
     socket.onmessage = (event) => {
       let message;
       try {
         message = JSON.parse(event.data);
-      } catch (err) {
-        this.emit("error", err);
+      } catch (error) {
+        this.dispatchEvent(new ErrorEvent("error", { error }));
         return;
       }
       this._onmessage(message);
     };
-    socket.onopen = (...args) => {
-      this.emit("open", ...args);
+    socket.onopen = (evt) => {
+      this.dispatchEvent(new Event("open"));
     };
-    socket.onerror = (...args) => {
-      this.emit("error", ...args);
+    socket.onerror = (evt) => {
+      this.dispatchEvent(new ErrorEvent("error", { error: evt }));
     };
 
     return promiseEvent(this, "open");

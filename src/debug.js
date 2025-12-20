@@ -1,21 +1,28 @@
-import { inspect } from "util";
-
 export default function (aria2) {
-  aria2.on("open", () => {
+  // emitted when the WebSocket is open.
+  aria2.addEventListener("open", () => {
     console.log("aria2", "OPEN");
   });
 
-  aria2.on("close", () => {
+  // emitted when the WebSocket is closed.
+  aria2.addEventListener("close", () => {
     console.log("aria2", "CLOSE");
   });
 
-  aria2.on("input", (m) => {
-    console.log("aria2", "IN");
-    console.log(inspect(m, { depth: null, colors: true }));
+  // emitted when error occur.
+  aria2.addEventListener("error", ({ error }) => {
+    console.error("aria2", "error", error);
   });
 
-  aria2.on("output", (m) => {
+  // emitted for every data sent.
+  aria2.addEventListener("input", ({ data }) => {
+    console.log("aria2", "IN");
+    console.dir(data);
+  });
+
+  // emitted for every data received.
+  aria2.addEventListener("output", ({ data }) => {
     console.log("aria2", "OUT");
-    console.log(inspect(m, { depth: null, colors: true }));
+    console.dir(data);
   });
 }

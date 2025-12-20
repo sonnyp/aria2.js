@@ -1,8 +1,8 @@
 export default function promiseEvent(target, event) {
   return new Promise((resolve, reject) => {
     function cleanup() {
-      target.removeListener(event, onEvent);
-      target.removeListener("error", onError);
+      target.removeEventListener(event, onEvent);
+      target.removeEventListener("error", onError);
     }
     function onEvent(data) {
       resolve(data);
@@ -12,7 +12,7 @@ export default function promiseEvent(target, event) {
       reject(err);
       cleanup();
     }
-    target.addListener(event, onEvent);
-    target.addListener("error", onError);
+    target.addEventListener(event, onEvent);
+    target.addEventListener("error", onError);
   });
 }
