@@ -1,21 +1,23 @@
-import { inspect } from "util";
-
 export default function (aria2) {
-  aria2.on("open", () => {
+  aria2.addEventListener("open", () => {
     console.log("aria2", "OPEN");
   });
 
-  aria2.on("close", () => {
+  aria2.addEventListener("close", () => {
     console.log("aria2", "CLOSE");
   });
 
-  aria2.on("input", (m) => {
-    console.log("aria2", "IN");
-    console.log(inspect(m, { depth: null, colors: true }));
+  aria2.addEventListener("error", ({ detail }) => {
+    console.error(detail);
   });
 
-  aria2.on("output", (m) => {
+  aria2.addEventListener("input", ({ detail }) => {
+    console.log("aria2", "IN");
+    console.dir(detail);
+  });
+
+  aria2.addEventListener("output", ({ detail }) => {
     console.log("aria2", "OUT");
-    console.log(inspect(m, { depth: null, colors: true }));
+    console.dir(detail);
   });
 }

@@ -1,6 +1,6 @@
-import { once } from "node:events";
 import test from "ava";
 
+import promiseEvent from "../src/promiseEvent.js";
 import JSONRPCClient from "../src/JSONRPCClient.js";
 
 Object.assign(global, { fetch, WebSocket });
@@ -35,9 +35,8 @@ test("#websocket", async (t) => {
   const message = { hello: "world" };
 
   client.socket = {
-    send(str, cb) {
+    async send(str) {
       t.is(str, JSON.stringify(message));
-      cb();
     },
   };
 
@@ -52,9 +51,9 @@ test("#websocket error", async (t) => {
   const error = new Error();
 
   client.socket = {
-    send(str, cb) {
+    send(str) {
       t.is(str, JSON.stringify(message));
-      cb(error);
+      throw error;
     },
   };
 
@@ -74,13 +73,13 @@ test("#websocket json error", async (t) => {
   client.open();
   client.socket.onopen();
 
-  const promise_error = once(client, "error");
+  const promise_error = promiseEvent(client, "error");
 
   try {
     client.socket.onmessage({ data: "foo" });
   } catch {}
 
-  const [error] = await promise_error;
+  const { detail: error } = await promise_error;
   t.true(error instanceof SyntaxError);
   t.is(error.message, `Unexpected token 'o', "foo" is not valid JSON`);
 });
@@ -92,7 +91,8 @@ test("#http", async (t) => {
   const request = { hello: "world" };
   const response = { world: "hello" };
 
-  client.fetch = (url, options) => {
+  const fetch = globalThis.fetch;
+  globalThis.fetch = (url, options) => {
     t.is(url, "http://localhost:80/jsonrpc");
     t.deepEqual(options, {
       method: "POST",
@@ -114,12 +114,15 @@ test("#http", async (t) => {
   };
 
   client.http(request);
+
+  globalThis.fetch = fetch;
 });
 
 test("#http fetch error", async (t) => {
   const client = new JSONRPCClient();
 
-  client.fetch = () => Promise.reject(new Error("foo"));
+  const fetch = globalThis.fetch;
+  globalThis.fetch = () => Promise.reject(new Error("foo"));
 
   await t.throwsAsync(
     async () => {
@@ -127,25 +130,36 @@ test("#http fetch error", async (t) => {
     },
     { message: "foo" },
   );
+  globalThis.fetch = fetch;
 });
 
 test("#http json error", async (t) => {
+  t.plan(2);
+
   const client = new JSONRPCClient();
 
-  client.fetch = () => {
+  const error = new SyntaxError("Oops");
+
+  const fetch = globalThis.fetch;
+  globalThis.fetch = () => {
     return Promise.resolve({
       async json() {
-        return JSON.parse("foo");
+        throw error;
       },
     });
   };
 
-  client.on("error", (err) => {
-    t.true(err instanceof SyntaxError);
-    t.is(err.message, `Unexpected token 'o', "foo" is not valid JSON`);
+  client.addEventListener("error", ({ detail: err }) => {
+    t.is(err, error);
   });
 
-  await client.http({});
+  try {
+    await client.http({});
+  } catch (err) {
+    t.is(err, error);
+  }
+
+  globalThis.fetch = fetch;
 });
 
 test("#_buildMessage", (t) => {
@@ -231,7 +245,7 @@ test("#send", async (t) => {
 
   const message = {};
 
-  client.on("output", (m) => {
+  client.addEventListener("output", ({ detail: m }) => {
     t.is(m, message);
   });
 

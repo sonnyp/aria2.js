@@ -42,7 +42,9 @@ Install aria2.js
 npm install aria2
 ```
 
-then
+[↑](#aria2js)
+
+## Usage
 
 ```js
 import Aria2 from "aria2";
@@ -52,9 +54,7 @@ const aria2 = new Aria2(options);
 
 In the browser you can also use `node_modules/aria2/bundle.js` directly in `<script>` and `window.Aria2`.
 
-[↑](#aria2js)
-
-## Usage
+Aria2 extends [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget).
 
 Default options match aria2c defaults and are
 
@@ -81,10 +81,8 @@ The `"aria2."` prefix can be omitted from both methods and notifications.
 `aria2.open()` opens the WebSocket connection. All subsequent requests will use the WebSocket transport instead of HTTP.
 
 ```javascript
-aria2
-  .open()
-  .then(() => console.log("open"))
-  .catch((err) => console.log("error", err));
+await aria2.open();
+console.log("open");
 ```
 
 [↑](#aria2js)
@@ -94,10 +92,8 @@ aria2
 `aria2.close()` closes the WebSocket connection. All subsequent requests will use the HTTP transport instead of WebSocket.
 
 ```javascript
-aria2
-  .close()
-  .then(() => console.log("closed"))
-  .catch((err) => console.log("error", err));
+await aria2.close();
+console.log("closed");
 ```
 
 [↑](#aria2js)
@@ -111,7 +107,7 @@ Example using [`addUri`](https://aria2.github.io/manual/en/html/aria2c.html#aria
 ```javascript
 const magnet =
   "magnet:?xt=urn:btih:88594AAACBDE40EF3E2510C47374EC0AA396C08E&dn=bbb_sunflower_1080p_30fps_normal.mp4&tr=udp%3a%2f%2ftracker.openbittorrent.com%3a80%2fannounce&tr=udp%3a%2f%2ftracker.publicbt.com%3a80%2fannounce&ws=http%3a%2f%2fdistribution.bbb3d.renderfarming.net%2fvideo%2fmp4%2fbbb_sunflower_1080p_30fps_normal.mp4";
-const [guid] = await aria2.call("addUri", [magnet], { dir: "/tmp" });
+const guid = await aria2.call("addUri", [magnet], { dir: "/tmp" });
 ```
 
 [↑](#aria2js)
@@ -163,9 +159,9 @@ const notifications = await aria2.listNotifications();
 
 // notifications logger example
 notifications.forEach((notification) => {
-  aria2.on(notification, (params) => {
-    console.log("aria2", notification, params);
-  });
+  aria2.addEventListener(notification, ({detail}) => {
+    console.log("aria2", notification, detail);
+  }});
 });
 ```
 
@@ -191,30 +187,30 @@ const methods = await aria2.listMethods();
 
 ```javascript
 // emitted when the WebSocket is open.
-aria2.on("open", () => {
+aria2.addEventListener("open", () => {
   console.log("aria2 OPEN");
 });
 
 // emitted when the WebSocket is closed.
-aria2.on("close", () => {
+aria2.addEventListener("close", () => {
   console.log("aria2 CLOSE");
 });
 
 // emitted for every message sent.
-aria2.on("output", (m) => {
-  console.log("aria2 OUT", m);
+aria2.addEventListener("output", ({detail}) => {
+  console.log("aria2 OUT", detail);
 });
 
 // emitted for every message received.
-aria2.on("input", (m) => {
-  console.log("aria2 IN", m);
+aria2.addEventListener("input", ({detail}) => {
+  console.log("aria2 IN", detail);
 });
 ```
 
 Additionally every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
 
 ```javascript
-aria2.on("onDownloadStart", ([guid]) => {
+aria2.addEventListener("onDownloadStart", ({detail: [guid]}) => {
   console.log("aria2 onDownloadStart", guid);
 });
 ```
