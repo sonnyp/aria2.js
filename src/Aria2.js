@@ -46,7 +46,7 @@ class Aria2 extends JSONRPCClient {
       calls.map(([method, ...params]) => [
         prefix(method),
         this.addSecret(params),
-      ])
+      ]),
     );
   }
 

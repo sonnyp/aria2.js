@@ -1,3 +1,4 @@
+import { once } from "node:events";
 import test from "ava";
 
 import JSONRPCClient from "../src/JSONRPCClient.js";
@@ -64,7 +65,7 @@ test("#websocket error", async (t) => {
   }
 });
 
-test.cb("#websocket json error", (t) => {
+test("#websocket json error", async (t) => {
   const client = new JSONRPCClient();
 
   client.WebSocket = function () {
@@ -73,16 +74,18 @@ test.cb("#websocket json error", (t) => {
   client.open();
   client.socket.onopen();
 
-  client.on("error", (err) => {
-    t.true(err instanceof SyntaxError);
-    t.is(err.message, `Unexpected token 'o', "foo" is not valid JSON`);
-    t.end();
-  });
+  const promise_error = once(client, "error");
 
-  client.socket.onmessage({ data: "foo" });
+  try {
+    client.socket.onmessage({ data: "foo" });
+  } catch {}
+
+  const [error] = await promise_error;
+  t.true(error instanceof SyntaxError);
+  t.is(error.message, `Unexpected token 'o', "foo" is not valid JSON`);
 });
 
-test.cb("#http", (t) => {
+test("#http", async (t) => {
   t.plan(3);
   const client = new JSONRPCClient();
 
@@ -108,7 +111,6 @@ test.cb("#http", (t) => {
 
   client._onmessage = (m) => {
     t.is(m, response);
-    t.end();
   };
 
   client.http(request);
