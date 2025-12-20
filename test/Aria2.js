@@ -1,6 +1,4 @@
 import test from "ava";
-import fetch from "node-fetch";
-import WebSocket from "ws";
 
 import Aria2 from "../src/Aria2.js";
 import promiseEvent from "../src/promiseEvent.js";

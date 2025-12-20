@@ -1,12 +1,10 @@
 # aria2.js
 
-JavaScript (Node.js and browsers) library for [aria2, "The next generation download utility."](https://aria2.github.io/)
+JavaScript library for [aria2, "The next generation download utility."](https://aria2.github.io/)
 
 - [aria2.js](#aria2js)
   - [Introduction](#introduction)
   - [Getting started](#getting-started)
-    - [Browser](#browser)
-    - [Node.js](#nodejs)
   - [Usage](#usage)
     - [open](#open)
     - [close](#close)
@@ -37,33 +35,21 @@ Start aria2 with rpc, example:
 
 `aria2c --enable-rpc --rpc-listen-all=true --rpc-allow-origin-all`
 
-### Browser
+Install aria2.js
 
 ```sh
 npm install aria2
 ```
 
-```js
-import Aria2 from "aria2";
-
-const aria2 = new Aria2({ WebSocket: ws, fetch: nodefetch, ...options });
-```
-
-You can also use `node_modules/aria2/bundle.js` directly in `<script>` and `window.Aria2`.
-
-### Node.js
-
-```sh
-npm install aria2 node-fetch ws
-```
+then
 
 ```js
 import Aria2 from "aria2";
-import ws from "ws";
-import nodefetch from "node-fetch";
 
-const aria2 = new Aria2({ WebSocket: ws, fetch: nodefetch, ...options });
-```
+const aria2 = new Aria2(options);
+````
+
+In the browser you can also use `node_modules/aria2/bundle.js` directly in `<script>` and `window.Aria2`.
 
 [↑](#aria2js)
 

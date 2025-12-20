@@ -1,6 +1,4 @@
 import test from "ava";
-import fetch from "node-fetch";
-import WebSocket from "ws";
 
 import JSONRPCClient from "../src/JSONRPCClient.js";
 
@@ -77,7 +75,7 @@ test.cb("#websocket json error", (t) => {
 
   client.on("error", (err) => {
     t.true(err instanceof SyntaxError);
-    t.is(err.message, "Unexpected token o in JSON at position 1");
+    t.is(err.message, `Unexpected token 'o', "foo" is not valid JSON`);
     t.end();
   });
 
@@ -142,7 +140,7 @@ test("#http json error", async (t) => {
 
   client.on("error", (err) => {
     t.true(err instanceof SyntaxError);
-    t.is(err.message, "Unexpected token o in JSON at position 1");
+    t.is(err.message, `Unexpected token 'o', "foo" is not valid JSON`);
   });
 
   await client.http({});
