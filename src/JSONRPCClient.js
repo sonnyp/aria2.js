@@ -1,6 +1,5 @@
 import { EventEmitter } from "events";
 
-import Deferred from "./Deferred.js";
 import promiseEvent from "./promiseEvent.js";
 import JSONRPCError from "./JSONRPCError.js";
 
@@ -90,7 +89,7 @@ class JSONRPCClient extends EventEmitter {
     await this._send(message);
 
     return message.map(({ id }) => {
-      const { promise } = (this.deferreds[id] = new Deferred());
+      const { promise } = (this.deferreds[id] = Promise.withResolvers());
       return promise;
     });
   }
@@ -99,7 +98,7 @@ class JSONRPCClient extends EventEmitter {
     const message = this._buildMessage(method, parameters);
     await this._send(message);
 
-    const { promise } = (this.deferreds[message.id] = new Deferred());
+    const { promise } = (this.deferreds[message.id] = Promise.withResolvers());
 
     return promise;
   }

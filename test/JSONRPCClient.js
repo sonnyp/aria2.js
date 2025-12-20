@@ -22,9 +22,9 @@ test("#url", (t) => {
         port: 1234,
         path: "/foobar",
       },
-      "foo"
+      "foo",
     ),
-    "foos://foobar:1234/foobar"
+    "foos://foobar:1234/foobar",
   );
 });
 
@@ -125,7 +125,7 @@ test("#http fetch error", async (t) => {
     async () => {
       await client.http({});
     },
-    { message: "foo" }
+    { message: "foo" },
   );
 });
 
@@ -155,7 +155,7 @@ test("#_buildMessage", (t) => {
       client._buildMessage();
     },
     { instanceOf: TypeError },
-    "undefined is not a string"
+    "undefined is not a string",
   );
 
   t.deepEqual(client._buildMessage("foobar"), {
