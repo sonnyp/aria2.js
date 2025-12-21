@@ -7,8 +7,8 @@ export default function (aria2) {
     console.log("aria2", "CLOSE");
   });
 
-  aria2.addEventListener("error", ({ detail }) => {
-    console.error(detail);
+  aria2.addEventListener("error", ({ error }) => {
+    console.error("error", error);
   });
 
   aria2.addEventListener("input", ({ detail }) => {

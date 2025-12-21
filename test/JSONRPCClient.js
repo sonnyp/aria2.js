@@ -1,4 +1,5 @@
 import test from "ava";
+import { mock } from "node:test";
 
 import promiseEvent from "../src/promiseEvent.js";
 import JSONRPCClient from "../src/JSONRPCClient.js";
@@ -79,7 +80,7 @@ test("#websocket json error", async (t) => {
     client.socket.onmessage({ data: "foo" });
   } catch {}
 
-  const { detail: error } = await promise_error;
+  const { error } = await promise_error;
   t.true(error instanceof SyntaxError);
   t.is(error.message, `Unexpected token 'o', "foo" is not valid JSON`);
 });
@@ -138,25 +139,30 @@ test("#http json error", async (t) => {
 
   const client = new JSONRPCClient();
 
-  const error = new SyntaxError("Oops");
+  let err;
 
   const fetch = globalThis.fetch;
   globalThis.fetch = () => {
     return Promise.resolve({
-      async json() {
-        throw error;
-      },
+      json: mock.fn(async () => {
+        try {
+          JSON.parse("foo");
+        } catch (error) {
+          err = error;
+          throw err;
+        }
+      }),
     });
   };
 
-  client.addEventListener("error", ({ detail: err }) => {
-    t.is(err, error);
+  client.addEventListener("error", ({ error }) => {
+    t.is(error.message, err.message);
   });
 
   try {
     await client.http({});
-  } catch (err) {
-    t.is(err, error);
+  } catch (error) {
+    t.is(error.message, err.message);
   }
 
   globalThis.fetch = fetch;

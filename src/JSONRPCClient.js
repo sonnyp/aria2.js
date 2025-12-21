@@ -1,6 +1,16 @@
 import promiseEvent from "./promiseEvent.js";
 import JSONRPCError from "./JSONRPCError.js";
 
+// https://github.com/nodejs/node/issues/58918
+if (!globalThis.ErrorEvent) {
+  globalThis.ErrorEvent = class ErrorEvent extends Event {
+    constructor(type, options) {
+      super(type, options);
+      this.error = options?.error;
+    }
+  };
+}
+
 class JSONRPCClient extends EventTarget {
   constructor(options) {
     super();
@@ -44,9 +54,9 @@ class JSONRPCClient extends EventTarget {
     try {
       msg = await response.json();
       this._onmessage(msg);
-    } catch (err) {
-      this.dispatchEvent(new CustomEvent("error", { detail: err }));
-      throw err;
+    } catch (error) {
+      this.dispatchEvent(new ErrorEvent("error", { error }));
+      throw error;
     }
 
     return msg;
@@ -111,7 +121,6 @@ class JSONRPCClient extends EventTarget {
   }
 
   _onnotification({ method, params }) {
-    // new CustomEvent("notification") ?
     this.dispatchEvent(new CustomEvent(method, { detail: params }));
   }
 
@@ -143,8 +152,8 @@ class JSONRPCClient extends EventTarget {
       let message;
       try {
         message = JSON.parse(event.data);
-      } catch (err) {
-        this.dispatchEvent(new CustomEvent("error", { detail: err }));
+      } catch (error) {
+        this.dispatchEvent(new ErrorEvent("error", { error }));
         return;
       }
       this._onmessage(message);
@@ -153,7 +162,7 @@ class JSONRPCClient extends EventTarget {
       this.dispatchEvent(new CustomEvent("open", { detail: evt }));
     };
     socket.onerror = (evt) => {
-      this.dispatchEvent(new CustomEvent("error", { detail: evt }));
+      this.dispatchEvent(new ErrorEvent("error", { error: evt }));
     };
 
     return promiseEvent(this, "open");
