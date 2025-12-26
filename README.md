@@ -188,26 +188,33 @@ const methods = await aria2.listMethods();
 ```javascript
 // emitted when the WebSocket is open.
 aria2.addEventListener("open", () => {
-  console.log("aria2 OPEN");
+  console.log("aria2", "OPEN");
 });
 
 // emitted when the WebSocket is closed.
 aria2.addEventListener("close", () => {
-  console.log("aria2 CLOSE");
+  console.log("aria2", "CLOSE");
 });
 
-// emitted for every message sent.
-aria2.addEventListener("output", ({detail}) => {
-  console.log("aria2 OUT", detail);
+// emitted when error occur.
+aria2.addEventListener("error", ({ error }) => {
+  console.error("aria2", "error", error);
 });
 
-// emitted for every message received.
-aria2.addEventListener("input", ({detail}) => {
-  console.log("aria2 IN", detail);
+// emitted for every data sent.
+aria2.addEventListener("input", ({ data }) => {
+  console.log("aria2", "IN");
+  console.dir(data);
+});
+
+// emitted for every data received.
+aria2.addEventListener("output", ({ data }) => {
+  console.log("aria2", "OUT");
+  console.dir(data);
 });
 ```
 
-Additionally every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
+Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
 
 ```javascript
 aria2.addEventListener("onDownloadStart", ({detail: [guid]}) => {

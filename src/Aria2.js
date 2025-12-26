@@ -1,4 +1,4 @@
-import JSONRPCClient from "./JSONRPCClient.js";
+import JSONRPCClient, { JSONRPCNotificationEvent } from "./JSONRPCClient.js";
 
 function prefix(str) {
   if (!str.startsWith("system.") && !str.startsWith("aria2.")) {
@@ -25,7 +25,7 @@ class Aria2 extends JSONRPCClient {
     const { method, params } = notification;
     const event = unprefix(method);
     if (event !== method)
-      this.dispatchEvent(new CustomEvent(event, { detail: params }));
+      this.dispatchEvent(new JSONRPCNotificationEvent(event, { params }));
     return super._onnotification(notification);
   }
 

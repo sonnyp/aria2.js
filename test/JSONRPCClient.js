@@ -251,7 +251,7 @@ test("#send", async (t) => {
 
   const message = {};
 
-  client.addEventListener("output", ({ detail: m }) => {
+  client.addEventListener("output", ({ data: m }) => {
     t.is(m, message);
   });
 

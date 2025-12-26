@@ -113,5 +113,5 @@ test("#_onnotification", async (t) => {
   const promise = promiseEvent(aria2, "onDownloadStart");
   aria2._onnotification({ method: "aria2.onDownloadStart", params });
 
-  t.is((await promise).detail, params);
+  t.is((await promise).params, params);
 });

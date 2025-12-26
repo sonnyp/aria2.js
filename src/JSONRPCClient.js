@@ -11,6 +11,20 @@ if (!globalThis.ErrorEvent) {
   };
 }
 
+export class JSONRPCEvent extends Event {
+  constructor(type, options) {
+    super(type, options);
+    this.data = options?.data;
+  }
+}
+
+export class JSONRPCNotificationEvent extends Event {
+  constructor(type, options) {
+    super(type, options);
+    this.params = options?.params;
+  }
+}
+
 class JSONRPCClient extends EventTarget {
   constructor(options) {
     super();
@@ -100,7 +114,7 @@ class JSONRPCClient extends EventTarget {
   }
 
   async _send(message) {
-    this.dispatchEvent(new CustomEvent("output", { detail: message }));
+    this.dispatchEvent(new JSONRPCEvent("output", { data: message }));
 
     const { socket } = this;
     return socket && socket.readyState === 1
@@ -121,11 +135,11 @@ class JSONRPCClient extends EventTarget {
   }
 
   _onnotification({ method, params }) {
-    this.dispatchEvent(new CustomEvent(method, { detail: params }));
+    this.dispatchEvent(new JSONRPCNotificationEvent(method, { params }));
   }
 
   _onmessage(message) {
-    this.dispatchEvent(new CustomEvent("input", { detail: message }));
+    this.dispatchEvent(new JSONRPCEvent("input", { data: message }));
 
     if (Array.isArray(message)) {
       for (const object of message) {
@@ -146,7 +160,7 @@ class JSONRPCClient extends EventTarget {
     const socket = (this.socket = new WebSocket(this.url("ws")));
 
     socket.onclose = (evt) => {
-      this.dispatchEvent(new CustomEvent("close"), { detail: evt });
+      this.dispatchEvent(new Event("close"));
     };
     socket.onmessage = (event) => {
       let message;
@@ -159,7 +173,7 @@ class JSONRPCClient extends EventTarget {
       this._onmessage(message);
     };
     socket.onopen = (evt) => {
-      this.dispatchEvent(new CustomEvent("open", { detail: evt }));
+      this.dispatchEvent(new Event("open"));
     };
     socket.onerror = (evt) => {
       this.dispatchEvent(new ErrorEvent("error", { error: evt }));
