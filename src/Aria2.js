@@ -24,8 +24,9 @@ class Aria2 extends JSONRPCClient {
   _onnotification(notification) {
     const { method, params } = notification;
     const event = unprefix(method);
-    if (event !== method)
+    if (event !== method) {
       this.dispatchEvent(new JSONRPCNotificationEvent(event, { params }));
+    }
     return super._onnotification(notification);
   }
 

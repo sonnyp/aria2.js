@@ -25,4 +25,9 @@ export default function (aria2) {
     console.log("aria2", "OUT");
     console.dir(data);
   });
+
+  // emitted for every notification received.
+  aria2.addEventListener("notification", ({ method, params }) => {
+    console.log("aria2", "notification", { method, params });
+  });
 }

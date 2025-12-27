@@ -21,6 +21,7 @@ export class JSONRPCEvent extends Event {
 export class JSONRPCNotificationEvent extends Event {
   constructor(type, options) {
     super(type, options);
+    this.method = options?.method;
     this.params = options?.params;
   }
 }
@@ -134,7 +135,9 @@ class JSONRPCClient extends EventTarget {
   }
 
   _onnotification({ method, params }) {
-    this.dispatchEvent(new JSONRPCNotificationEvent(method, { params }));
+    this.dispatchEvent(
+      new JSONRPCNotificationEvent("notification", { method, params }),
+    );
   }
 
   _onmessage(message) {

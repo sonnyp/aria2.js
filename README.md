@@ -212,9 +212,14 @@ aria2.addEventListener("output", ({ data }) => {
   console.log("aria2", "OUT");
   console.dir(data);
 });
+
+// emitted for every notification received.
+aria2.addEventListener("notification", ({ method, params }) => {
+  console.log("aria2", "notification", { method, params });
+});
 ```
 
-Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
+Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) is also emitted as an event.
 
 ```javascript
 aria2.addEventListener("onDownloadStart", ({params: [guid]}) => {

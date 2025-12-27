@@ -261,3 +261,21 @@ test("#send", async (t) => {
 
   client._send(message);
 });
+
+test("#_onnotification", (t) => {
+  t.plan(2);
+  const client = new JSONRPCClient();
+
+  const method = "foo";
+  const params = [1, 2, 3];
+
+  client.addEventListener(
+    "notification",
+    ({ method: _method, params: _params }) => {
+      t.assert.equal(method, _method);
+      t.assert.equal(params, _params);
+    },
+  );
+
+  client._onnotification({ method, params });
+});
