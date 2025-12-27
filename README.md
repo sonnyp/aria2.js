@@ -2,18 +2,17 @@
 
 JavaScript library for [aria2, "The next generation download utility."](https://aria2.github.io/)
 
-- [aria2.js](#aria2js)
-  - [Introduction](#introduction)
-  - [Getting started](#getting-started)
-  - [Usage](#usage)
-    - [open](#open)
-    - [close](#close)
-    - [call](#call)
-    - [multicall](#multicall)
-    - [batch](#batch)
-    - [listNotifications](#listnotifications)
-    - [listMethods](#listmethods)
-    - [events](#events)
+- [Introduction](#introduction)
+- [Getting started](#getting-started)
+- [Usage](#usage)
+  - [open](#open)
+  - [close](#close)
+  - [call](#call)
+  - [multicall](#multicall)
+  - [batch](#batch)
+  - [listNotifications](#listnotifications)
+  - [listMethods](#listmethods)
+  - [events](#events)
 
 ## Introduction
 
@@ -219,7 +218,7 @@ aria2.addEventListener("notification", ({ method, params }) => {
 });
 ```
 
-Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) is also emitted as an event.
+Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) is also emitted as an event. Only available when using WebSocket, see [open](#open).
 
 ```javascript
 aria2.addEventListener("onDownloadStart", ({params: [guid]}) => {

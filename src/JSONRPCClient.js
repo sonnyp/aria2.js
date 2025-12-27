@@ -161,7 +161,7 @@ class JSONRPCClient extends EventTarget {
   async open() {
     const socket = (this.socket = new WebSocket(this.url("ws")));
 
-    socket.onclose = (evt) => {
+    socket.onclose = () => {
       this.dispatchEvent(new Event("close"));
     };
     socket.onmessage = (event) => {
@@ -174,7 +174,7 @@ class JSONRPCClient extends EventTarget {
       }
       this._onmessage(message);
     };
-    socket.onopen = (evt) => {
+    socket.onopen = () => {
       this.dispatchEvent(new Event("open"));
     };
     socket.onerror = (evt) => {
@@ -189,14 +189,14 @@ class JSONRPCClient extends EventTarget {
     socket.close();
     return promiseEvent(this, "close");
   }
-}
 
-JSONRPCClient.defaultOptions = {
-  secure: false,
-  host: "localhost",
-  port: 80,
-  secret: "",
-  path: "/jsonrpc",
-};
+  static defaultOptions = {
+    secure: false,
+    host: "localhost",
+    port: 80,
+    secret: "",
+    path: "/jsonrpc",
+  };
+}
 
 export default JSONRPCClient;
