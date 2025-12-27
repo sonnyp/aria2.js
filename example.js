@@ -13,8 +13,8 @@ import debug from "./src/debug.js";
     return;
   }
 
-  aria2.addEventListener("onDownloadStart", ({ detail }) => {
-    console.log("Download start", detail);
+  aria2.addEventListener("onDownloadStart", ({ params }) => {
+    console.log("Download start", params);
   });
 
   const magnet =

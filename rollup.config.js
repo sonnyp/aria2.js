@@ -1,5 +1,3 @@
-import nodePolyfills from "rollup-plugin-polyfill-node";
-
 export default [
   {
     input: "src/Aria2.js",
@@ -8,7 +6,5 @@ export default [
       format: "iife",
       name: "Aria2",
     },
-    // Still needed?
-    plugins: [nodePolyfills()],
   },
 ];

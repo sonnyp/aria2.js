@@ -24,14 +24,14 @@
     "preversion": "npm test",
     "lint": "prettier -l **/*.js",
     "unit": "node --test test/*.js",
-    "test": "npm run unit && npm run lint",
-    "prepublishOnly": "rollup -c rollup.config.js"
+    "test": "npm run unit && npm run lint && npm run bundle",
+    "bundle": "rollup -c rollup.config.js",
+    "prepublishOnly": "npm run bundle"
   },
   "repository": "github:sonnyp/aria2.js",
   "devDependencies": {
     "prettier": "3.7.4",
-    "rollup": "^4.54.0",
-    "rollup-plugin-polyfill-node": "^0.13.0"
+    "rollup": "^4.54.0"
   },
   "engines": {
     "node": ">= 22.0.0"

@@ -127,7 +127,7 @@ const results = await aria2.multicall(multicall);
 
 ### batch
 
-`aria2.batch()` is a helper for [batch](https://aria2.github.io/manual/en/html/aria2c.html#system.multicall). It behaves the same as [multicall](#multicall) except it returns an array of promises which gives more flexibility in handling errors.
+`aria2.batch()` is a helper for [batch](https://www.jsonrpc.org/specification#batch). It behaves the same as [multicall](#multicall) except it returns an array of promises which gives more flexibility in handling errors.
 
 ```javascript
 const batch = [
@@ -217,7 +217,7 @@ aria2.addEventListener("output", ({ data }) => {
 Additionally, every [aria2 notifications](https://aria2.github.io/manual/en/html/aria2c.html#notifications) received will be emitted as an event (with and without the `"aria2."` prefix). Only available when using WebSocket, see [open](#open).
 
 ```javascript
-aria2.addEventListener("onDownloadStart", ({detail: [guid]}) => {
+aria2.addEventListener("onDownloadStart", ({params: [guid]}) => {
   console.log("aria2 onDownloadStart", guid);
 });
 ```
