@@ -1,18 +1,12 @@
 export default function promiseEvent(target, event) {
+  const controller = new AbortController();
+  const { signal } = controller;
   return new Promise((resolve, reject) => {
-    function cleanup() {
-      target.removeEventListener(event, onEvent);
-      target.removeEventListener("error", onError);
-    }
-    function onEvent(data) {
-      resolve(data);
-      cleanup();
-    }
-    function onError(err) {
-      reject(err);
-      cleanup();
-    }
-    target.addEventListener(event, onEvent);
-    target.addEventListener("error", onError);
-  });
+    target.addEventListener(event, resolve, {
+      signal,
+    });
+    target.addEventListener("error", reject, {
+      signal,
+    });
+  }).finally(() => controller.abort());
 }
