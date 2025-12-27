@@ -23,13 +23,12 @@
   "scripts": {
     "preversion": "npm test",
     "lint": "prettier -l **/*.js",
-    "unit": "ava",
+    "unit": "node --test test/*.js",
     "test": "npm run unit && npm run lint",
     "prepublishOnly": "rollup -c rollup.config.js"
   },
   "repository": "github:sonnyp/aria2.js",
   "devDependencies": {
-    "ava": "^6.4.1",
     "prettier": "3.7.4",
     "rollup": "^4.54.0",
     "rollup-plugin-polyfill-node": "^0.13.0"

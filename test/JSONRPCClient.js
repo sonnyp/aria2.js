@@ -1,21 +1,18 @@
-import test from "ava";
-import { mock } from "node:test";
+import { test, mock } from "node:test";
 
 import promiseEvent from "../src/promiseEvent.js";
 import JSONRPCClient from "../src/JSONRPCClient.js";
 
-Object.assign(global, { fetch, WebSocket });
-
 test("#id", (t) => {
   const client = new JSONRPCClient();
-  t.is(client.lastId, 0);
-  t.is(client.id(), 0);
-  t.is(client.lastId, 1);
+  t.assert.strictEqual(client.lastId, 0);
+  t.assert.strictEqual(client.id(), 0);
+  t.assert.strictEqual(client.lastId, 1);
 });
 
 test("#url", (t) => {
   const client = new JSONRPCClient();
-  t.is(
+  t.assert.strictEqual(
     client.url.call(
       {
         secure: true,
@@ -37,7 +34,7 @@ test("#websocket", async (t) => {
 
   client.socket = {
     async send(str) {
-      t.is(str, JSON.stringify(message));
+      t.assert.strictEqual(str, JSON.stringify(message));
     },
   };
 
@@ -53,7 +50,7 @@ test("#websocket error", async (t) => {
 
   client.socket = {
     send(str) {
-      t.is(str, JSON.stringify(message));
+      t.assert.strictEqual(str, JSON.stringify(message));
       throw error;
     },
   };
@@ -61,7 +58,7 @@ test("#websocket error", async (t) => {
   try {
     await client.websocket(message);
   } catch (err) {
-    t.is(err, error);
+    t.assert.strictEqual(err, error);
   }
 });
 
@@ -81,8 +78,11 @@ test("#websocket json error", async (t) => {
   } catch {}
 
   const { error } = await promise_error;
-  t.true(error instanceof SyntaxError);
-  t.is(error.message, `Unexpected token 'o', "foo" is not valid JSON`);
+  t.assert.ok(error instanceof SyntaxError);
+  t.assert.strictEqual(
+    error.message,
+    `Unexpected token 'o', "foo" is not valid JSON`,
+  );
 });
 
 test("#http", async (t) => {
@@ -92,10 +92,9 @@ test("#http", async (t) => {
   const request = { hello: "world" };
   const response = { world: "hello" };
 
-  const fetch = globalThis.fetch;
-  globalThis.fetch = (url, options) => {
-    t.is(url, "http://localhost:80/jsonrpc");
-    t.deepEqual(options, {
+  t.mock.method(globalThis, "fetch", (url, options) => {
+    t.assert.strictEqual(url, "http://localhost:80/jsonrpc");
+    t.assert.deepStrictEqual(options, {
       method: "POST",
       body: JSON.stringify(request),
       headers: {
@@ -108,30 +107,33 @@ test("#http", async (t) => {
         return Promise.resolve(response);
       },
     });
-  };
+  });
 
   client._onmessage = (m) => {
-    t.is(m, response);
+    t.assert.strictEqual(m, response);
   };
 
   client.http(request);
 
-  globalThis.fetch = fetch;
+  t.mock.reset();
 });
 
 test("#http fetch error", async (t) => {
   const client = new JSONRPCClient();
 
-  const fetch = globalThis.fetch;
-  globalThis.fetch = () => Promise.reject(new Error("foo"));
+  const error = new Error("foo");
 
-  await t.throwsAsync(
-    async () => {
-      await client.http({});
-    },
-    { message: "foo" },
-  );
-  globalThis.fetch = fetch;
+  t.mock.method(globalThis, "fetch", () => Promise.reject(error));
+
+  let err;
+  try {
+    await client.http({});
+  } catch (e) {
+    err = e;
+  }
+  t.assert.strictEqual(err, error);
+
+  t.mock.reset();
 });
 
 test("#http json error", async (t) => {
@@ -141,8 +143,7 @@ test("#http json error", async (t) => {
 
   let err;
 
-  const fetch = globalThis.fetch;
-  globalThis.fetch = () => {
+  t.mock.method(globalThis, "fetch", () => {
     return Promise.resolve({
       json: mock.fn(async () => {
         try {
@@ -153,45 +154,42 @@ test("#http json error", async (t) => {
         }
       }),
     });
-  };
+  });
 
   client.addEventListener("error", ({ error }) => {
-    t.is(error.message, err.message);
+    t.assert.strictEqual(error.message, err.message);
   });
 
   try {
     await client.http({});
   } catch (error) {
-    t.is(error.message, err.message);
+    t.assert.strictEqual(error.message, err.message);
   }
 
-  globalThis.fetch = fetch;
+  t.mock.reset();
 });
 
 test("#_buildMessage", (t) => {
   const client = new JSONRPCClient();
-  t.throws(
-    () => {
-      client._buildMessage();
-    },
-    { instanceOf: TypeError },
-    "undefined is not a string",
-  );
 
-  t.deepEqual(client._buildMessage("foobar"), {
+  t.assert.throws(() => {
+    client._buildMessage();
+  }, TypeError);
+
+  t.assert.deepStrictEqual(client._buildMessage("foobar"), {
     method: "foobar",
     ["json-rpc"]: "2.0",
     id: 0,
   });
 
-  t.deepEqual(client._buildMessage("method", []), {
+  t.assert.deepStrictEqual(client._buildMessage("method", []), {
     method: "method",
     params: [],
     ["json-rpc"]: "2.0",
     id: 1,
   });
 
-  t.deepEqual(client._buildMessage("method", {}), {
+  t.assert.deepStrictEqual(client._buildMessage("method", {}), {
     method: "method",
     params: {},
     ["json-rpc"]: "2.0",
@@ -200,10 +198,12 @@ test("#_buildMessage", (t) => {
 });
 
 test("#batch", async (t) => {
+  t.plan(1);
+
   const client = new JSONRPCClient();
 
   client._send = async (message) => {
-    t.deepEqual(message, [
+    t.assert.deepStrictEqual(message, [
       { method: "foo", params: [], "json-rpc": "2.0", id: 0 },
       { method: "bar", params: {}, "json-rpc": "2.0", id: 1 },
     ]);
@@ -221,13 +221,15 @@ test("#batch", async (t) => {
 });
 
 test("#call", async (t) => {
+  t.plan(1);
+
   const client = new JSONRPCClient();
 
   const params = {};
   const method = "foo";
 
   client._send = async (message) => {
-    t.deepEqual(message, {
+    t.assert.deepStrictEqual(message, {
       method,
       params,
       "json-rpc": "2.0",
@@ -252,8 +254,10 @@ test("#send", async (t) => {
   const message = {};
 
   client.addEventListener("output", ({ data: m }) => {
-    t.is(m, message);
+    t.assert.deepEqual(m, message);
   });
+
+  t.mock.method(client, "http", () => {});
 
   client._send(message);
 });

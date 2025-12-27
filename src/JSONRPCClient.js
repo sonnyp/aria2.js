@@ -116,8 +116,7 @@ class JSONRPCClient extends EventTarget {
   async _send(message) {
     this.dispatchEvent(new JSONRPCEvent("output", { data: message }));
 
-    const { socket } = this;
-    return socket && socket.readyState === 1
+    return this.socket?.readyState === 1
       ? this.websocket(message)
       : this.http(message);
   }

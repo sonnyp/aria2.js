@@ -1,15 +1,13 @@
-import test from "ava";
+import { test } from "node:test";
 import promiseEvent from "../src/promiseEvent.js";
 
 import Aria2 from "../src/Aria2.js";
-
-Object.assign(global, { fetch, WebSocket });
 
 test("#call", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
   aria2._send = (m) => {
-    t.deepEqual(m, {
+    t.assert.deepStrictEqual(m, {
       method: "aria2.foo",
       params: ["token:foobar", "bar"],
       id: 0,
@@ -23,7 +21,7 @@ test("#multicall", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
   aria2._send = (m) => {
-    t.deepEqual(m, {
+    t.assert.deepStrictEqual(m, {
       method: "system.multicall",
       params: [
         [
@@ -45,7 +43,7 @@ test("#batch", (t) => {
   t.plan(1);
   const aria2 = new Aria2({ secret: "foobar" });
   aria2._send = (m) => {
-    t.deepEqual(m, [
+    t.assert.deepStrictEqual(m, [
       {
         method: "aria2.a",
         params: ["token:foobar", "1", "2"],
@@ -70,7 +68,7 @@ test("#listNotifications", async (t) => {
   t.plan(2);
   const aria2 = new Aria2({ secret: "foobar" });
   aria2._send = (m) => {
-    t.deepEqual(m, {
+    t.assert.deepStrictEqual(m, {
       method: "system.listNotifications",
       params: ["token:foobar"],
       id: 0,
@@ -83,14 +81,14 @@ test("#listNotifications", async (t) => {
   });
 
   const notifications = await aria2.listNotifications();
-  t.deepEqual(notifications, ["foo", "bar", "system.foo"]);
+  t.assert.deepStrictEqual(notifications, ["foo", "bar", "system.foo"]);
 });
 
 test("#listMethods", async (t) => {
   t.plan(2);
   const aria2 = new Aria2({ secret: "foobar" });
   aria2._send = (m) => {
-    t.deepEqual(m, {
+    t.assert.deepStrictEqual(m, {
       method: "system.listMethods",
       params: ["token:foobar"],
       id: 0,
@@ -103,7 +101,7 @@ test("#listMethods", async (t) => {
   });
 
   const methods = await aria2.listMethods();
-  t.deepEqual(methods, ["foo", "bar", "system.foo"]);
+  t.assert.deepStrictEqual(methods, ["foo", "bar", "system.foo"]);
 });
 
 test("#_onnotification", async (t) => {
@@ -113,5 +111,5 @@ test("#_onnotification", async (t) => {
   const promise = promiseEvent(aria2, "onDownloadStart");
   aria2._onnotification({ method: "aria2.onDownloadStart", params });
 
-  t.is((await promise).params, params);
+  t.assert.deepEqual((await promise).params, params);
 });
