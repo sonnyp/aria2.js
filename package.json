@@ -31,7 +31,7 @@
   "repository": "github:sonnyp/aria2.js",
   "devDependencies": {
     "prettier": "3.7.4",
-    "rollup": "^4.54.0"
+    "rollup": "^4.59.0"
   },
   "engines": {
     "node": ">= 22.0.0"
