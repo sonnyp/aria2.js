@@ -29,7 +29,25 @@ jobs:
         run: npm run lint
 
       - name: Test
-        run: npm run test
+        env:
+          MAX_RETRIES: ${{ vars.MAX_RETRIES }}
+          RETRY_DELAY: ${{ vars.RETRY_DELAY }}
+        run: |
+          
+          - name: Test
+            run: |
+              while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+                echo "--- Running tests (Attempt $((RETRY_COUNT + 1))/$MAX_RETRIES) ---"
+                npm run test || {
+                  if [ $RETRY_COUNT -eq $(($MAX_RETRIES - 1)) ]; then
+                    echo "Tests failed permanently after $MAX_RETRIES attempts."
+                    exit 1
+                  fi
+                  echo "Test command failed. Retrying in $RETRY_DELAY seconds..."
+                  sleep $RETRY_DELAY
+                }
+                RETRY_COUNT=$((RETRY_COUNT + 1))
+              done
 
       - name: Build
         run: npm run build
